@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Perseverantia Dashboard - Event Registration Panel">
+    <link rel="icon" type="image/png" href="/assets/persev.png" />
+    <title>Dashboard - Perseverantia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      @font-face {
+        font-family: Mestizo;
+        src: url(/assets/MestizoFont.ttf);
+      }
+      
+      .gradient-bg {
+        background: linear-gradient(135deg, #0D122C 0%, #131D3F 100%);
+      }
+      
+      .card-gradient {
+        background: linear-gradient(90deg, #0D122C 0%, #131D3F 100%);
+      }
+      
+      .event-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(190, 142, 48, 0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .event-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #BE8E30;
+        box-shadow: 0 0 30px rgba(190, 142, 48, 0.4);
+        transform: translateY(-5px);
+      }
+      
+      .register-btn {
+        background: #081032;
+        color: white;
+        border: 3px solid #BE8E30;
+        transition: all 0.3s ease;
+      }
+      
+      .register-btn:hover {
+        background: #BE8E30;
+        color: #081032;
+        box-shadow: 0 0 20px rgba(190, 142, 48, 0.5);
+      }
+      
+      .logo-glow {
+        filter: drop-shadow(0 0 15px rgba(190, 142, 48, 0.4));
+      }
+      
+      .icon-glow {
+        filter: drop-shadow(0 0 10px rgba(190, 142, 48, 0.6));
+      }
+      
+      .event-list {
+        max-height: 500px; /* Increased max height to 500px */
+        overflow-y: auto;
+      }
+      
+      .event-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .event-list::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+      
+      .event-list::-webkit-scrollbar-thumb {
+        background: #BE8E30;
+        border-radius: 3px;
+      }
+      
+      .logout-btn {
+        background: rgba(220, 38, 38, 0.8);
+        border: 2px solid rgba(220, 38, 38, 0.6);
+        transition: all 0.3s ease;
+      }
+      
+      .logout-btn:hover {
+        background: rgba(220, 38, 38, 1);
+        border-color: rgba(220, 38, 38, 1);
+        box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+      }
+    </style>
+  </head>
+  
+  <body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-[#BE8E30]/30 mb-8">
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-4">
+            <img 
+              src="/assets/persevlogo.png" 
+              alt="Perseverantia Logo" 
+              class="w-12 h-12 logo-glow"
+            />
+            <div>
+              <h1 class="text-3xl text-white" style="font-family: Mestizo">
+                Perseverantia Dashboard
+              </h1>
+              <p class="text-gray-300 text-sm">Event Registration Panel</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <div class="text-right">
+              <p class="text-white text-sm">Welcome back!</p>
+              <p class="text-[#BE8E30] text-xs">Logged in as: Admin</p>
+            </div>
+            <a 
+              href="/logout" 
+              class="logout-btn px-4 py-2 rounded-lg text-white text-sm hover:scale-105 transition-transform"
+            >
+              <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <div class="container mx-auto px-4 pb-8">
+      <!-- Dashboard Title -->
+      <div class="text-center mb-12">
+        <h2 class="text-5xl text-white mb-4" style="font-family: Mestizo">
+          Event Registration
+        </h2>
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+          Register participants for different event categories. Choose from Sports, Classroom, or Stage events.
+        </p>
+      </div>
+
+      <!-- Event Categories Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        
+        
+
+        <!-- Classroom Events Card -->
+        <div class="event-card rounded-3xl p-8 text-center h-[650px]">
+          <div class="mb-6">
+            <i class="fas fa-chalkboard-teacher text-6xl text-[#BE8E30] icon-glow mb-4"></i>
+            <h3 class="text-3xl text-white mb-2" style="font-family: Mestizo">
+              Classroom Events
+            </h3>
+            <p class="text-gray-300 text-sm">
+              Academic competitions and intellectual challenges
+            </p>
+          </div>
+          
+          <!-- Classroom Events List -->
+          <div class="event-list mb-6 text-left max-h-[350px]">
+            <div class="space-y-2">
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Admeta</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Artem</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Carmen</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Fabula</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Fortuna</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Codeferno</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Gustatio</span>
+              </div>
+              
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Mahim 16</span>
+              </div>
+              
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Negotium</span>
+              </div>
+            </div>
+          </div>
+          
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSc6V2QSVAjj-b6h1sRCR3FtYgdmath9bLppdtpZKdgmwxeJyg/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
+            <i class="fas fa-user-plus mr-2"></i>Register for Classroom
+          </button></a>
+        </div>
+
+        <!-- Stage Events Card -->
+        <div class="event-card rounded-3xl p-8 text-center h-[650px]">
+          <div class="mb-6">
+            <i class="fas fa-theater-masks text-6xl text-[#BE8E30] icon-glow mb-4"></i>
+            <h3 class="text-3xl text-white mb-2" style="font-family: Mestizo">
+              Stage Events
+            </h3>
+            <p class="text-gray-300 text-sm">
+              Performing arts and creative showcases
+            </p>
+          </div>
+          
+          <!-- Stage Events List -->
+          <div class="event-list mb-40 text-left max-h-[350px]">
+            <div class="space-y-2">
+              
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Gratia</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Panache</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Symphonia</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Mr. and Mrs. Perseverantia</span>
+              </div>
+            </div>
+          </div>
+          
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNaisOoay9h4FL9LrAQoSMvyQfLomyrOvd-zGqt5c2lD6ydg/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
+            <i class="fas fa-user-plus mr-2"></i>Register for Stage
+          </button></a>
+        </div>
+
+        <!-- Sports Events Card -->
+        <div class="event-card rounded-3xl p-8 text-center h-[650px]">
+          <div class="mb-6">
+            <i class="fas fa-running text-6xl text-[#BE8E30] icon-glow mb-4"></i>
+            <h3 class="text-3xl text-white mb-2" style="font-family: Mestizo">
+              Sports Events
+            </h3>
+            <p class="text-gray-300 text-sm">
+              Athletic competitions and physical challenges
+            </p>
+          </div>
+          
+          <!-- Sports Events List -->
+          <div class="event-list mb-6 text-left max-h-[350px]">
+            <div class="space-y-2">
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Explorare</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Monopolium</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Football</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Basketball</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Gully Cricket</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Table Tennis</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium"> Tug of War</span>
+              </div>
+              <div class="bg-white/10 rounded-lg p-3">
+                <span class="text-white font-medium">  E-Sports</span>
+              </div>
+              
+            </div>
+          </div>
+          
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScm4aAY5cVC5bxH_6IO3KAEnVFx9oZgu7Pr25-zXCcQ8Kw_2Q/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
+            <i class="fas fa-user-plus mr-2"></i>Register for Sports
+          </button></a>
+        </div>
+
+      </div>
+
+      <!-- Quick Stats Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+        
+        <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
+          <i class="fas fa-trophy text-3xl text-[#BE8E30] mb-3"></i>
+          <h4 class="text-2xl text-white font-bold">21</h4>
+          <p class="text-gray-300 text-sm">Total Events</p>
+        </div>
+        
+        <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
+          <i class="fas fa-school text-3xl text-[#BE8E30] mb-3"></i>
+          <h4 class="text-2xl text-white font-bold" id="participating-schools">0</h4>
+          <p class="text-gray-300 text-sm">Participating Schools</p>
+        </div>
+        
+        <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
+          <i class="fas fa-calendar text-3xl text-[#BE8E30] mb-3"></i>
+          <h4 class="text-2xl text-white font-bold" id="days-remaining">3</h4>
+          <p class="text-gray-300 text-sm">Days Remaining</p>
+        </div>
+      </div>
+
+      <!-- Additional Actions -->
+      <div class="text-center">
+        <div class="card-gradient rounded-2xl p-8 border border-[#BE8E30]/30 max-w-2xl mx-auto">
+          <h3 class="text-2xl text-white mb-4" style="font-family: Mestizo">
+            Quick Actions
+          </h3>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/events" class="bg-[#081032] text-white px-6 py-3 rounded-full border-2 border-[#BE8E30] hover:bg-[#BE8E30] hover:text-[#081032] transition-all">
+              <i class="fas fa-list mr-2"></i>View All Events
+            </a>
+            <a href="/organizing-committee" class="bg-[#081032] text-white px-6 py-3 rounded-full border-2 border-[#BE8E30] hover:bg-[#BE8E30] hover:text-[#081032] transition-all">
+              <i class="fas fa-users-cog mr-2"></i>Organizing Committee
+            </a>
+            <a href="/" class="bg-[#081032] text-white px-6 py-3 rounded-full border-2 border-[#BE8E30] hover:bg-[#BE8E30] hover:text-[#081032] transition-all">
+              <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-[#BE8E30] rounded-full opacity-5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-[#BE8E30] rounded-full opacity-5 blur-3xl"></div>
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+      // Extract username from auth string
+      const username = "!auth".split("-")[0];
+      
+      // Update the username display
+      document.addEventListener('DOMContentLoaded', function() {
+        const usernameDisplay = document.querySelector('.text-\\[\\#BE8E30\\].text-xs');
+        if (usernameDisplay && username) {
+          usernameDisplay.textContent = `Logged in as: ${username}`;
+        }
+      });
+      
+      // Add click handlers for registration buttons
+      document.querySelectorAll('.register-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const category = this.textContent.trim().split(' ').pop();
+          
+          // Show loading state
+          const originalText = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+          this.disabled = true;
+          
+          // Simulate registration process
+          setTimeout(() => {
+            alert(`Registration form for ${category} events will open soon!`);
+            this.innerHTML = originalText;
+            this.disabled = false;
+          }, 1500);
+        });
+      });
+      
+      // Add hover effects to event cards
+      document.querySelectorAll('.event-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+      
+      // Animate stats on page load
+       function update() {
+        const stats = document.querySelectorAll('h4');
+        stats.forEach((stat, index) => {
+          const finalValue = parseInt(stat.textContent);
+          let currentValue = 0;
+          const increment = finalValue / 50;
+          
+          const timer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= finalValue) {
+              stat.textContent = finalValue;
+              clearInterval(timer);
+            } else {
+              stat.textContent = Math.floor(currentValue);
+            }
+          }, 20 + (index * 10));
+        });
+      };
+      
+      document.addEventListener('DOMContentLoaded', () => {
+  const updateDaysRemaining = () => {
+    const eventDate = new Date(2025, 9, 3, 7, 0, 0); // 3rd October 2025, 7:00 AM
+    const currentDate = new Date();
+    const daysRemainingElement = document.getElementById("days-remaining");
+    if (daysRemainingElement) {
+      if (eventDate > currentDate) {
+        const daysRemaining = Math.floor((eventDate - currentDate) / (1000 * 60 * 60 * 24));
+        daysRemainingElement.textContent = `${daysRemaining} Days Remaining`;
+      } else {
+        daysRemainingElement.textContent = "Event has started!";
+      }
+    }
+  };
+  const updateParticipatingSchools = () => {
+    const schoolsElement = document.getElementById("participating-schools");
+    if (schoolsElement) {
+      // call api endpoint to get the number of participating schools
+      fetch('/api/participating-schools')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+          schoolsElement.textContent = `${data.count} Participating Schools`;
+          console.log(schoolsElement)
+          update();
+        })
+        .catch(error => {
+          console.error('Error fetching participating schools:', error);
+        });
+    }
+  };
+
+  setInterval(updateDaysRemaining, 1000 * 60 * 60); // Update every hour
+  updateDaysRemaining(); // Initial call to set the value immediately
+  updateParticipatingSchools(); // Initial call to set the value immediately
+});
+    </script>
+  </body>
+</html>

@@ -45,10 +45,7 @@
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
 
-      const test = urlParams.get('test');
-      if(test!='true'){
-        window.location.href = "/coming-soon"
-      }
+     
       var day = 0;
       var month = 0;
       var year = 0;
@@ -227,6 +224,26 @@
           Your browser does not support the video tag.
         </video>
       </div>
+      
+      <!-- Navigation Buttons Section -->
+      <div class="relative py-8 flex justify-center z-10">
+        <div class="flex flex-row gap-16"> <!-- Increased gap from 12 to 16 -->
+          <a
+            href="/school-login"
+            class="text-white bg-[#081032] py-3 px-8 rounded-full hover:shadow-xl hover:bg-[#BE8E30] hover:outline-[#081032] hover:text-black transition duration-300 outline outline-[4px] outline-[#BE8E30] outline-offset-2 text-center font-semibold text-lg"
+          >
+            Event Registration
+          </a>
+          <a
+            href="/events"
+            class="text-white bg-[#081032] py-3 px-8 mx-8 rounded-full hover:shadow-xl hover:bg-[#BE8E30] hover:outline-[#081032] hover:text-black transition duration-300 outline outline-[4px] outline-[#BE8E30] outline-offset-2 text-center font-semibold text-lg"
+          >
+            Handbook
+          </a>
+          
+        </div>
+      </div>
+      
       <section class="text-white py-8 mx-8">
         <div class="container mx-auto text-center">
           <h2 class="text-5xl" style="font-family: Mestizo">
@@ -509,7 +526,22 @@
       
     </script>
   
+    <script>
+      const updateDaysRemaining = () => {
+        const eventDate = new Date(year, month - 1, day, 7, 0, 0);
+        const currentDate = new Date();
+        if (eventDate > currentDate) {
+          const daysRemaining = Math.floor((eventDate - currentDate) / (1000 * 60 * 60 * 24));
+          document.getElementById("days-remaining").textContent = `${daysRemaining} Days Remaining`;
+        } else {
+          document.getElementById("days-remaining").textContent = "Event has started!";
+        }
+      };
 
+      setInterval(updateDaysRemaining, 1000 * 60 * 60); // Update every hour
+    </script>
 
+    <!-- Add this element where you want to display the days remaining -->
+    <div id="days-remaining" class="text-center text-lg font-semibold text-white mt-4"></div>
   </body>
 </html>

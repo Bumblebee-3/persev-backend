@@ -1,8 +1,11 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
+const fs = require('fs');
+
 const app = express();
 const PORT = 3000;
+const thirtyDays = 1000 * 60 * 60 * 24 * 30; // 30 days in milliseconds
 
 app.use(require("express").json())    // <==== parse request body as JSON
       const bodyParser = require('body-parser');
@@ -32,8 +35,9 @@ function isLoggedIn(req,res,next){
                 return next();
             }
         }
-        res.redirect("/");
+        res.redirect("/login?error=access");
 }
+
 
 app.post("/pass/validate/",async (req,res)=>{
         let uname= req.body.username;
@@ -47,9 +51,28 @@ app.post("/pass/validate/",async (req,res)=>{
     })
 
     app.get('/login',  (req, res) => {
-      req.session.username = req.query.username;
-      req.session.password = req.query.password;
-      res.redirect("/panel")
+      // If this is a login attempt with credentials
+      if (req.query.username && req.query.password) {
+          // Validate credentials
+          let validLogin = false;
+          for(let i = 0; i < unames.length; i++) {
+              if(unames[i] === req.query.username && passwords[i] === req.query.password) {
+                  validLogin = true;
+                  break;
+              }
+          }
+          
+          if (validLogin) {
+              req.session.username = req.query.username;
+              req.session.password = req.query.password;
+              res.redirect("/panel");
+          } else {
+              res.redirect("/login?error=invalid");
+          }
+      } else {
+          // Just serving the login page
+          res.sendFile(path.join(__dirname, 'static', 'login.html'));
+      }
     })
     app.get('/logout',  (req, res) => {
       req.session.username = "";
@@ -83,6 +106,15 @@ app.get('/config.json', (req, res) => {
 // Route to serve the index.html file
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+
+app.get('/school-login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'login.html'));
+});
+
+app.get('/api/participating-schools', (req, res) => {
+    // Return the count of participating schools
+    res.json({ count: unames.length });
 });
 
 // Catch-all route for undefined paths to serve 404.html
