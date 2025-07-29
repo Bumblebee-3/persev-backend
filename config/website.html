@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perseverantia Config Builder</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Fonts -->
+  <style>
+    @font-face {
+      font-family: Mestizo;
+      src: url(https://bss-perseverantia.github.io/assets/MestizoFont.ttf);
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(50deg, rgba(17,89,141,1) 0%, rgba(8,16,50,1) 100%);
+      color: white;
+    }
+    h1, h2 {
+      font-family: Mestizo, serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen px-6 py-10">
+
+  <div class="max-w-5xl mx-auto bg-[#0C1542] p-8 border-8 border-[#BE8E30] rounded-xl shadow-xl">
+    <header class="mb-10 text-center">
+      <img src="https://bss-perseverantia.github.io/assets/persevlogo.png" alt="Logo" class="mx-auto w-28 mb-4" />
+      <h1 class="text-5xl text-[#BE8E30] mb-2">Config Builder</h1>
+      <p class="text-gray-300 max-w-xl mx-auto text-sm">
+        Build and export your config.js easily.<br/>
+        Copy the generated config and paste it in your repo.<br/>
+        Redeploy and reset leaderboard DB as needed.
+      </p>
+    </header>
+
+    <!-- Navbar Section -->
+    <section class="mb-8">
+      <h2 class="text-2xl mb-4 text-[#BE8E30]">Navbar</h2>
+
+      <label class="block mb-2 font-semibold" for="navbarTitle">Title</label>
+      <input
+        id="navbarTitle"
+        type="text"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4"
+        value="PERSEVERANTIA '25"
+      />
+
+      <div id="navbarLinksContainer" class="mb-4 space-y-3">
+        <!-- Links will be dynamically added here -->
+      </div>
+
+      <button
+        id="addNavbarLinkBtn"
+        type="button"
+        class="bg-[#BE8E30] text-black px-5 py-2 rounded font-semibold hover:bg-yellow-400 transition"
+      >
+        + Add Navbar Link
+      </button>
+    </section>
+
+    <!-- Main Logo & DateTime -->
+    <section class="mb-8">
+      <h2 class="text-2xl mb-4 text-[#BE8E30]">Main Logo & Countdown</h2>
+
+      <label class="block mb-2 font-semibold" for="mainLogoInput">Main Logo URL</label>
+      <input
+        id="mainLogoInput"
+        type="text"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4"
+        value="/assets/persevlogo.png"
+      />
+
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div>
+          <label class="block mb-2 font-semibold" for="countdownYear">Countdown Year</label>
+          <input
+            id="countdownYear"
+            type="number"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="2025"
+            min="2000"
+            max="2100"
+          />
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold" for="countdownMonth">Month</label>
+          <input
+            id="countdownMonth"
+            type="number"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="10"
+            min="1"
+            max="12"
+          />
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold" for="countdownDay">Day</label>
+          <input
+            id="countdownDay"
+            type="number"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="3"
+            min="1"
+            max="31"
+          />
+        </div>
+      </div>
+
+      <label class="block mb-2 font-semibold" for="dateTimeInput">DateTime Display</label>
+      <input
+        id="dateTimeInput"
+        type="text"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+        value="3rd October @ 7:00 a.m."
+      />
+    </section>
+
+    <!-- About Section -->
+    <section class="mb-8">
+      <h2 class="text-2xl mb-4 text-[#BE8E30]">About Section</h2>
+
+      <label class="block mb-2 font-semibold" for="aboutTb1">Text Block 1 (tb1)</label>
+      <textarea
+        id="aboutTb1"
+        rows="3"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4 resize-none"
+      >Bombay Scottish School, Mahim has returned with the third edition of its Annual Inter-School Fest - Perseverantia!</textarea>
+
+      <label class="block mb-2 font-semibold" for="aboutTbg">Text Block - Theme (tbg)</label>
+      <textarea
+        id="aboutTbg"
+        rows="2"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4 resize-none"
+      >Our theme for this year is INCLUSIVITY</textarea>
+
+      <label class="block mb-2 font-semibold" for="aboutTb2">Text Block 2 (tb2)</label>
+      <textarea
+        id="aboutTb2"
+        rows="5"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4 resize-none"
+      >Whether you are a Gaming Geek or a Football Freak, a Fashionista or a Filmmaker, a Dancer or a Debater, a Writer or the Wolf of Wall Street, we have something for everyone. &lt;be&gt;&lt;br&gt; Join us on an enthralling journey where you can make a mark by displaying your talent through 15 exciting events.</textarea>
+
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div>
+          <label class="block mb-2 font-semibold" for="aboutButton1Name">Button 1 Name</label>
+          <input
+            id="aboutButton1Name"
+            type="text"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="View Events"
+          />
+          <label class="block mt-3 mb-2 font-semibold" for="aboutButton1Link">Button 1 Link</label>
+          <input
+            id="aboutButton1Link"
+            type="text"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="/events"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold" for="aboutButton2Name">Button 2 Name</label>
+          <input
+            id="aboutButton2Name"
+            type="text"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="Organizing Committee"
+          />
+          <label class="block mt-3 mb-2 font-semibold" for="aboutButton2Link">Button 2 Link</label>
+          <input
+            id="aboutButton2Link"
+            type="text"
+            class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+            value="/organizingCommittee"
+          />
+        </div>
+      </div>
+
+      <label class="block mb-2 font-semibold" for="aboutPhoto">Photo URL</label>
+      <input
+        id="aboutPhoto"
+        type="text"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+        value="https://static.wixstatic.com/media/447894_0bcb6114fe254d76a4301c97bad20409~mv2.jpg/v1/crop/x_266,y_21,w_1082,h_1045/fill/w_408,h_382,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/WhatsApp%20Image%202024-06-10%20at%2019_40_edite.jpg"
+      />
+    </section>
+
+    <!-- Register Section -->
+    <section class="mb-8">
+      <h2 class="text-2xl mb-4 text-[#BE8E30]">Register Section</h2>
+
+      <label class="block mb-2 font-semibold" for="registerContent">Content</label>
+      <textarea
+        id="registerContent"
+        rows="4"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4 resize-none"
+      >Be part of Perseverantia '25 and showcase your talents across 21+ thrilling events. Don’t miss your chance to compete, collaborate, and celebrate!</textarea>
+
+      <label class="block mb-2 font-semibold" for="registerLink">Register Link</label>
+      <input
+        id="registerLink"
+        type="text"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+        value="/register"
+      />
+    </section>
+
+    <!-- Contact Section -->
+    <section class="mb-8">
+      <h2 class="text-2xl mb-4 text-[#BE8E30]">Contact Section</h2>
+
+      <label class="block mb-2 font-semibold" for="contactMobile">Mobile Numbers</label>
+      <textarea
+        id="contactMobile"
+        rows="2"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30] mb-4 resize-none"
+      >📞 +91 84258 98552 / +91 77380 99474 / +91 70211 38415</textarea>
+
+      <label class="block mb-2 font-semibold" for="contactEmail">Email</label>
+      <input
+        id="contactEmail"
+        type="email"
+        class="w-full p-3 rounded bg-[#1E274F] text-white border border-[#BE8E30]"
+        value="perseverantia.mahim@bombayscottish.in"
+      />
+    </section>
+
+    <!-- Generate & Output -->
+    <div class="text-center mt-6">
+      <button
+        id="generateBtn"
+        class="bg-[#BE8E30] text-black px-8 py-3 rounded-full font-bold hover:scale-105 transition duration-300"
+      >
+        Generate Config
+      </button>
+    </div>
+
+    <pre
+      id="output"
+      class="mt-6 p-6 bg-[#1E274F] text-green-300 rounded max-h-96 overflow-auto text-sm font-mono whitespace-pre-wrap"
+    ></pre>
+
+    <div class="text-center mt-4">
+      <button
+        id="copyBtn"
+        class="bg-[#BE8E30] text-black px-6 py-2 rounded-full font-semibold hover:scale-105 transition duration-300"
+      >
+        Copy Config
+      </button>
+      <p id="copyStatus" class="text-green-400 mt-2 hidden">Copied!</p>
+    </div>
+  </div>
+
+  <footer class="text-center text-gray-400 text-xs mt-8">
+    &copy; 2025 Bombay Scottish School, Mahim. All rights reserved.
+  </footer>
+
+<script>
+  // Initial Navbar links from your JSON example
+  let navbarLinks = [
+    { name: "Leaderboard", linkto: "/leaderboard" },
+    { name: "Fortuna", linkto: "/fortuna" }
+  ];
+
+  const navbarLinksContainer = document.getElementById('navbarLinksContainer');
+  const addNavbarLinkBtn = document.getElementById('addNavbarLinkBtn');
+
+  // Render navbar links inputs
+  function renderNavbarLinks() {
+    navbarLinksContainer.innerHTML = '';
+    navbarLinks.forEach((link, index) => {
+      const div = document.createElement('div');
+      div.className = 'flex space-x-3 mb-3';
+
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.placeholder = 'Link Name';
+      nameInput.value = link.name;
+      nameInput.className = 'flex-1 p-2 rounded bg-[#1E274F] text-white border border-[#BE8E30]';
+      nameInput.oninput = (e) => {
+        navbarLinks[index].name = e.target.value;
+      };
+
+      const linkInput = document.createElement('input');
+      linkInput.type = 'text';
+      linkInput.placeholder = 'Link To';
+      linkInput.value = link.linkto;
+      linkInput.className = 'flex-1 p-2 rounded bg-[#1E274F] text-white border border-[#BE8E30]';
+      linkInput.oninput = (e) => {
+        navbarLinks[index].linkto = e.target.value;
+      };
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = '×';
+      removeBtn.title = 'Remove link';
+      removeBtn.className = 'text-red-500 font-bold px-2 hover:text-red-400';
+      removeBtn.onclick = () => {
+        navbarLinks.splice(index, 1);
+        renderNavbarLinks();
+      };
+
+      div.appendChild(nameInput);
+      div.appendChild(linkInput);
+      div.appendChild(removeBtn);
+
+      navbarLinksContainer.appendChild(div);
+    });
+  }
+
+  addNavbarLinkBtn.onclick = () => {
+    navbarLinks.push({ name: '', linkto: '' });
+    renderNavbarLinks();
+  };
+
+  // Initial render
+  renderNavbarLinks();
+
+  // Generate config object & JSON output
+  function generateConfig() {
+    const config = {
+      website: {
+        navbar: {
+          title: document.getElementById('navbarTitle').value.trim(),
+          links: navbarLinks.filter(l => l.name.trim() && l.linkto.trim()),
+        },
+        mainLogo: document.getElementById('mainLogoInput').value.trim(),
+        countdown: {
+          year: Number(document.getElementById('countdownYear').value),
+          month: Number(document.getElementById('countdownMonth').value),
+          day: Number(document.getElementById('countdownDay').value),
+        },
+        dateTime: document.getElementById('dateTimeInput').value.trim(),
+        about: {
+          tb1: document.getElementById('aboutTb1').value.trim(),
+          tbg: document.getElementById('aboutTbg').value.trim(),
+          tb2: document.getElementById('aboutTb2').value.trim(),
+          button1: {
+            name: document.getElementById('aboutButton1Name').value.trim(),
+            link: document.getElementById('aboutButton1Link').value.trim(),
+          },
+          button2: {
+            name: document.getElementById('aboutButton2Name').value.trim(),
+            link: document.getElementById('aboutButton2Link').value.trim(),
+          },
+          photo: document.getElementById('aboutPhoto').value.trim(),
+        },
+        register: {
+          content: document.getElementById('registerContent').value.trim(),
+          link: document.getElementById('registerLink').value.trim(),
+        },
+        contact: {
+          mobileNos: document.getElementById('contactMobile').value.trim(),
+          email: document.getElementById('contactEmail').value.trim(),
+        }
+      }
+    };
+
+    return config;
+  }
+
+  // On generate button click
+  const generateBtn = document.getElementById('generateBtn');
+  const output = document.getElementById('output');
+  generateBtn.onclick = () => {
+    const config = generateConfig();
+    output.textContent = JSON.stringify(config, null, 2);
+    document.getElementById('copyStatus').classList.add('hidden');
+  };
+
+  const iframeContainer = document.createElement('div');
+  iframeContainer.className = 'mt-10 border border-[#BE8E30] rounded overflow-hidden';
+  iframeContainer.style.height = '600px'; // fixed height for demo
+
+  const iframeTitle = document.createElement('h3');
+  iframeTitle.textContent = 'Live Preview (iframe)';
+  iframeTitle.className = 'text-[#BE8E30] font-mestizo mb-2 text-lg';
+
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '600px';
+  iframe.style.border = 'none';
+
+  iframeContainer.appendChild(iframeTitle);
+  iframeContainer.appendChild(iframe);
+  document.querySelector('.max-w-5xl').appendChild(iframeContainer);
+
+  generateBtn.onclick = () => {
+    const config = generateConfig();
+    output.textContent = JSON.stringify(config, null, 2);
+    document.getElementById('copyStatus').classList.add('hidden');
+
+    // Encode website config as JSON string
+    const encodedConfig = encodeURIComponent(JSON.stringify(config.website));
+    // Construct iframe src with config param
+    iframe.src = `/viewTest.html?config=${encodedConfig}`;
+  };
+
+
+  // Copy to clipboard button
+  const copyBtn = document.getElementById('copyBtn');
+  const copyStatus = document.getElementById('copyStatus');
+  copyBtn.onclick = () => {
+    if (!output.textContent) return;
+    navigator.clipboard.writeText(output.textContent).then(() => {
+      copyStatus.classList.remove('hidden');
+      setTimeout(() => copyStatus.classList.add('hidden'), 1500);
+    });
+  };
+
+  // Generate initially
+  generateBtn.click();
+
+</script>
+
+</body>
+</html>
