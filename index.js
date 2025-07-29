@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = 3000;
@@ -30,6 +31,10 @@ const passwords = process.env.PASSWORDS.split(',');
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 
+function hashPassword(password) {
+    return crypto.createHash('sha256').update(password).digest('hex');
+}
+
 function isLoggedIn(req,res,next){
         for(let i=0;i<unames.length;i++){
             if(unames[i]==req.session.username && passwords[i]==req.session.password){
@@ -43,8 +48,9 @@ function isLoggedIn(req,res,next){
 app.post("/pass/validate/",async (req,res)=>{
         let uname= req.body.username;
         let pass = req.body.password;
-        for(let i=0;i<data.accounts.length;i++){
-            if(data.accounts[i].username==uname && data.accounts[i].password==pass){
+        let hashedPass = hashPassword(pass);
+        for(let i=0;i<unames.length;i++){
+            if(unames[i]==uname && passwords[i]==hashedPass){
                 return res.json({data:true})
             }
         }
@@ -56,8 +62,9 @@ app.post("/pass/validate/",async (req,res)=>{
       if (req.query.username && req.query.password) {
           // Validate credentials
           let validLogin = false;
+          let hashedPass = hashPassword(req.query.password);
           for(let i = 0; i < unames.length; i++) {
-              if(unames[i] === req.query.username && passwords[i] === req.query.password) {
+              if(unames[i] === req.query.username && passwords[i] === hashedPass) {
                   validLogin = true;
                   break;
               }
@@ -65,7 +72,7 @@ app.post("/pass/validate/",async (req,res)=>{
           
           if (validLogin) {
               req.session.username = req.query.username;
-              req.session.password = req.query.password;
+              req.session.password = hashedPass;
               res.redirect("/panel");
           } else {
               res.redirect("/login?error=invalid");
