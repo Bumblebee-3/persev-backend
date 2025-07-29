@@ -21,6 +21,7 @@ app.use(require("express").json())    // <==== parse request body as JSON
 
 // Load environment variables from .env file
 dotenv.config();
+console.log(process.env.UNAMES);
 
 const unames = process.env.UNAMES.split(',');
 const passwords = process.env.PASSWORDS.split(',');
@@ -77,7 +78,7 @@ app.post("/pass/validate/",async (req,res)=>{
     app.get('/logout',  (req, res) => {
       req.session.username = "";
       req.session.password = "";
-      res.redirect("/?loggedout=true")
+      res.redirect("/")
     })
     app.get("/panel",isLoggedIn,(req,res)=>{
         const data = fs.readFileSync(__dirname+"/views/panel.html").toString()
