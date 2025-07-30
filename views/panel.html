@@ -410,7 +410,7 @@
       </div>
 
       <!-- Quick Stats Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 center">
 
         
         <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
@@ -567,7 +567,7 @@
     if (daysRemainingElement) {
       if (eventDate > currentDate) {
         const daysRemaining = Math.floor((eventDate - currentDate) / (1000 * 60 * 60 * 24));
-        daysRemainingElement.textContent = `${daysRemaining} Days Remaining`;
+        daysRemainingElement.textContent = `${daysRemaining}`;
       } else {
         daysRemainingElement.textContent = "Event has started!";
       }

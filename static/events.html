@@ -33,37 +33,179 @@
     /* Custom styles for loading screen and font */
     @font-face {
       font-family: Mestizo;
-      src: url('https://perseverantia.events-at-scottishmahim.com/assets/MestizoFont.ttf');
+      src: url('/assets/MestizoFont.ttf');
     }
 
     #loading-screen {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #0a0f2c, #1a2949);
+      background: radial-gradient(circle at center, #1a2949 0%, #0a0f2c 100%);
       z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 1;
-      /* Start fully opaque */
       pointer-events: auto;
-      /* Allow clicks, but typically covered by overlay */
       transition: opacity 0.6s ease;
-      /* For fade-out effect */
     }
 
     #loading-screen.fade-out {
       opacity: 0;
       pointer-events: none;
-      /* Disable interaction when faded */
     }
 
-    /* Your custom font and background for body are now expected in style.css */
-    /* h1, h2, h3 font remains here for clarity */
-    h1,
-    h2,
-    h3 {
+    #loading-video {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Enhanced Background and Animations */
+    body {
+      background: linear-gradient(135deg, #0a0f2c 0%, #1a2949 50%, #0d122c 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Floating Background Elements */
+    .bg-decoration {
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bg-decoration::before,
+    .bg-decoration::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(190, 142, 48, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .bg-decoration::before {
+      width: 200px;
+      height: 200px;
+      top: 10%;
+      left: 80%;
+      animation-delay: 0s;
+    }
+
+    .bg-decoration::after {
+      width: 150px;
+      height: 150px;
+      bottom: 20%;
+      left: 10%;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* Enhanced Typography */
+    h1, h2, h3 {
       font-family: 'Mestizo', serif;
+    }
+
+    .section-title {
+      background: linear-gradient(45deg, #BE8E30, #FFD700, #BE8E30);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(190, 142, 48, 0.5);
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Enhanced Event Card Animations */
+    .event-card {
+      background: linear-gradient(145deg, #081032 0%, #0c1542 100%);
+      border: 2px solid rgba(190, 142, 48, 0.3);
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(190, 142, 48, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .event-card:hover::before {
+      left: 100%;
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: #BE8E30;
+      box-shadow: 
+        0 20px 40px rgba(190, 142, 48, 0.3),
+        0 0 30px rgba(190, 142, 48, 0.2);
+    }
+
+    .event-card img {
+      transition: all 0.4s ease;
+      filter: grayscale(20%);
+    }
+
+    .event-card:hover img {
+      filter: grayscale(0%) brightness(110%);
+      transform: scale(1.1);
+    }
+
+    .event-name {
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .event-card:hover .event-name {
+      text-shadow: 0 0 20px rgba(190, 142, 48, 0.8);
+    }
+
+    /* Stagger animation delays */
+    .event-card:nth-child(1) { animation-delay: 0.1s; }
+    .event-card:nth-child(2) { animation-delay: 0.2s; }
+    .event-card:nth-child(3) { animation-delay: 0.3s; }
+    .event-card:nth-child(4) { animation-delay: 0.4s; }
+    .event-card:nth-child(5) { animation-delay: 0.5s; }
+    .event-card:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Enhanced Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #081032;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, #BE8E30, #FFD700);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, #FFD700, #BE8E30);
     }
 
     /* Custom styles for hamburger menu and modal adjustments (mobile only) */
@@ -244,6 +386,75 @@
       flex-shrink: 0;
       /* Add this */
     }
+
+    /* Enhanced Event Card Animations matching organizing-committee.html */
+    .event-card {
+      background: linear-gradient(145deg, #081032 0%, #0c1542 100%);
+      border: 2px solid rgba(190, 142, 48, 0.3);
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(190, 142, 48, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .event-card:hover::before {
+      left: 100%;
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: #BE8E30;
+      box-shadow: 
+        0 20px 40px rgba(190, 142, 48, 0.3),
+        0 0 30px rgba(190, 142, 48, 0.2);
+    }
+
+    .event-card img {
+      transition: all 0.4s ease;
+      filter: grayscale(20%);
+    }
+
+    .event-card:hover img {
+      filter: grayscale(0%) brightness(110%);
+      transform: scale(1.1);
+    }
+
+    .event-name {
+      color: #BE8E30;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .event-card:hover .event-name {
+      text-shadow: 0 0 20px rgba(190, 142, 48, 0.8);
+    }
+
+    /* Entrance Animations */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
@@ -292,19 +503,17 @@
     </div>
   </nav>
 
-  <div class="flex justify-center my-6 px-4">
-    <img src="https://perseverantia.events-at-scottishmahim.com/assets/banner3.avif" alt="Perseverantia Banner"
-      class="rounded-[20px] w-full max-w-4xl" />
-  </div>
-
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+    <!-- Background Decorations -->
+    <div class="bg-decoration"></div>
+    
     <header class="text-center mb-12">
-      <h1 class="text-3xl sm:text-5xl text-[#BE8E30] mb-4">Our Events</h1>
-      <p class="text-gray-300 text-base sm:text-lg">Explore the thrilling line-up of competitions at Perseverantia '25.
+      <h1 class="text-3xl sm:text-5xl text-[#BE8E30] mb-4 section-title fade-in-up">Our Events</h1>
+      <p class="text-gray-300 text-base sm:text-lg fade-in-up">Explore the thrilling line-up of competitions at Perseverantia '25.
       </p>
     </header>
 
-    <section class="py-4 mb-8">
+    <section class="py-4 mb-8 fade-in-up">
       <div class="marquee-container">
         <div class="marquee-content">
           <div id="marquee-row-1-main"></div>
@@ -322,6 +531,16 @@
     <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     </div>
   </main>
+
+  <!-- Footer matching organizing-committee.html -->
+  <footer class="bg-gradient-to-r from-[#081032] to-[#0c1542] text-white py-8 border-t border-[#BE8E30]/30">
+    <div class="container mx-auto text-center">
+      <div class="mb-4">
+        <h3 class="text-xl" style="font-family: Mestizo; color: #BE8E30;">Perseverantia 2025</h3>
+      </div>
+      <p class="text-gray-300 mb-2">&copy; 2025 Bombay Scottish School, Mahim. All rights reserved.</p>
+    </div>
+  </footer>
 
   <div id="modal" class="fixed inset-0 bg-[#08103280] flex items-center justify-center z-50 hidden overflow-y-auto p-4">
     <div
@@ -411,16 +630,17 @@
         populateMarquees(events);
 
 
-        // Events Grid Population (This is what will naturally create "rows" of "n" columns)
+        // Events Grid Population with enhanced card structure
         const grid = document.getElementById('eventsGrid');
         grid.innerHTML = ''; // Clear existing content before populating
-        events.forEach(event => {
+        events.forEach((event, index) => {
           const card = document.createElement('div');
-          // Ensuring card classes match the theme and general appearance from the original
-          card.className = 'bg-[#0C1542] rounded-lg p-6 border border-[#BE8E30] shadow-lg hover:scale-105 transition cursor-pointer';
+          // Use event-card class to match organizing-committee.html style
+          card.className = 'event-card w-full p-6 fade-in-up cursor-pointer';
+          card.style.animationDelay = `${(index * 0.1) + 0.1}s`;
           card.innerHTML = `
-            <img src="${event.logo}" alt="${event.name} Logo" class="w-24 h-32 object-contain mx-auto mb-4" />
-            <h2 class="text-xl font-bold text-[#BE8E30] text-center">${event.name}</h2>
+            <img src="${event.logo}" alt="${event.name} Logo" class="w-24 h-32 object-contain mx-auto mb-4 transition-all duration-400" />
+            <h2 class="text-xl event-name text-center">${event.name}</h2>
             <p class="text-sm italic text-gray-300 text-center mt-1">${event.shortDesc}</p>
           `;
           card.onclick = () => openModal(event);
@@ -431,6 +651,9 @@
         setTimeout(() => {
           loadingScreen.classList.add("fade-out");
           setTimeout(() => loadingScreen.remove(), 600); // Remove after CSS transition
+          
+          // Initialize enhanced animations after loading screen is removed
+          initializeEnhancedAnimations();
         }, 1000); // Show loading screen for 2 seconds (2000ms)
 
       } catch (err) {
@@ -584,6 +807,85 @@
         document.body.style.overflow = '';
       }
     });
+
+    // --- Enhanced Animations and Interactions (matching organizing-committee.html) ---
+    function initializeEnhancedAnimations() {
+      // Intersection Observer for fade-in animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-in-up').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+      });
+
+      // Add click ripple effect to event cards
+      document.querySelectorAll('.event-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+          // Create ripple effect
+          const ripple = document.createElement('div');
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          
+          ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            background: rgba(190, 142, 48, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+            z-index: 1;
+          `;
+          
+          this.appendChild(ripple);
+          
+          // Remove ripple after animation
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add ripple animation keyframes if not already present
+      if (!document.getElementById('ripple-styles')) {
+        const style = document.createElement('style');
+        style.id = 'ripple-styles';
+        style.textContent = `
+          @keyframes ripple {
+            to {
+              transform: scale(4);
+              opacity: 0;
+            }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Parallax effect for background decorations
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('.bg-decoration');
+        if (parallax) {
+          parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+      });
+    }
 
     // --- Link Interception for Loading Screen (Optional but good for consistency) ---
     document.body.addEventListener('click', function (e) {
