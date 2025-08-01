@@ -109,7 +109,7 @@ app.get('/style2.css', (req, res) => {
 });
 
 app.get('/config.json', (req, res) => {
-    res.sendFile(path.join(__dirname, 'config.json'));
+    res.sendFile(path.join(__dirname, 'config_sorted.json'));
 });
 // Route to serve the index.html file
 app.get('/', (req, res) => {

@@ -297,96 +297,6 @@
       }
     }
 
-    /* --- MARQUEE CUSTOM CSS --- */
-    .marquee-container {
-      overflow: hidden;
-      white-space: nowrap;
-      /* CRITICAL: Prevents content from wrapping */
-      width: 100%;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
-
-    .marquee-content {
-      display: inline-flex;
-      /* CRITICAL: Makes children lay out horizontally */
-      gap: 2rem;
-      /* Spacing between logos */
-      padding-right: 2rem;
-      /* Essential for seamless loop, adds space at the end */
-      animation: marquee-left 15s linear infinite;
-      /* Ensure this div is wide enough to contain duplicated content */
-      /* No width property here, as inline-flex will size based on content. */
-      /* The content inside should duplicate sufficiently to cover the screen plus a bit more */
-    }
-
-    /* Animation keyframes for scrolling left */
-    @keyframes marquee-left {
-      0% {
-        transform: translateX(0%);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
-
-      /* Scrolls half its width */
-    }
-
-    /* Animation keyframes for scrolling right */
-    @keyframes marquee-right {
-      0% {
-        transform: translateX(-50%);
-      }
-
-      /* Starts half its width to the left */
-      100% {
-        transform: translateX(0%);
-      }
-
-      /* Ends at original position */
-    }
-
-    /* Apply right scroll animation to the second row */
-    #marquee-row-2-wrapper .marquee-content {
-      animation: marquee-right 15s linear infinite;
-    }
-
-    /* Pause animation on hover */
-    /*    .marquee-container:hover .marquee-content {
-      animation-play-state: paused;
-    }
-  */
-
-    /* Style for the images within the marquee */
-    .marquee-logo-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-right: 0.6rem;
-      /* space between logos */
-      flex-shrink: 0;
-    }
-
-    .marquee-logo {
-      height: 128px;
-      width: 128px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    /* Ensure the containers of images lay them out horizontally */
-    #marquee-row-1-main,
-    #marquee-row-1-duplicate,
-    #marquee-row-2-main,
-    #marquee-row-2-duplicate {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex-shrink: 0;
-      /* Add this */
-    }
-
     /* Enhanced Event Card Animations matching organizing-committee.html */
     .event-card {
       background: linear-gradient(145deg, #081032 0%, #0c1542 100%);
@@ -513,21 +423,6 @@
       </p>
     </header>
 
-    <section class="py-4 mb-8 fade-in-up">
-      <div class="marquee-container">
-        <div class="marquee-content">
-          <div id="marquee-row-1-main"></div>
-          <div id="marquee-row-1-duplicate" aria-hidden="true"></div>
-        </div>
-      </div>
-
-      <div id="marquee-row-2-wrapper" class="marquee-container mt-4">
-        <div class="marquee-content">
-          <div id="marquee-row-2-main"></div>
-          <div id="marquee-row-2-duplicate" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
     <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     </div>
   </main>
@@ -626,10 +521,6 @@
         // Populate Navbar Title
         document.getElementById("nav-title").textContent = navbar.title || "Perseverantia";
 
-        // --- MARQUEE POPULATION CALL HERE ---
-        populateMarquees(events);
-
-
         // Events Grid Population with enhanced card structure
         const grid = document.getElementById('eventsGrid');
         grid.innerHTML = ''; // Clear existing content before populating
@@ -639,7 +530,7 @@
           card.className = 'event-card w-full p-6 fade-in-up cursor-pointer';
           card.style.animationDelay = `${(index * 0.1) + 0.1}s`;
           card.innerHTML = `
-            <img src="${event.logo}" alt="${event.name} Logo" class="w-24 h-32 object-contain mx-auto mb-4 transition-all duration-400" />
+            <img src="${event.logo}" alt="${event.name} Logo" class="w-28 h-36 object-contain mx-auto mb-4 transition-all duration-400" />
             <h2 class="text-xl event-name text-center">${event.name}</h2>
             <p class="text-sm italic text-gray-300 text-center mt-1">${event.shortDesc}</p>
           `;
@@ -705,57 +596,6 @@
         }, 500); // Match transition duration
       }
     });
-    // --- MARQUEE POPULATION LOGIC (Adjusted to split events) ---
-    function populateMarquees(events) {
-      const marqueeRow1Main = document.getElementById('marquee-row-1-main');
-      const marqueeRow1Duplicate = document.getElementById('marquee-row-1-duplicate');
-      const marqueeRow2Main = document.getElementById('marquee-row-2-main');
-      const marqueeRow2Duplicate = document.getElementById('marquee-row-2-duplicate');
-
-      const midpoint = Math.ceil(events.length / 2);
-      const firstHalf = events.slice(0, midpoint);
-      const secondHalf = events.slice(midpoint);
-
-      // Utility to generate logo HTML with data attributes
-      const generateLogoHTML = (subset) => subset.map(event => {
-        if (!event.logo || event.logo.trim() === '') return '';
-        return `
-          <div class="marquee-logo-wrapper">
-            <img 
-              src="${event.logo}" 
-              alt="${event.name} Logo" 
-              class="marquee-logo cursor-pointer"
-              data-event-name="${encodeURIComponent(event.name)}"
-            />
-          </div>`;
-      }).join('');
-
-      // Populate all 4 rows (main + duplicate)
-      const firstHalfHTML = generateLogoHTML(firstHalf);
-      marqueeRow1Main.innerHTML = firstHalfHTML;
-      marqueeRow1Duplicate.innerHTML = firstHalfHTML;
-
-      const secondHalfHTML = generateLogoHTML(secondHalf);
-      marqueeRow2Main.innerHTML = secondHalfHTML;
-      marqueeRow2Duplicate.innerHTML = secondHalfHTML;
-
-      // After DOM insertion, bind click events to logos
-      setTimeout(() => {
-        document.querySelectorAll('.marquee-logo').forEach(logo => {
-          logo.addEventListener('click', () => {
-            const eventName = decodeURIComponent(logo.getAttribute('data-event-name'));
-            const eventData = events.find(e => e.name === eventName);
-            if (eventData) {
-              openModal(eventData);
-            } else {
-              console.warn(`No event found for name: ${eventName}`);
-            }
-          });
-        });
-      }, 0); // Wait for DOM insert
-    }
-
-
     // --- Modal Logic (Kept as is, functional) ---
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modalTitle');

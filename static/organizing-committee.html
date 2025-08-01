@@ -282,6 +282,8 @@
             </div>
             <div class="hidden md:flex space-x-6 text-lg" id="desktop-nav">
                 <a href="/" class="hover:text-blue-200">Home</a>
+                <a href="/events.html" class="hover:text-blue-200">Events</a>
+                <a href="/organizing-committee.html" class="hover:text-blue-200">Organizing Committee</a>
             </div>
             <div class="md:hidden">
                 <button id="menu-toggle" class="focus:outline-none" aria-label="menu">
@@ -294,6 +296,8 @@
         </div>
         <div id="mobile-menu" class="md:hidden hidden opacity-0 scale-y-90 -translate-y-4 transform transition-all duration-500 ease-out origin-top px-4 pb-4">
             <a href="/" class="block py-2 text-lg hover:text-blue-200">Home</a>
+            <a href="/events.html" class="block py-2 text-lg hover:text-blue-200">Events</a>
+            <a href="/organizing-committee.html" class="block py-2 text-lg hover:text-blue-200">Organizing Committee</a>
         </div>
     </nav>
 
@@ -699,7 +703,7 @@
             }
         });
 
-        // --- Navbar Logic from events.html ---
+        // --- Navbar Logic with better fallback ---
         async function setupNavbar() {
             try {
                 const res = await fetch('config.json');
@@ -711,8 +715,12 @@
                 // Populate Navbar Links
                 const desktopNav = document.getElementById("desktop-nav");
                 const mobileMenu = document.getElementById("mobile-menu");
+                
+                // Clear existing content
                 desktopNav.innerHTML = '';
                 mobileMenu.innerHTML = '';
+                
+                // Add Home link
                 const homeDesktop = document.createElement('a');
                 homeDesktop.href = '/';
                 homeDesktop.textContent = 'Home';
@@ -725,6 +733,7 @@
                 homeMobile.className = 'block py-2 text-lg hover:text-blue-200';
                 mobileMenu.appendChild(homeMobile);
 
+                // Add config-based links
                 (navbar.links || []).forEach(link => {
                     // Desktop Nav
                     const desktopLink = document.createElement('a');
@@ -741,10 +750,40 @@
                     mobileMenu.appendChild(mobileLink);
                 });
 
-                // Navbar Title
+                // Update navbar title
                 document.getElementById("nav-title").textContent = navbar.title || "Perseverantia";
             } catch (err) {
-                // Fallback: do nothing, keep default nav
+                console.warn("Could not load config.json, using fallback navbar:", err);
+                // Fallback: Add static navigation links
+                const desktopNav = document.getElementById("desktop-nav");
+                const mobileMenu = document.getElementById("mobile-menu");
+                
+                // Clear existing content
+                desktopNav.innerHTML = '';
+                mobileMenu.innerHTML = '';
+                
+                // Static fallback links
+                const staticLinks = [
+                    { name: 'Home', href: '/' },
+                    { name: 'Events', href: '/events.html' },
+                    { name: 'Organizing Committee', href: '/organizing-committee.html' }
+                ];
+                
+                staticLinks.forEach(link => {
+                    // Desktop Nav
+                    const desktopLink = document.createElement('a');
+                    desktopLink.href = link.href;
+                    desktopLink.textContent = link.name;
+                    desktopLink.className = 'hover:text-blue-200';
+                    desktopNav.appendChild(desktopLink);
+
+                    // Mobile Nav
+                    const mobileLink = document.createElement('a');
+                    mobileLink.href = link.href;
+                    mobileLink.textContent = link.name;
+                    mobileLink.className = 'block py-2 text-lg hover:text-blue-200';
+                    mobileMenu.appendChild(mobileLink);
+                });
             }
         }
         document.addEventListener("DOMContentLoaded", setupNavbar);
