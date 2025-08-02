@@ -210,22 +210,11 @@
 
     /* Custom styles for hamburger menu and modal adjustments (mobile only) */
     @media (max-width: 639px) {
-
       /* Tailwind CSS 'sm' breakpoint is 640px */
       #mobile-menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        margin-top: 1rem;
-        background-color: #0C1542;
-        /* Ensure background for dropdown */
-        border-top: 1px solid #BE8E30;
+        background-color: #0c154250;
+        border-top: 0px solid #BE8E30;
         padding-top: 0.5rem;
-      }
-
-      #mobile-menu.open {
-        display: flex;
       }
 
       #mobile-menu a {
@@ -549,6 +538,53 @@
 
       } catch (err) {
         console.error("Failed to load /config.json or populate content:", err);
+        
+        // Fallback: Set basic navigation if config fails
+        const desktopNav = document.getElementById("desktop-nav");
+        const mobileMenu = document.getElementById("mobile-menu");
+        
+        // Clear and set fallback navigation
+        desktopNav.innerHTML = '';
+        mobileMenu.innerHTML = '';
+        
+        // Add Home link
+        const homeDesktop = document.createElement('a');
+        homeDesktop.href = '/';
+        homeDesktop.textContent = 'Home';
+        homeDesktop.className = 'hover:text-blue-200';
+        desktopNav.appendChild(homeDesktop);
+
+        const homeMobile = document.createElement('a');
+        homeMobile.href = '/';
+        homeMobile.textContent = 'Home';
+        homeMobile.className = 'block py-2 text-lg hover:text-blue-200';
+        mobileMenu.appendChild(homeMobile);
+        
+        // Add other essential links
+        const eventsDesktop = document.createElement('a');
+        eventsDesktop.href = '/events.html';
+        eventsDesktop.textContent = 'Events';
+        eventsDesktop.className = 'hover:text-blue-200';
+        desktopNav.appendChild(eventsDesktop);
+
+        const eventsMobile = document.createElement('a');
+        eventsMobile.href = '/events.html';
+        eventsMobile.textContent = 'Events';
+        eventsMobile.className = 'block py-2 text-lg hover:text-blue-200';
+        mobileMenu.appendChild(eventsMobile);
+        
+        const ocDesktop = document.createElement('a');
+        ocDesktop.href = '/organizing-committee.html';
+        ocDesktop.textContent = 'Organizing Committee';
+        ocDesktop.className = 'hover:text-blue-200';
+        desktopNav.appendChild(ocDesktop);
+
+        const ocMobile = document.createElement('a');
+        ocMobile.href = '/organizing-committee.html';
+        ocMobile.textContent = 'Organizing Committee';
+        ocMobile.className = 'block py-2 text-lg hover:text-blue-200';
+        mobileMenu.appendChild(ocMobile);
+        
         // If config fails, still hide the loading screen after a shorter delay
         setTimeout(() => {
           loadingScreen.classList.add("fade-out");
@@ -560,41 +596,39 @@
     // Run the initialization function when the DOM is ready
     document.addEventListener("DOMContentLoaded", initializePage);
 
+    // --- Mobile Menu Toggle Script (Fixed to work with original structure) ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        
+        if (toggleBtn && mobileMenu) {
+            let menuOpen = false;
+            toggleBtn.addEventListener("click", () => {
+                menuOpen = !menuOpen;
+                console.log("Menu toggle clicked, menuOpen:", menuOpen); // Debug log
+                if (menuOpen) {
+                    mobileMenu.classList.remove("hidden");
+                    void mobileMenu.offsetWidth;
+                    mobileMenu.classList.remove("opacity-0", "scale-y-90", "-translate-y-4");
+                    mobileMenu.classList.add("opacity-100", "scale-y-100", "translate-y-0");
+                } else {
+                    mobileMenu.classList.remove("opacity-100", "scale-y-100", "translate-y-0");
+                    mobileMenu.classList.add("opacity-0", "scale-y-90", "-translate-y-4");
+                    setTimeout(() => {
+                        if (!menuOpen) {
+                            mobileMenu.classList.add("hidden");
+                        }
+                    }, 500);
+                }
+            });
+        } else {
+            console.error("Menu toggle elements not found:", { toggleBtn, mobileMenu });
+        }
+    });
 
-    // --- Mobile Menu Toggle Script (Matches main page) ---
-    const toggleBtn = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu"); // This is the mobile menu container
-    let menuOpen = false;
-
-    toggleBtn.addEventListener("click", () => {
-      menuOpen = !menuOpen;
-
-      if (menuOpen) {
-        mobileMenu.classList.remove("hidden");
-        void mobileMenu.offsetWidth; // Force reflow
-        mobileMenu.classList.remove(
-          "opacity-0",
-          "scale-y-90",
-          "-translate-y-4",
-        );
-        mobileMenu.classList.add(
-          "opacity-100",
-          "scale-y-100",
-          "translate-y-0",
-        );
-      } else {
-        mobileMenu.classList.remove(
-          "opacity-100",
-          "scale-y-100",
-          "translate-y-0",
-        );
-        mobileMenu.classList.add("opacity-0", "scale-y-90", "-translate-y-4");
-        setTimeout(() => {
-          if (!menuOpen) {
-            mobileMenu.classList.add("hidden");
-          }
-        }, 500); // Match transition duration
-      }
+    // Initialize mobile menu after DOM is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        // Mobile menu is already set up above, no additional initialization needed
     });
     // --- Modal Logic (Kept as is, functional) ---
     const modal = document.getElementById('modal');
@@ -740,10 +774,40 @@
         if (isInternal && !isFile && !isMailto && !isAnchor) {
           e.preventDefault();
 
-          loadingScreen.classList.remove("fade-out");
-          loadingScreen.style.opacity = '1';
-          loadingScreen.style.pointerEvents = 'auto';
-          loadingScreen.style.display = 'flex';
+          let currentLoadingScreen = document.getElementById("loading-screen");
+          
+          // If loading screen doesn't exist, create it
+          if (!currentLoadingScreen) {
+            currentLoadingScreen = document.createElement('div');
+            currentLoadingScreen.id = 'loading-screen';
+            currentLoadingScreen.style.cssText = `
+              position: fixed;
+              inset: 0;
+              background: radial-gradient(circle at center, #1a2949 0%, #0a0f2c 100%);
+              z-index: 9999;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              opacity: 1;
+              pointer-events: auto;
+              transition: opacity 0.6s ease;
+            `;
+            
+            currentLoadingScreen.innerHTML = `
+              <video autoplay muted loop playsinline style="width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(190, 142, 48, 0.7)); border-radius: 12px; animation: pulse 2s ease-in-out infinite;">
+                <source src="/assets/load.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            `;
+            
+            document.body.appendChild(currentLoadingScreen);
+          } else {
+            // If it exists, show it
+            currentLoadingScreen.classList.remove("fade-out");
+            currentLoadingScreen.style.opacity = '1';
+            currentLoadingScreen.style.pointerEvents = 'auto';
+            currentLoadingScreen.style.display = 'flex';
+          }
 
           setTimeout(() => {
             window.location.href = targetLink.href;
