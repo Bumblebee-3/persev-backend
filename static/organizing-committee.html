@@ -339,7 +339,12 @@
             </div>
 
 
-                            <div class="department-section fade-in-up">
+                            
+
+
+            <!-- Department Grid -->
+            <div class="department-grid grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="department-section fade-in-up">
                     <div class="text-3xl text-center mb-6 section-title" style="font-family: Mestizo;">
                         Administration 
                     </div>
@@ -351,11 +356,6 @@
                                  class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Adhunya Pan</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Administration</div>
-                        </div><div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/oc2025/administration/saanvi.avif" alt="Saanvi" 
-                                 class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
-                            <div class="text-lg member-name text-center">Saanvi Shah</div>
-                            <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Administration</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
                             <img src="/assets/oc2025/administration/krishay.avif" alt="Krishay" 
@@ -365,12 +365,7 @@
                         </div>
                     </div>
                 </div>
-                <br><br>
                 
-
-
-            <!-- Department Grid -->
-            <div class="department-grid grid grid-cols-1 md:grid-cols-2 gap-12">
                 <!-- Research & Development Department -->
                 <div class="department-section fade-in-up">
                     <div class="text-3xl text-center mb-6 section-title" style="font-family: Mestizo;">
@@ -464,13 +459,13 @@
                     </div>
                     <div class="flex flex-wrap justify-center gap-6">
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/oc2025/marketing/anshrah.avif" alt="Anshrah" 
+                            <img src="/assets/oc2025/public-relations/anshrah.avif" alt="Anshrah" 
                                  class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Anshrah Ahmed</div>
                             <div class="text-xs text-[#BE8E30] text-center">Head of Marketing</div>
                         </div>
                         <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/oc2025/marketing/anvi.avif" alt="Anvi" 
+                            <img src="/assets/oc2025/public-relations/anvi.avif" alt="Anvi" 
                                  class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
                             <div class="text-lg member-name text-center">Anvi Khattar</div>
                             <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Marketing</div>
@@ -572,17 +567,12 @@
                         
 
                             <div class="member-card w-56 p-4 fade-in-up">
-                                <img src="/assets/oc2025/security/arjun.avif" alt="Arjun" 
+                                <img src="/assets/oc2025/awards/aditi.avif" alt="Aditi" 
                                     class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
-                                <div class="text-lg member-name text-center">Arjun bapat</div>
-                            <div class="text-xs text-[#BE8E30] text-center">Head of Security</div>
-                        </div>
-                        <div class="member-card w-56 p-4 fade-in-up">
-                            <img src="/assets/oc2025/security/aadita.avif" alt="Aaditya" 
-                                 class="aspect-[4/3] w-full object-cover rounded-lg mb-4">
-                            <div class="text-lg member-name text-center">Aaditya Gupta</div>
-                            <div class="text-xs text-[#BE8E30] text-center">Deputy Head of Security</div>
-                        </div>
+                                <div class="text-lg member-name text-center">Aditi Sharma</div>
+                                <div class="text-xs text-[#BE8E30] text-center">Head of Awards</div>
+                            </div>
+                        
                     </div>
                 </div>
 
@@ -829,11 +819,40 @@
                 const isAnchor = targetLink.hash && targetLink.pathname === window.location.pathname;
                 if (isInternal && !isFile && !isMailto && !isAnchor) {
                     e.preventDefault();
-                    const loadingScreen = document.getElementById("loading-screen");
-                    loadingScreen.classList.remove("fade-out");
-                    loadingScreen.style.opacity = '1';
-                    loadingScreen.style.pointerEvents = 'auto';
-                    loadingScreen.style.display = 'flex';
+                    let loadingScreen = document.getElementById("loading-screen");
+                    
+                    // If loading screen doesn't exist, create it
+                    if (!loadingScreen) {
+                        loadingScreen = document.createElement('div');
+                        loadingScreen.id = 'loading-screen';
+                        loadingScreen.style.cssText = `
+                            position: fixed;
+                            inset: 0;
+                            background: linear-gradient(135deg, #0a0f2c, #1a2949);
+                            z-index: 9999;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: opacity 0.6s ease;
+                            opacity: 1;
+                        `;
+                        
+                        loadingScreen.innerHTML = `
+                            <video autoplay muted loop playsinline style="width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(190, 142, 48, 0.7)); border-radius: 12px;">
+                                <source src="/assets/load.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                        
+                        document.body.appendChild(loadingScreen);
+                    } else {
+                        // If it exists, show it
+                        loadingScreen.classList.remove("fade-out");
+                        loadingScreen.style.opacity = '1';
+                        loadingScreen.style.pointerEvents = 'auto';
+                        loadingScreen.style.display = 'flex';
+                    }
+                    
                     setTimeout(() => {
                         window.location.href = targetLink.href;
                     }, 1000);
