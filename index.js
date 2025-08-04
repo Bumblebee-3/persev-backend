@@ -29,6 +29,8 @@ const passwords = process.env.PASSWORDS.split(',');
 
 // Serve static files from the "assets" folder
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use("/views",express.static(path.join(__dirname, 'views')));
+app.use("/static",express.static(path.join(__dirname, 'static')));
 
 
 function hashPassword(password) {
@@ -79,7 +81,7 @@ app.post("/pass/validate/",async (req,res)=>{
           }
       } else {
           // Just serving the login page
-          res.sendFile(path.join(__dirname, 'static', 'login.html'));
+          res.sendFile(path.join(__dirname, 'views', 'login.html'));
       }
     })
     app.get('/logout',  (req, res) => {
@@ -93,11 +95,11 @@ app.post("/pass/validate/",async (req,res)=>{
         res.send(data.replace(/(!auth)/g,auth));
     })
 app.get('/events', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'events.html'));
+    res.sendFile(path.join(__dirname, 'views', 'events.html'));
 });
 
 app.get('/organizing-committee', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'organizing-committee.html'));
+    res.sendFile(path.join(__dirname, 'views', 'organizing-committee.html'));
 });
 
 app.get('/style.css', (req, res) => {
@@ -113,11 +115,11 @@ app.get('/config.json', (req, res) => {
 });
 // Route to serve the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'index.html'));
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.get('/school-login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'login.html'));
+    res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
 app.get('/api/participating-schools', (req, res) => {
@@ -127,7 +129,7 @@ app.get('/api/participating-schools', (req, res) => {
 
 // Catch-all route for undefined paths to serve 404.html
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'static', '404.html'));
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 app.listen(PORT, () => {
