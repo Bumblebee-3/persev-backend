@@ -4,6 +4,11 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const crypto = require('crypto');
 
+// Import API routes
+const registrationRoutes = require('./routes/registration');
+// Import database initialization
+const { initializeDatabase } = require('./database/init_db');
+
 const app = express();
 const PORT = 3000;
 const thirtyDays = 1000 * 60 * 60 * 24 * 30; // 30 days in milliseconds
@@ -19,7 +24,6 @@ app.use(require("express").json())    // <==== parse request body as JSON
         saveUninitialized: true
       }))
 
-
 // Load environment variables from .env file
 dotenv.config();
 console.log(process.env.UNAMES);
@@ -27,10 +31,29 @@ console.log(process.env.UNAMES);
 const unames = process.env.UNAMES.split(',');
 const passwords = process.env.PASSWORDS.split(',');
 
+// User to school mapping
+const userSchoolMapping = {
+    'user1': {
+        name: 'JB Vaccha High School',
+        contingentCode: 'JBV001'
+    },
+    'user2': {
+        name: 'Delhi Public School',
+        contingentCode: 'DPS002'
+    },
+    'user3': {
+        name: 'Ryan International School',
+        contingentCode: 'RIS003'
+    }
+};
+
 // Serve static files from the "assets" folder
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use("/views",express.static(path.join(__dirname, 'views')));
 app.use("/static",express.static(path.join(__dirname, 'static')));
+
+// Use API routes
+app.use('/api', registrationRoutes);
 
 
 function hashPassword(password) {
@@ -98,6 +121,21 @@ app.get('/events', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'events.html'));
 });
 
+app.get('/stage-registration', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'stage-registration.html'));
+});
+
+app.get('/api/user/school-info', (req, res) => {
+    // Get username from session or query parameter for testing
+    const username = req.session.username || req.query.username;
+    
+    if (!username || !userSchoolMapping[username]) {
+        return res.status(404).json({ message: 'School information not found for user' });
+    }
+    
+    res.json(userSchoolMapping[username]);
+});
+
 app.get('/organizing-committee', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'organizing-committee.html'));
 });
@@ -132,7 +170,22 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Initialize database and start server
+async function startServer() {
+    try {
+        console.log('🔄 Initializing database connection...');
+        await initializeDatabase();
+        console.log('✅ Database connected successfully!');
+        
+        app.listen(PORT, () => {
+            console.log(`🚀 Server is running on http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error('❌ Failed to start server:', error);
+        process.exit(1);
+    }
+}
+
+// Start the server
+startServer();
 

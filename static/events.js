@@ -2,6 +2,8 @@
 const loadingScreen = document.getElementById('loading-screen');
 
 async function initializePage() {
+
+
   // Ensure loading screen is visible at the very start
   loadingScreen.style.opacity = '1';
   loadingScreen.style.pointerEvents = 'auto';
@@ -16,6 +18,32 @@ async function initializePage() {
     const website = config.website || {};
     const navbar = website.navbar || {};
     const events = website.events || [];
+
+    // Preload images using Promise-based approach (prevents duplicate requests)
+    const imagePromises = [];
+    website.events.forEach(event => {
+      if (event.eventHeadPhoto) {
+        imagePromises.push(new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => reject(new Error(`Failed to load ${event.eventHeadPhoto}`));
+          img.src = event.eventHeadPhoto;
+        }));
+      }
+      if (event.logo) {
+        imagePromises.push(new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => reject(new Error(`Failed to load ${event.logo}`));
+          img.src = event.logo;
+        }));
+      }
+    });
+
+    // Wait for all images to preload (optional - don't block UI)
+    Promise.allSettled(imagePromises).then(results => {
+      console.log(`Preloaded ${results.filter(r => r.status === 'fulfilled').length}/${results.length} images`);
+    });
 
     // Populate Navbar Links
     const desktopNav = document.getElementById('desktop-nav');

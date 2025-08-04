@@ -354,8 +354,8 @@
             </div>
           </div>
           
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNaisOoay9h4FL9LrAQoSMvyQfLomyrOvd-zGqt5c2lD6ydg/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
-            <i class="fas fa-user-plus mr-2"></i>Register for Stage
+          <a href="/stage-registration" id="stage-registration-link"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo" id="stage-btn">
+            <i class="fas fa-user-plus mr-2" id="stage-icon"></i><span id="stage-text">Register for Stage</span>
           </button></a>
         </div>
 
@@ -410,8 +410,13 @@
       </div>
 
       <!-- Quick Stats Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 center">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 center">
 
+        <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
+          <i class="fas fa-clipboard-list text-3xl text-[#BE8E30] mb-3"></i>
+          <h4 class="text-2xl text-white font-bold" id="total-registrations">0</h4>
+          <p class="text-gray-300 text-sm">Total Event Registrations</p>
+        </div>
         
         <div class="card-gradient rounded-2xl p-6 text-center border border-[#BE8E30]/30">
           <i class="fas fa-trophy text-3xl text-[#BE8E30] mb-3"></i>
@@ -581,9 +586,7 @@
         .then(response => response.json())
         .then(data => {
             console.log(data)
-          schoolsElement.textContent = `${data.count} Participating Schools`;
-          console.log(schoolsElement)
-          update();
+          schoolsElement.textContent = data.count;
         })
         .catch(error => {
           console.error('Error fetching participating schools:', error);
@@ -591,9 +594,56 @@
     }
   };
 
+  const updateRegistrationStats = () => {
+    const registrationsElement = document.getElementById("total-registrations");
+    if (registrationsElement) {
+      fetch('/api/stats/registrations')
+        .then(response => response.json())
+        .then(data => {
+          console.log('Registration stats:', data);
+          registrationsElement.textContent = data.totalEventRegistrations;
+          update(); // Call the animation function after updating all stats
+        })
+        .catch(error => {
+          console.error('Error fetching registration stats:', error);
+          registrationsElement.textContent = '0';
+          update(); // Still call animation even if fetch fails
+        });
+    }
+  };
+
+  const checkStageRegistration = () => {
+    fetch('/api/check-stage-registration')
+      .then(response => response.json())
+      .then(data => {
+        const stageBtn = document.getElementById('stage-btn');
+        const stageText = document.getElementById('stage-text');
+        const stageIcon = document.getElementById('stage-icon');
+        const stageLink = document.getElementById('stage-registration-link');
+        
+        if (data.hasRegistration) {
+          // User has existing registration
+          stageText.textContent = 'Modify Registration Details';
+          stageIcon.className = 'fas fa-edit mr-2';
+          stageLink.href = '/stage-registration?mode=edit';
+          stageBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+        } else {
+          // No existing registration
+          stageText.textContent = 'Register for Stage';
+          stageIcon.className = 'fas fa-user-plus mr-2';
+          stageLink.href = '/stage-registration';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking stage registration:', error);
+      });
+  };
+
   setInterval(updateDaysRemaining, 1000 * 60 * 60); // Update every hour
   updateDaysRemaining(); // Initial call to set the value immediately
   updateParticipatingSchools(); // Initial call to set the value immediately
+  updateRegistrationStats(); // Initial call to get registration stats
+  checkStageRegistration(); // Check if user has existing stage registration
 });
     </script>
   </body>
