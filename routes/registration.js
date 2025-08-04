@@ -97,21 +97,24 @@ router.post('/register/stage', async (req, res) => {
 
         console.log('All registrations completed successfully');
 
-        // Sync to Google Sheets (non-blocking)
-        try {
-            await googleSheetsService.addStageRegistration({
-                school: schoolData,
-                events: eventsWithNames
-            });
-            console.log('✅ Successfully synced to Google Sheets');
-        } catch (sheetsError) {
-            console.warn('⚠️ Google Sheets sync failed, but registration was successful:', sheetsError.message);
-        }
-
+        // Send immediate success response to user
         res.status(201).json({ 
             message: 'Registration completed successfully',
             schoolId: school._id,
             eventsRegistered: events.length
+        });
+
+        // Sync to Google Sheets in background (non-blocking)
+        setImmediate(async () => {
+            try {
+                await googleSheetsService.addStageRegistration({
+                    school: schoolData,
+                    events: eventsWithNames
+                });
+                console.log('✅ Background Google Sheets sync completed');
+            } catch (sheetsError) {
+                console.warn('⚠️ Background Google Sheets sync failed:', sheetsError.message);
+            }
         });
 
     } catch (error) {

@@ -50,14 +50,19 @@ class GoogleSheetsService {
             // Ensure the sheet exists
             await this.createSheetIfNotExists('Stage Registrations');
             
-            // Prepare rows for each event registration
-            const rows = [];
+            // Get all existing data from the sheet
+            const existingData = await this.getAllSheetData();
             
+            // Find and remove existing entries for this school
+            const filteredData = this.removeSchoolEntries(existingData, school.name);
+            
+            // Prepare new rows for this school
+            const newRows = [];
             for (const eventReg of events) {
                 const eventName = eventReg.eventName || 'Unknown Event';
                 
                 for (const participant of eventReg.participants) {
-                    rows.push([
+                    newRows.push([
                         new Date().toISOString(), // Timestamp
                         school.name,
                         school.contingentCode || '',
@@ -73,27 +78,77 @@ class GoogleSheetsService {
                 }
             }
 
-            if (rows.length === 0) return;
+            // Combine filtered data with new entries
+            const finalData = [...filteredData, ...newRows];
+            
+            // Clear the sheet and write all data back
+            await this.updateEntireSheet(finalData);
 
-            // Add headers if sheet is empty
-            await this.ensureHeaders();
-
-            // Append data to sheet
-            const response = await this.sheets.spreadsheets.values.append({
-                spreadsheetId: this.spreadsheetId,
-                range: 'Stage Registrations!A:K',
-                valueInputOption: 'RAW',
-                resource: {
-                    values: rows
-                }
-            });
-
-            console.log(`✅ Added ${rows.length} rows to Google Sheets`);
-            return response.data;
+            console.log(`✅ Updated Google Sheets: removed old entries for ${school.name}, added ${newRows.length} new rows`);
+            return { updatedRows: newRows.length };
 
         } catch (error) {
             console.error('❌ Failed to sync to Google Sheets:', error.message);
             // Don't throw - registration should still succeed even if sheets fails
+        }
+    }
+
+    async getAllSheetData() {
+        try {
+            const response = await this.sheets.spreadsheets.values.get({
+                spreadsheetId: this.spreadsheetId,
+                range: 'Stage Registrations!A:K'
+            });
+
+            const rows = response.data.values || [];
+            
+            // Return data without headers (skip first row if it exists)
+            if (rows.length > 0 && rows[0][0] === 'Timestamp') {
+                return rows.slice(1); // Skip header row
+            }
+            
+            return rows;
+        } catch (error) {
+            console.warn('⚠️ Could not get existing sheet data:', error.message);
+            return []; // Return empty array if sheet doesn't exist yet
+        }
+    }
+
+    removeSchoolEntries(data, schoolName) {
+        // Filter out all rows that belong to this school (column B contains school name)
+        return data.filter(row => {
+            if (!row || row.length < 2) return true; // Keep malformed rows
+            return row[1] !== schoolName; // Keep rows where school name doesn't match
+        });
+    }
+
+    async updateEntireSheet(data) {
+        try {
+            // Clear the sheet first (except headers)
+            await this.sheets.spreadsheets.values.clear({
+                spreadsheetId: this.spreadsheetId,
+                range: 'Stage Registrations!A2:K'
+            });
+
+            // Ensure headers exist
+            await this.ensureHeaders();
+
+            // If there's data to write, append it
+            if (data.length > 0) {
+                await this.sheets.spreadsheets.values.append({
+                    spreadsheetId: this.spreadsheetId,
+                    range: 'Stage Registrations!A:K',
+                    valueInputOption: 'RAW',
+                    resource: {
+                        values: data
+                    }
+                });
+            }
+
+            console.log(`✅ Sheet updated with ${data.length} total rows`);
+        } catch (error) {
+            console.error('❌ Failed to update entire sheet:', error.message);
+            throw error;
         }
     }
 
