@@ -1577,10 +1577,16 @@ video {
   }
 }
 
+html {
+    background: linear-gradient(135deg, #0a0f2c, #131d3f, #0d122c);
+    background-size: 100% 100%;
+    min-height: 100vh;
+}
+
 body {
-    background: linear-gradient(135deg, #0a0f2c, #131d3f, #0d122c); /* This is the key */
-    background-size: cover;
-    background-attachment: fixed;
-    color: #f0f0f0; /* Or white, depending on your exact main text color */
+    background: linear-gradient(135deg, #0a0f2c, #131d3f, #0d122c);
+    background-size: 100% 100%;
+    min-height: 100vh;
+    color: #f0f0f0;
     font-family: 'Inter', sans-serif;
 }
