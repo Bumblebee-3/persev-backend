@@ -68,7 +68,21 @@ router.post('/register/stage', async (req, res) => {
             const eventRegistration = new EventRegistration({
                 schoolId: school._id,
                 eventId: eventData.eventId,
-                participants: eventData.participants
+                participants: eventData.participants.map(participant => {
+                    // Filter out null gender values - only include gender if it's not null
+                    const cleanParticipant = {
+                        name: participant.name,
+                        grade: participant.grade,
+                        participantOrder: participant.participantOrder
+                    };
+                    
+                    // Only add gender field if it's not null or empty
+                    if (participant.gender && participant.gender.trim() !== '') {
+                        cleanParticipant.gender = participant.gender;
+                    }
+                    
+                    return cleanParticipant;
+                })
             });
 
             await eventRegistration.save();

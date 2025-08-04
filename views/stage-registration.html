@@ -945,18 +945,24 @@
                         const name = card.querySelector(`input[name="participant_name_${event._id}[]"]`).value.trim();
                         const grade = parseInt(card.querySelector(`select[name="participant_grade_${event._id}[]"]`).value);
                         const genderSelect = card.querySelector(`select[name="participant_gender_${event._id}[]"]`);
-                        const gender = genderSelect ? genderSelect.value : null;
+                        const gender = genderSelect ? genderSelect.value : '';
                         
                         if (name && grade) {
                             // Convert to proper Title Case (e.g., "john doe" → "John Doe")
                             const titleCaseName = name.trim().toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
                             
-                            participants.push({
+                            const participant = {
                                 name: titleCaseName,
                                 grade: grade,
-                                gender: gender,
                                 participantOrder: index + 1
-                            });
+                            };
+                            
+                            // Only include gender if it exists and is not empty
+                            if (gender && gender.trim() !== '') {
+                                participant.gender = gender;
+                            }
+                            
+                            participants.push(participant);
                         }
                     });
                     
