@@ -49,6 +49,11 @@ router.post('/register/stage', async (req, res) => {
             await school.save();
         }
 
+        // Delete ALL existing registrations for this school first
+        // This ensures that events changed from "yes" to "no" are properly removed
+        const deletedCount = await EventRegistration.deleteMany({ schoolId: school._id });
+        console.log(`Deleted ${deletedCount.deletedCount} existing registrations for school: ${school.name}`);
+
         // Save all registrations and collect event names for sheets sync
         const eventsWithNames = [];
         
@@ -57,12 +62,6 @@ router.post('/register/stage', async (req, res) => {
             if (!event) {
                 return res.status(400).json({ message: `Event not found: ${eventData.eventId}` });
             }
-
-            // Delete existing registrations for this event and school (for updates)
-            await EventRegistration.deleteMany({ 
-                schoolId: school._id, 
-                eventId: eventData.eventId 
-            });
 
             // Create new registration
             const eventRegistration = new EventRegistration({

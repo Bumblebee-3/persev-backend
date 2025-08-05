@@ -121,7 +121,7 @@ app.get('/events', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'events.html'));
 });
 
-app.get('/stage-registration', (req, res) => {
+app.get('/stage-registration', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'stage-registration.html'));
 });
 
