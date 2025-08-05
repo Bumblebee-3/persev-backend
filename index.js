@@ -44,6 +44,38 @@ const userSchoolMapping = {
     'user3': {
         name: 'Ryan International School',
         contingentCode: 'RIS003'
+    },
+    'user4': {
+        name: 'St. Xavier\'s High School',
+        contingentCode: 'SXH004'
+    },
+    'user5': {
+        name: 'Greenwood High School',
+        contingentCode: 'GHS005'
+    },
+    'user6': {
+        name: 'Blue Ridge International School',
+        contingentCode: 'BRIS006'
+    },
+    'user7': {
+        name: 'Silver Oak Academy',
+        contingentCode: 'SOA007'
+    },
+    'user8': {
+        name: 'Maple Leaf International School',
+        contingentCode: 'MLIS008'
+    },
+    'user9': {
+        name: 'Oakridge International School',
+        contingentCode: 'OIS009'
+    },
+    'user10': {
+        name: 'Heritage School',
+        contingentCode: 'HS010'
+    },
+    'admin': {
+        name: 'Admin',
+        contingentCode: 'ADMIN'
     }
 };
 
