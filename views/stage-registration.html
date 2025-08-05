@@ -45,6 +45,29 @@
             color: rgba(255, 255, 255, 0.5);
         }
         
+        /* Custom Select Styling for Safari/WebKit */
+        select.input-field {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23BE8E30' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        
+        select.input-field option {
+            background: #0D122C;
+            color: white;
+            border: none;
+        }
+        
+        /* Ensure consistent height on Safari */
+        select.input-field {
+            min-height: 44px; /* Minimum touch target for mobile Safari */
+        }
+        
         .event-toggle {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(190, 142, 48, 0.3);
@@ -322,7 +345,7 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="flex justify-between mt-8">
+                    <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
                         <button type="button" id="back-to-school" 
                                 class="btn-secondary px-8 py-3 rounded-xl font-medium">
                             <i class="fas fa-arrow-left mr-2"></i>Back

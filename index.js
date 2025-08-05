@@ -176,6 +176,10 @@ app.get('/organizing-committee', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'organizing-committee.html'));
 });
 
+app.get('/leaderboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'leaderboard_coming_soon.html'));
+});
+
 app.get('/style.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'style.css'));
 });

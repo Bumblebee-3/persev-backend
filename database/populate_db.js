@@ -39,7 +39,7 @@ async function populateDatabase() {
       { name: 'Gully Cricket', categoryId: sportsCategory, minParticipants: 6, maxParticipants: 10, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Street cricket tournament' },
       { name: 'Table Tennis', categoryId: sportsCategory, minParticipants: 2, maxParticipants: 4, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Table tennis singles and doubles' },
       { name: 'Tug of War', categoryId: sportsCategory, minParticipants: 8, maxParticipants: 12, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Traditional tug of war competition' },
-      { name: 'E-Sports', categoryId: sportsCategory, minParticipants: 3, maxParticipants: 5, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Video game tournaments' },
+      { name: 'E-Sports', categoryId: sportsCategory, minParticipants: 1, maxParticipants: 7, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Video game tournament' },
 
       // Stage Events
       { name: 'Gratia', categoryId: stageCategory, minParticipants: 6, maxParticipants: 8, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Group dance performance competition' },
