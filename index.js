@@ -153,8 +153,12 @@ app.get('/events', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'events.html'));
 });
 
-app.get('/stage-registration', isLoggedIn, (req, res) => {
+app.get('/stage-registration', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'stage-registration.html'));
+});
+
+app.get('/sports-gaming-registration', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'sports-gaming-registration.html'));
 });
 
 app.get('/api/user/school-info', (req, res) => {

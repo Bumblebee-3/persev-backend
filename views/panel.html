@@ -402,8 +402,8 @@
             </div>
           </div>
           
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScm4aAY5cVC5bxH_6IO3KAEnVFx9oZgu7Pr25-zXCcQ8Kw_2Q/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
-            <i class="fas fa-user-plus mr-2"></i>Register for Sports
+          <a href="/sports-gaming-registration" id="sports-registration-link"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo" id="sports-btn">
+            <i class="fas fa-user-plus mr-2" id="sports-icon"></i><span id="sports-text">Register for Sports</span>
           </button></a>
         </div>
 
@@ -639,11 +639,39 @@
       });
   };
 
+  const checkSportsRegistration = () => {
+    // For now, just set it to registration mode since backend isn't implemented yet
+    const sportsBtn = document.getElementById('sports-btn');
+    const sportsText = document.getElementById('sports-text');
+    const sportsIcon = document.getElementById('sports-icon');
+    const sportsLink = document.getElementById('sports-registration-link');
+    
+    sportsText.textContent = 'Register for Sports';
+    sportsIcon.className = 'fas fa-user-plus mr-2';
+    sportsLink.href = '/sports-gaming-registration';
+    
+    // TODO: Implement sports registration status checking when backend is ready
+    // fetch('/api/check-sports-registration')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     if (data.hasRegistration) {
+    //       sportsText.textContent = 'Modify Sports Registration';
+    //       sportsIcon.className = 'fas fa-edit mr-2';
+    //       sportsLink.href = '/sports-gaming-registration?mode=edit';
+    //       sportsBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error('Error checking sports registration:', error);
+    //   });
+  };
+
   setInterval(updateDaysRemaining, 1000 * 60 * 60); // Update every hour
   updateDaysRemaining(); // Initial call to set the value immediately
   updateParticipatingSchools(); // Initial call to set the value immediately
   updateRegistrationStats(); // Initial call to get registration stats
   checkStageRegistration(); // Check if user has existing stage registration
+  checkSportsRegistration(); // Check if user has existing sports registration
 });
     </script>
   </body>
