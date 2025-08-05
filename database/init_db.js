@@ -59,6 +59,34 @@ const eventRegistrationSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Sports Registration Schema
+const sportsRegistrationSchema = new mongoose.Schema({
+  schoolId: { type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true },
+  eventId: { type: String, required: true },
+  eventName: { type: String, required: true },
+  participants: [{
+    name: { type: String, required: true },
+    grade: { type: Number, required: true },
+    gender: { type: String },
+    weight: { type: Number },
+    participantOrder: { type: Number, required: true }
+  }],
+  registrationDate: { type: Date, default: Date.now }
+});
+
+// Classroom Registration Schema
+const classroomRegistrationSchema = new mongoose.Schema({
+  schoolId: { type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true },
+  eventId: { type: String, required: true },
+  eventName: { type: String, required: true },
+  participants: [{
+    name: { type: String, required: true },
+    grade: { type: Number, required: true },
+    participantOrder: { type: Number, required: true }
+  }],
+  registrationDate: { type: Date, default: Date.now }
+});
+
 // Create compound index to prevent duplicate registrations
 eventRegistrationSchema.index({ schoolId: 1, eventId: 1 }, { unique: true });
 
@@ -110,13 +138,15 @@ const School = mongoose.model('School', schoolSchema);
 const EventCategory = mongoose.model('EventCategory', eventCategorySchema);
 const Event = mongoose.model('Event', eventSchema);
 const EventRegistration = mongoose.model('EventRegistration', eventRegistrationSchema);
+const SportsRegistration = mongoose.model('SportsRegistration', sportsRegistrationSchema);
+const ClassroomRegistration = mongoose.model('ClassroomRegistration', classroomRegistrationSchema);
 
 let isConnected = false;
 
 async function initializeDatabase() {
   if (isConnected) {
     console.log('Using existing database connection');
-    return { School, EventCategory, Event, EventRegistration };
+    return { School, EventCategory, Event, EventRegistration, SportsRegistration, ClassroomRegistration };
   }
 
   try {
@@ -146,7 +176,7 @@ async function initializeDatabase() {
 
     console.log('🎉 Database models initialized successfully!');
     
-    return { School, EventCategory, Event, EventRegistration };
+    return { School, EventCategory, Event, EventRegistration, SportsRegistration, ClassroomRegistration };
   } catch (error) {
     console.error('❌ Failed to connect to MongoDB:', error);
     throw error;
@@ -181,11 +211,21 @@ if (require.main === module) {
     });
 }
 
-module.exports = { 
-  initializeDatabase, 
-  disconnectFromDatabase,
-  School,
-  EventCategory,
-  Event,
-  EventRegistration
+// Ensure all models are properly created
+const models = {
+    School,
+    Event,
+    EventCategory,
+    EventRegistration,
+    StageEvent: Event,  // Alias Event as StageEvent for stage events
+    StageRegistration: EventRegistration,  // Alias EventRegistration as StageRegistration
+    SportsRegistration,
+    ClassroomRegistration,
+    initializeDatabase,  // Export the initialization function
+    disconnectFromDatabase
 };
+
+// Debug: Log which models are available
+console.log('Available models:', Object.keys(models));
+
+module.exports = models;

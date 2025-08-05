@@ -201,6 +201,11 @@ app.get('/api/participating-schools', (req, res) => {
     res.json({ count: unames.length });
 });
 
+// Classroom registration page
+app.get('/classroom-registration', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/classroom-registration.html'));
+});
+
 // Catch-all route for undefined paths to serve 404.html
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));

@@ -48,15 +48,17 @@ async function populateDatabase() {
       { name: 'Mr. and Mrs. Perseverantia', categoryId: stageCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'male_female_required', description: 'Personality and talent showcase for one male and one female participant' },
 
       // Classroom Events
-      { name: 'Admeta', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 3, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Academic quiz competition' },
-      { name: 'Artem', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 3, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Art and creativity challenge' },
-      { name: 'Carmen', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 2, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Poetry and creative writing' },
-      { name: 'Fabula', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 3, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Storytelling and narrative competition' },
-      { name: 'Fortuna', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 4, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Strategy and luck-based games' },
-      { name: 'Codeferno', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 3, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Programming and coding competition' },
-      { name: 'Gustatio', categoryId: classroomCategory, minParticipants: 3, maxParticipants: 5, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Culinary arts and cooking challenge' },
-      { name: 'Mahim 16', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 2, minGrade: 8, maxGrade: 12, genderRequirement: 'any', description: 'Local knowledge and trivia' },
-      { name: 'Negotium', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 4, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Business and entrepreneurship challenge' }
+      { name: 'Admeta: Category 1', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 10, genderRequirement: 'any', description: 'Academic debate for grades 9-10' },
+      { name: 'Admeta: Category 2', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 11, maxGrade: 12, genderRequirement: 'any', description: 'Academic debate for grades 11-12' },
+      { name: 'Artem', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 1, minGrade: 11, maxGrade: 12, genderRequirement: 'any', description: 'Art and creativity challenge' },
+      { name: 'Carmen: Category 1', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 1, minGrade: 9, maxGrade: 10, genderRequirement: 'any', description: 'Poetry and creative writing for grades 9-10' },
+      { name: 'Carmen: Category 2', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 1, minGrade: 11, maxGrade: 12, genderRequirement: 'any', description: 'Poetry and creative writing for grades 11-12' },
+      { name: 'Fabula', categoryId: classroomCategory, minParticipants: 4, maxParticipants: 10, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Storytelling and narrative competition' },
+      { name: 'Fortuna', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 3, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Strategy and luck-based games' },
+      { name: 'Codeferno', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Programming and coding competition' },
+      { name: 'Gustatio', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Culinary arts and cooking challenge' },
+      { name: 'Mahim 16', categoryId: classroomCategory, minParticipants: 3, maxParticipants: 4, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Local knowledge and trivia' },
+      { name: 'Negotium', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'grade_mixed_required', description: 'Business and entrepreneurship challenge (requires one grade 9-10 and one grade 11-12)' }
     ];
 
     // Insert Events
