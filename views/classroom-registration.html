@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sports and Gaming Events Registration - Perseverantia 2025</title>
+    <title>Classroom Events Registration - Perseverantia 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -202,7 +202,7 @@
                 <div class="flex items-center space-x-4">
                     <img src="/assets/persevlogo.png" alt="Perseverantia Logo" class="w-12 h-12">
                     <div>
-                        <h1 class="text-3xl text-white" style="font-family: Mestizo">Sports and Gaming Registration</h1>
+                        <h1 class="text-3xl text-white" style="font-family: Mestizo">Classroom Events Registration</h1>
                         <p class="text-gray-300 text-sm">Perseverantia 2025</p>
                     </div>
                 </div>
@@ -286,12 +286,12 @@
                 <!-- Events Section -->
                 <div class="form-card rounded-3xl p-8 hidden" id="events-section">
                     <h2 class="text-2xl text-white mb-6 flex items-center" style="font-family: Mestizo">
-                        <i class="fas fa-futbol text-[#BE8E30] mr-3"></i>
-                        Sports and Gaming Events Selection
+                        <i class="fas fa-chalkboard-teacher text-[#BE8E30] mr-3"></i>
+                        Classroom Events Selection
                     </h2>
                     
                     <p class="text-gray-300 mb-8">
-                        Select the sports and gaming events you want to participate in and add your team members. 
+                        Select the classroom events you want to participate in and add your team members. 
                         You can participate in multiple events with different teams.
                     </p>
                     
@@ -344,149 +344,116 @@
     </div>
 
     <script>
-        let sportsEvents = [
+        let classroomEvents = [
             {
-                _id: 'explorare',
-                name: 'Explorare',
-                description: 'Grades 9-12',
-                minParticipants: 3,
-                maxParticipants: 5,
+                _id: 'admeta-cat1',
+                name: 'Admeta: Category 1',
+                description: 'Academic debate - Grades 9-10',
+                minParticipants: 2,
+                maxParticipants: 2,
                 minGrade: 9,
-                maxGrade: 12,
-                genderRequirement: 'any',
-                needsWeight: false
+                maxGrade: 10,
+                genderRequirement: 'any'
             },
             {
-                _id: 'monopolium',
-                name: 'Monopolium',
-                description: 'Grades 9-12',
-                minParticipants: 10,
-                maxParticipants: 20,
+                _id: 'admeta-cat2',
+                name: 'Admeta: Category 2',
+                description: 'Academic debate - Grades 11-12',
+                minParticipants: 2,
+                maxParticipants: 2,
+                minGrade: 11,
+                maxGrade: 12,
+                genderRequirement: 'any'
+            },
+            {
+                _id: 'artem',
+                name: 'Artem',
+                description: 'Art and creativity challenge - Grades 11-12',
+                minParticipants: 1,
+                maxParticipants: 1,
+                minGrade: 11,
+                maxGrade: 12,
+                genderRequirement: 'any'
+            },
+            {
+                _id: 'carmen-cat1',
+                name: 'Carmen: Category 1',
+                description: 'Poetry and creative writing - Grades 9-10',
+                minParticipants: 1,
+                maxParticipants: 1,
                 minGrade: 9,
-                maxGrade: 12,
-                genderRequirement: 'any',
-                needsWeight: false
+                maxGrade: 10,
+                genderRequirement: 'any'
             },
             {
-                _id: 'football-u18-boys',
-                name: 'Football: Category 1: U18 Boys',
-                description: 'Born on or after 04/10/2007',
-                minParticipants: 5,
-                maxParticipants: 8,
-                minGrade: 8,
+                _id: 'carmen-cat2',
+                name: 'Carmen: Category 2',
+                description: 'Poetry and creative writing - Grades 11-12',
+                minParticipants: 1,
+                maxParticipants: 1,
+                minGrade: 11,
                 maxGrade: 12,
-                genderRequirement: 'male_only',
-                needsWeight: false
+                genderRequirement: 'any'
             },
             {
-                _id: 'football-u16-boys',
-                name: 'Football: Category 2: U16 Boys',
-                description: 'Born on or after 04/10/2009',
-                minParticipants: 5,
-                maxParticipants: 8,
-                minGrade: 8,
-                maxGrade: 12,
-                genderRequirement: 'male_only',
-                needsWeight: false
-            },
-            {
-                _id: 'football-u18-girls',
-                name: 'Football: Category 3: U18 Girls',
-                description: 'Born on or after 04/10/2007',
-                minParticipants: 5,
-                maxParticipants: 8,
-                minGrade: 8,
-                maxGrade: 12,
-                genderRequirement: 'female_only',
-                needsWeight: false
-            },
-            {
-                _id: 'basketball-u19-boys',
-                name: 'Basketball: Boys (U19)',
-                description: 'Under 19 boys (Grades 9-12)',
-                minParticipants: 7,
+                _id: 'fabula',
+                name: 'Fabula',
+                description: 'Storytelling and narrative - Grades 9-12',
+                minParticipants: 4,
                 maxParticipants: 10,
                 minGrade: 9,
                 maxGrade: 12,
-                genderRequirement: 'male_only',
-                needsWeight: false
+                genderRequirement: 'any'
             },
             {
-                _id: 'basketball-u16-boys',
-                name: 'Basketball: Boys (U16)',
-                description: 'Under 16 boys (Grades 9-12)',
-                minParticipants: 7,
-                maxParticipants: 10,
-                minGrade: 9,
-                maxGrade: 12,
-                genderRequirement: 'male_only',
-                needsWeight: false
-            },
-            {
-                _id: 'basketball-u19-girls',
-                name: 'Basketball: Girls (U19)',
-                description: 'Under 19 Girls (Grades 9-12)',
-                minParticipants: 7,
-                maxParticipants: 10,
-                minGrade: 9,
-                maxGrade: 12,
-                genderRequirement: 'female_only',
-                needsWeight: false
-            },
-            {
-                _id: 'basketball-u16-girls',
-                name: 'Basketball: Girls (U16)',
-                description: 'Under 16 Girls (Grades 9-12)',
-                minParticipants: 7,
-                maxParticipants: 10,
-                minGrade: 9,
-                maxGrade: 12,
-                genderRequirement: 'female_only',
-                needsWeight: false
-            },
-            {
-                _id: 'gully-cricket',
-                name: 'Gully Cricket',
-                description: '6 players + 1 Substitute, 1 girl compulsory',
-                minParticipants: 7,
-                maxParticipants: 7,
-                minGrade: 8,
-                maxGrade: 12,
-                genderRequirement: 'male_female_required',
-                needsWeight: false
-            },
-            {
-                _id: 'table-tennis',
-                name: 'Table Tennis',
-                description: 'Under 19 Boys and Girls',
+                _id: 'fortuna',
+                name: 'Fortuna',
+                description: 'Strategy and luck-based games - Grades 9-12',
                 minParticipants: 2,
                 maxParticipants: 3,
-                minGrade: 8,
+                minGrade: 9,
                 maxGrade: 12,
-                genderRequirement: 'any',
-                needsWeight: false
+                genderRequirement: 'any'
             },
             {
-                _id: 'tug-of-war-boys',
-                name: 'Tug Of War: Boys (Under 16 and Under 19)',
-                description: 'Boys Under 16 and Under 19 (combined)',
-                minParticipants: 7,
-                maxParticipants: 7,
-                minGrade: 8,
+                _id: 'codeferno',
+                name: 'Codeferno',
+                description: 'Programming and coding competition - Grades 9-12',
+                minParticipants: 1,
+                maxParticipants: 2,
+                minGrade: 9,
                 maxGrade: 12,
-                genderRequirement: 'male_only',
-                needsWeight: true
+                genderRequirement: 'any'
             },
             {
-                _id: 'tug-of-war-girls',
-                name: 'Tug Of War: Girls (Under 16 and Under 19)',
-                description: 'Girls Under 16 and Under 19 (combined)',
-                minParticipants: 7,
-                maxParticipants: 7,
-                minGrade: 8,
+                _id: 'gustatio',
+                name: 'Gustatio',
+                description: 'Culinary arts and cooking challenge - Grades 9-12',
+                minParticipants: 2,
+                maxParticipants: 2,
+                minGrade: 9,
                 maxGrade: 12,
-                genderRequirement: 'female_only',
-                needsWeight: true
+                genderRequirement: 'any'
+            },
+            {
+                _id: 'mahim16',
+                name: 'Mahim 16',
+                description: 'Local knowledge and trivia - Grades 9-12',
+                minParticipants: 3,
+                maxParticipants: 4,
+                minGrade: 9,
+                maxGrade: 12,
+                genderRequirement: 'any'
+            },
+            {
+                _id: 'negotium',
+                name: 'Negotium',
+                description: 'Business and entrepreneurship - Grades 9-12',
+                minParticipants: 2,
+                maxParticipants: 2,
+                minGrade: 9,
+                maxGrade: 12,
+                genderRequirement: 'grade_mixed_required'
             }
         ];
         
@@ -519,14 +486,14 @@
         function updateHeaderForEditMode() {
             const title = document.querySelector('h1');
             const subtitle = document.querySelector('.text-gray-300');
-            title.textContent = 'Modify Sports and Gaming Registration';
+            title.textContent = 'Modify Classroom Events Registration';
             subtitle.textContent = 'Update your existing registration details';
         }
 
         // Load existing registrations
         async function loadExistingRegistrations() {
             try {
-                const response = await fetch('/api/check-sports-registration');
+                const response = await fetch('/api/check-classroom-registration');
                 if (response.ok) {
                     const data = await response.json();
                     if (data.hasRegistration) {
@@ -571,13 +538,9 @@
                                 if (currentCard) {
                                     const nameInput = currentCard.querySelector(`input[name="participant_name_${eventId}[]"]`);
                                     const gradeSelect = currentCard.querySelector(`select[name="participant_grade_${eventId}[]"]`);
-                                    const genderSelect = currentCard.querySelector(`select[name="participant_gender_${eventId}[]"]`);
-                                    const weightInput = currentCard.querySelector(`input[name="participant_weight_${eventId}[]"]`);
                                     
                                     if (nameInput) nameInput.value = participant.name;
                                     if (gradeSelect) gradeSelect.value = participant.grade;
-                                    if (genderSelect && participant.gender) genderSelect.value = participant.gender;
-                                    if (weightInput && participant.weight) weightInput.value = participant.weight;
                                 }
                             }, 100);
                         });
@@ -612,7 +575,7 @@
             const container = document.getElementById('events-container');
             container.innerHTML = '';
 
-            sportsEvents.forEach(event => {
+            classroomEvents.forEach(event => {
                 const eventCard = createEventCard(event);
                 container.appendChild(eventCard);
             });
@@ -624,6 +587,9 @@
             div.className = 'event-toggle rounded-2xl p-6';
             div.dataset.eventId = event._id;
             
+            const specialRequirement = event.genderRequirement === 'grade_mixed_required' ? 
+                '<span class="text-[#BE8E30]">One Grade 9-10 + One Grade 11-12 required</span>' : '';
+            
             div.innerHTML = `
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
                     <div class="flex-1">
@@ -632,13 +598,7 @@
                         <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm">
                             <span class="text-[#BE8E30]">Grades: ${event.minGrade}-${event.maxGrade}</span>
                             <span class="text-[#BE8E30]">Team: ${event.minParticipants === event.maxParticipants ? event.minParticipants : event.minParticipants + '-' + event.maxParticipants} participants</span>
-                            ${event.genderRequirement === 'male_female_required' ? 
-                                '<span class="text-[#BE8E30]">Mixed gender required</span>' : 
-                                event.genderRequirement === 'male_only' ? 
-                                '<span class="text-[#BE8E30]">Boys only</span>' :
-                                event.genderRequirement === 'female_only' ? 
-                                '<span class="text-[#BE8E30]">Girls only</span>' : ''}
-                            ${event.needsWeight ? '<span class="text-[#BE8E30]">Weight required</span>' : ''}
+                            ${specialRequirement}
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -703,7 +663,7 @@
                 eventCard.classList.add('active');
                 
                 // Add minimum required participants
-                const event = sportsEvents.find(e => e._id === eventId);
+                const event = classroomEvents.find(e => e._id === eventId);
                 const currentCount = document.querySelectorAll(`#participant_list_${eventId} .participant-card`).length;
                 
                 for (let i = currentCount; i < event.minParticipants; i++) {
@@ -721,7 +681,7 @@
 
         // Add participant
         function addParticipant(eventId) {
-            const event = sportsEvents.find(e => e._id === eventId);
+            const event = classroomEvents.find(e => e._id === eventId);
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const currentCount = participantList.children.length;
             
@@ -736,24 +696,12 @@
             participantCard.style.animationDelay = `${currentCount * 0.1}s`;
             
             let participantTitle = `Participant ${participantIndex}`;
-            if (eventId === 'gully-cricket' && participantIndex === 7) {
-                participantTitle = 'Participant 7 (Substitute)';
+            
+            // Special titles for specific events
+            if (eventId === 'admeta-cat1' || eventId === 'admeta-cat2') {
+                if (participantIndex === 1) participantTitle = 'Participant 1 (FOR the motion)';
+                if (participantIndex === 2) participantTitle = 'Participant 2 (AGAINST the motion)';
             }
-            
-            const genderOptions = getGenderOptions(event, participantIndex);
-            const weightField = event.needsWeight ? `
-                <div>
-                    <label class="block text-gray-300 mb-1 text-sm">Weight (kg) *</label>
-                    <input type="number" name="participant_weight_${eventId}[]" required 
-                           class="input-field w-full px-3 py-2 rounded-lg text-sm"
-                           placeholder="Enter weight in kg" min="1" step="0.1">
-                </div>
-            ` : '';
-            
-            // Determine grid columns based on available fields
-            let gridCols = 2; // Default: name and grade
-            if (genderOptions) gridCols++;
-            if (weightField) gridCols++;
             
             participantCard.innerHTML = `
                 <div class="flex items-center justify-between mb-3">
@@ -763,7 +711,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-${gridCols} gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-300 mb-1 text-sm">Full Name *</label>
                         <input type="text" name="participant_name_${eventId}[]" required 
@@ -780,8 +728,6 @@
                             ).join('')}
                         </select>
                     </div>
-                    ${genderOptions}
-                    ${weightField}
                 </div>
             `;
             
@@ -790,65 +736,9 @@
             validateEvent(eventId);
         }
 
-        // Get gender options based on event requirements
-        function getGenderOptions(event, participantIndex) {
-            // No gender field for Monopolium and Explorare
-            if (event._id === 'monopolium' || event._id === 'explorare') {
-                return '';
-            }
-            
-            if (event.genderRequirement === 'any') {
-                return `
-                    <div>
-                        <label class="block text-gray-300 mb-1 text-sm">Gender</label>
-                        <select name="participant_gender_${event._id}[]" 
-                                class="input-field w-full px-3 py-2 rounded-lg text-sm">
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                `;
-            } else if (event.genderRequirement === 'male_only') {
-                return `
-                    <div>
-                        <label class="block text-gray-300 mb-1 text-sm">Gender *</label>
-                        <select name="participant_gender_${event._id}[]" required 
-                                class="input-field w-full px-3 py-2 rounded-lg text-sm">
-                            <option value="male">Male</option>
-                        </select>
-                    </div>
-                `;
-            } else if (event.genderRequirement === 'female_only') {
-                return `
-                    <div>
-                        <label class="block text-gray-300 mb-1 text-sm">Gender *</label>
-                        <select name="participant_gender_${event._id}[]" required 
-                                class="input-field w-full px-3 py-2 rounded-lg text-sm">
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                `;
-            } else if (event.genderRequirement === 'male_female_required') {
-                return `
-                    <div>
-                        <label class="block text-gray-300 mb-1 text-sm">Gender *</label>
-                        <select name="participant_gender_${event._id}[]" required 
-                                class="input-field w-full px-3 py-2 rounded-lg text-sm">
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                `;
-            }
-            return '';
-        }
-
         // Remove participant
         function removeParticipant(eventId, button) {
-            const event = sportsEvents.find(e => e._id === eventId);
+            const event = classroomEvents.find(e => e._id === eventId);
             const participantCard = button.closest('.participant-card');
             const participantList = document.getElementById(`participant_list_${eventId}`);
             
@@ -882,9 +772,13 @@
             participantCards.forEach((card, index) => {
                 const title = card.querySelector('h5');
                 let participantTitle = `Participant ${index + 1}`;
-                if (eventId === 'gully-cricket' && index === 6) {
-                    participantTitle = 'Participant 7 (Substitute)';
+                
+                // Special titles for specific events
+                if (eventId === 'admeta-cat1' || eventId === 'admeta-cat2') {
+                    if (index === 0) participantTitle = 'Participant 1 (FOR the motion)';
+                    if (index === 1) participantTitle = 'Participant 2 (AGAINST the motion)';
                 }
+                
                 title.textContent = participantTitle;
             });
         }
@@ -893,7 +787,7 @@
         function updateParticipantCount(eventId) {
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const count = participantList.children.length;
-            const event = sportsEvents.find(e => e._id === eventId);
+            const event = classroomEvents.find(e => e._id === eventId);
             
             document.getElementById(`count_${eventId}`).textContent = count;
             
@@ -915,7 +809,7 @@
 
         // Validate event requirements
         function validateEvent(eventId) {
-            const event = sportsEvents.find(e => e._id === eventId);
+            const event = classroomEvents.find(e => e._id === eventId);
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const count = participantList.children.length;
             const validationDiv = document.getElementById(`validation_${eventId}`);
@@ -926,14 +820,15 @@
                 messages.push(`⚠️ Need at least ${event.minParticipants} participants`);
             }
             
-            if (event.genderRequirement === 'male_female_required') {
-                const genderSelects = participantList.querySelectorAll('select[name*="gender"]');
-                const selectedGenders = Array.from(genderSelects).map(s => s.value);
-                const hasMale = selectedGenders.includes('male');
-                const hasFemale = selectedGenders.includes('female');
+            // Special validation for Negotium (grade mixed requirement)
+            if (event.genderRequirement === 'grade_mixed_required') {
+                const gradeSelects = participantList.querySelectorAll('select[name*="grade"]');
+                const selectedGrades = Array.from(gradeSelects).map(s => parseInt(s.value));
+                const hasLowerGrade = selectedGrades.some(g => g >= 9 && g <= 10);
+                const hasHigherGrade = selectedGrades.some(g => g >= 11 && g <= 12);
                 
-                if (!hasMale || !hasFemale) {
-                    messages.push('⚠️ Need both male and female participants');
+                if (!hasLowerGrade || !hasHigherGrade) {
+                    messages.push('⚠️ Need one Grade 9-10 and one Grade 11-12 participant');
                 }
             }
             
@@ -1062,7 +957,7 @@
                     throw new Error('Please complete all required fields and event requirements.');
                 }
                 
-                const response = await fetch('/api/register/sports', {
+                const response = await fetch('/api/register/classroom', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1074,8 +969,8 @@
                 
                 if (response.ok) {
                     const successMessage = editMode ? 
-                        'Sports and Gaming registration updated successfully! 🎉' : 
-                        'Sports and Gaming registration submitted successfully! 🎉';
+                        'Classroom events registration updated successfully! 🎉' : 
+                        'Classroom events registration submitted successfully! 🎉';
                     showMessage(successMessage, 'success');
                     
                     // Redirect to panel after successful submission
@@ -1112,7 +1007,7 @@
             };
             
             // Collect event registrations
-            sportsEvents.forEach(event => {
+            classroomEvents.forEach(event => {
                 const participateYes = document.querySelector(`input[name="participate_${event._id}"][value="yes"]`);
                 if (participateYes && participateYes.checked) {
                     const participants = [];
@@ -1121,10 +1016,6 @@
                     participantList.querySelectorAll('.participant-card').forEach((card, index) => {
                         const name = card.querySelector(`input[name="participant_name_${event._id}[]"]`).value.trim();
                         const grade = parseInt(card.querySelector(`select[name="participant_grade_${event._id}[]"]`).value);
-                        const genderSelect = card.querySelector(`select[name="participant_gender_${event._id}[]"]`);
-                        const gender = genderSelect ? genderSelect.value : '';
-                        const weightInput = card.querySelector(`input[name="participant_weight_${event._id}[]"]`);
-                        const weight = weightInput ? parseFloat(weightInput.value) : null;
                         
                         if (name && grade) {
                             // Convert to proper Title Case (e.g., "john doe" → "John Doe")
@@ -1135,16 +1026,6 @@
                                 grade: grade,
                                 participantOrder: index + 1
                             };
-                            
-                            // Only include gender if it exists and is not empty
-                            if (gender && gender.trim() !== '') {
-                                participant.gender = gender;
-                            }
-                            
-                            // Include weight if required
-                            if (event.needsWeight && weight) {
-                                participant.weight = weight;
-                            }
                             
                             participants.push(participant);
                         }
@@ -1180,22 +1061,13 @@
             
             // Validate each event
             for (let eventReg of formData.events) {
-                const event = sportsEvents.find(e => e._id === eventReg.eventId);
+                const event = classroomEvents.find(e => e._id === eventReg.eventId);
                 
                 // Check participant count
                 if (eventReg.participants.length < event.minParticipants || 
                     eventReg.participants.length > event.maxParticipants) {
                     showMessage(`${event.name} requires ${event.minParticipants === event.maxParticipants ? event.minParticipants : event.minParticipants + '-' + event.maxParticipants} participants.`, 'error');
                     return false;
-                }
-                
-                // Check gender requirements
-                if (event.genderRequirement === 'male_female_required') {
-                    const genders = eventReg.participants.map(p => p.gender);
-                    if (!genders.includes('male') || !genders.includes('female')) {
-                        showMessage(`${event.name} requires both male and female participants.`, 'error');
-                        return false;
-                    }
                 }
                 
                 // Check grade requirements
@@ -1206,13 +1078,15 @@
                     }
                 }
                 
-                // Check weight requirements
-                if (event.needsWeight) {
-                    for (let participant of eventReg.participants) {
-                        if (!participant.weight || participant.weight <= 0) {
-                            showMessage(`${event.name} requires weight for all participants.`, 'error');
-                            return false;
-                        }
+                // Special validation for Negotium (grade mixed requirement)
+                if (event.genderRequirement === 'grade_mixed_required') {
+                    const grades = eventReg.participants.map(p => p.grade);
+                    const hasLowerGrade = grades.some(g => g >= 9 && g <= 10);
+                    const hasHigherGrade = grades.some(g => g >= 11 && g <= 12);
+                    
+                    if (!hasLowerGrade || !hasHigherGrade) {
+                        showMessage(`${event.name} requires one Grade 9-10 and one Grade 11-12 participant.`, 'error');
+                        return false;
                     }
                 }
             }

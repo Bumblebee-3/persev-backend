@@ -318,8 +318,8 @@
             </div>
           </div>
           
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSc6V2QSVAjj-b6h1sRCR3FtYgdmath9bLppdtpZKdgmwxeJyg/viewform?usp=header"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo">
-            <i class="fas fa-user-plus mr-2"></i>Register for Classroom
+          <a href="/classroom-registration" id="classroom-registration-link"><button class="register-btn w-full py-3 px-6 rounded-full text-lg font-medium" style="font-family: Mestizo" id="classroom-btn">
+            <i class="fas fa-user-plus mr-2" id="classroom-icon"></i><span id="classroom-text">Register for Classroom</span>
           </button></a>
         </div>
 
@@ -601,7 +601,8 @@
         .then(response => response.json())
         .then(data => {
           console.log('Registration stats:', data);
-          registrationsElement.textContent = data.totalEventRegistrations;
+          // Use totalRegistrations instead of totalEventRegistrations
+          registrationsElement.textContent = data.totalRegistrations || 0;
           update(); // Call the animation function after updating all stats
         })
         .catch(error => {
@@ -623,7 +624,7 @@
         
         if (data.hasRegistration) {
           // User has existing registration
-          stageText.textContent = 'Modify Registration Details';
+          stageText.textContent = 'Modify Stage Events';
           stageIcon.className = 'fas fa-edit mr-2';
           stageLink.href = '/stage-registration?mode=edit';
           stageBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
@@ -640,30 +641,75 @@
   };
 
   const checkSportsRegistration = () => {
-    // For now, just set it to registration mode since backend isn't implemented yet
-    const sportsBtn = document.getElementById('sports-btn');
-    const sportsText = document.getElementById('sports-text');
-    const sportsIcon = document.getElementById('sports-icon');
-    const sportsLink = document.getElementById('sports-registration-link');
-    
-    sportsText.textContent = 'Register for Sports';
-    sportsIcon.className = 'fas fa-user-plus mr-2';
-    sportsLink.href = '/sports-gaming-registration';
-    
-    // TODO: Implement sports registration status checking when backend is ready
-    // fetch('/api/check-sports-registration')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     if (data.hasRegistration) {
-    //       sportsText.textContent = 'Modify Sports Registration';
-    //       sportsIcon.className = 'fas fa-edit mr-2';
-    //       sportsLink.href = '/sports-gaming-registration?mode=edit';
-    //       sportsBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error('Error checking sports registration:', error);
-    //   });
+    fetch('/api/check-sports-registration')
+      .then(response => response.json())
+      .then(data => {
+        const sportsBtn = document.getElementById('sports-btn');
+        const sportsText = document.getElementById('sports-text');
+        const sportsIcon = document.getElementById('sports-icon');
+        const sportsLink = document.getElementById('sports-registration-link');
+        
+        if (data.hasRegistration) {
+          // User has existing registration
+          sportsText.textContent = 'Modify Sports Events';
+          sportsIcon.className = 'fas fa-edit mr-2';
+          sportsLink.href = '/sports-gaming-registration?mode=edit';
+          sportsBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+        } else {
+          // No existing registration
+          sportsText.textContent = 'Register for Sports';
+          sportsIcon.className = 'fas fa-user-plus mr-2';
+          sportsLink.href = '/sports-gaming-registration';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking sports registration:', error);
+        // Fallback to registration mode if API fails
+        const sportsBtn = document.getElementById('sports-btn');
+        const sportsText = document.getElementById('sports-text');
+        const sportsIcon = document.getElementById('sports-icon');
+        const sportsLink = document.getElementById('sports-registration-link');
+        
+        sportsText.textContent = 'Register for Sports';
+        sportsIcon.className = 'fas fa-user-plus mr-2';
+        sportsLink.href = '/sports-gaming-registration';
+      });
+  };
+
+  const checkClassroomRegistration = () => {
+    fetch('/api/check-classroom-registration')
+      .then(response => response.json())
+      .then(data => {
+        const classroomBtn = document.getElementById('classroom-btn');
+        const classroomText = document.getElementById('classroom-text');
+        const classroomIcon = document.getElementById('classroom-icon');
+        const classroomLink = document.getElementById('classroom-registration-link');
+        
+        if (data.hasRegistration) {
+          // User has existing registration
+          classroomText.textContent = 'Modify Classroom Events';
+          classroomIcon.className = 'fas fa-edit mr-2';
+          classroomLink.href = '/classroom-registration?mode=edit';
+          classroomBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+        } else {
+          // No existing registration
+          classroomText.textContent = 'Register for Classroom';
+          classroomIcon.className = 'fas fa-user-plus mr-2';
+          classroomLink.href = '/classroom-registration';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking classroom registration:', error);
+        // Fallback to registration mode if API fails
+        const classroomBtn = document.getElementById('classroom-btn');
+        const classroomText = document.getElementById('classroom-text');
+        const classroomIcon = document.getElementById('classroom-icon');
+        const classroomLink = document.getElementById('classroom-registration-link');
+        
+        classroomText.textContent = 'Register for Classroom';
+        classroomIcon.className = 'fas fa-user-plus mr-2';
+        classroomLink.href = '/classroom-registration';
+      });
   };
 
   setInterval(updateDaysRemaining, 1000 * 60 * 60); // Update every hour
@@ -672,6 +718,7 @@
   updateRegistrationStats(); // Initial call to get registration stats
   checkStageRegistration(); // Check if user has existing stage registration
   checkSportsRegistration(); // Check if user has existing sports registration
+  checkClassroomRegistration(); // Check if user has existing classroom registration
 });
     </script>
   </body>

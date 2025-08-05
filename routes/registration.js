@@ -1,22 +1,29 @@
 const express = require('express');
-const { School, Event, EventCategory, EventRegistration } = require('../database/init_db');
+const mongoose = require('mongoose');
+const { School, StageEvent, StageRegistration, SportsRegistration, ClassroomRegistration } = require('../database/init_db');
 const googleSheetsService = require('../services/googleSheets');
 
 const router = express.Router();
 
+// Debug: Check if models are available
+console.log('Models loaded in registration routes:', {
+    School: !!School,
+    StageEvent: !!StageEvent, 
+    StageRegistration: !!StageRegistration,
+    SportsRegistration: !!SportsRegistration,
+    ClassroomRegistration: !!ClassroomRegistration
+});
+
+// Simple auth middleware (replace with your actual auth system)
+const requireAuth = (req, res, next) => {
+    // For demo purposes, always allow
+    next();
+};
+
 // Get stage events
 router.get('/events/stage', async (req, res) => {
     try {
-        const stageCategory = await EventCategory.findOne({ name: 'Stage' });
-        if (!stageCategory) {
-            return res.status(404).json({ message: 'Stage category not found' });
-        }
-
-        const events = await Event.find({ 
-            categoryId: stageCategory._id, 
-            isActive: true 
-        }).sort({ name: 1 });
-
+        const events = await StageEvent.find({ isActive: true }).sort({ name: 1 });
         res.json(events);
     } catch (error) {
         console.error('Error fetching stage events:', error);
@@ -25,7 +32,7 @@ router.get('/events/stage', async (req, res) => {
 });
 
 // Register for stage events
-router.post('/register/stage', async (req, res) => {
+router.post('/register/stage', requireAuth, async (req, res) => {
     try {
         const { school: schoolData, events } = req.body;
 
@@ -51,20 +58,20 @@ router.post('/register/stage', async (req, res) => {
 
         // Delete ALL existing registrations for this school first
         // This ensures that events changed from "yes" to "no" are properly removed
-        const deletedCount = await EventRegistration.deleteMany({ schoolId: school._id });
+        const deletedCount = await StageRegistration.deleteMany({ schoolId: school._id });
         console.log(`Deleted ${deletedCount.deletedCount} existing registrations for school: ${school.name}`);
 
         // Save all registrations and collect event names for sheets sync
         const eventsWithNames = [];
         
         for (let eventData of events) {
-            const event = await Event.findById(eventData.eventId);
+            const event = await StageEvent.findById(eventData.eventId);
             if (!event) {
                 return res.status(400).json({ message: `Event not found: ${eventData.eventId}` });
             }
 
             // Create new registration
-            const eventRegistration = new EventRegistration({
+            const eventRegistration = new StageRegistration({
                 schoolId: school._id,
                 eventId: eventData.eventId,
                 participants: eventData.participants.map(participant => {
@@ -132,7 +139,7 @@ router.get('/registrations/:schoolId', async (req, res) => {
             return res.status(404).json({ message: 'School not found' });
         }
 
-        const registrations = await EventRegistration.find({ schoolId })
+        const registrations = await StageRegistration.find({ schoolId })
             .populate('eventId', 'name description minParticipants maxParticipants minGrade maxGrade genderRequirement')
             .populate('schoolId', 'name contingentCode teacherName');
 
@@ -171,17 +178,8 @@ router.get('/check-stage-registration', async (req, res) => {
         }
 
         // Check if school has any stage event registrations
-        const stageCategory = await EventCategory.findOne({ name: 'Stage' });
-        if (!stageCategory) {
-            return res.json({ hasRegistration: false });
-        }
-
-        const stageEvents = await Event.find({ categoryId: stageCategory._id });
-        const stageEventIds = stageEvents.map(event => event._id);
-
-        const existingRegistrations = await EventRegistration.find({
-            schoolId: school._id,
-            eventId: { $in: stageEventIds }
+        const existingRegistrations = await StageRegistration.find({
+            schoolId: school._id
         }).populate('eventId');
 
         res.json({
@@ -196,75 +194,303 @@ router.get('/check-stage-registration', async (req, res) => {
     }
 });
 
-// Get all categories and their events (for future expansion)
-router.get('/events/all', async (req, res) => {
+// Check if user has existing sports registrations
+router.get('/check-sports-registration', async (req, res) => {
     try {
-        const categories = await EventCategory.find().sort({ name: 1 });
-        const result = [];
-
-        for (let category of categories) {
-            const events = await Event.find({ 
-                categoryId: category._id, 
-                isActive: true 
-            }).sort({ name: 1 });
-
-            result.push({
-                category: category,
-                events: events
-            });
+        // For now, we'll use a simple mapping. In production, you'd get this from session
+        const userSchoolMapping = {
+            'user1': 'JB Vaccha High School',
+            'user2': 'Delhi Public School',
+            'user3': 'Ryan International School'
+        };
+        
+        // Get username from session or query parameter for testing
+        const username = req.session?.username || req.query.username || 'user1';
+        const schoolName = userSchoolMapping[username];
+        
+        if (!schoolName) {
+            return res.json({ hasRegistration: false });
         }
 
-        res.json(result);
+        const school = await School.findOne({ name: schoolName });
+        if (!school) {
+            return res.json({ hasRegistration: false });
+        }
+
+        // Check if school has any sports event registrations
+        const existingRegistrations = await SportsRegistration.find({
+            schoolId: school._id
+        });
+
+        res.json({
+            hasRegistration: existingRegistrations.length > 0,
+            school: school,
+            registrations: existingRegistrations
+        });
+
     } catch (error) {
-        console.error('Error fetching all events:', error);
+        console.error('Error checking sports registration:', error);
         res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Check if user has existing classroom registrations
+router.get('/check-classroom-registration', async (req, res) => {
+    try {
+        const userSchoolMapping = {
+            'user1': 'JB Vaccha High School',
+            'user2': 'Delhi Public School',
+            'user3': 'Ryan International School'
+        };
+        
+        // Get username from session or query parameter for testing
+        const username = req.session?.username || req.query.username || 'user1';
+        const schoolName = userSchoolMapping[username];
+        
+        if (!schoolName) {
+            return res.json({ hasRegistration: false });
+        }
+
+        const school = await School.findOne({ name: schoolName });
+        if (!school) {
+            return res.json({ hasRegistration: false });
+        }
+
+        // Use the imported ClassroomRegistration model
+        const existingRegistrations = await ClassroomRegistration.find({
+            schoolId: school._id
+        });
+
+        res.json({
+            hasRegistration: existingRegistrations.length > 0,
+            school: school,
+            registrations: existingRegistrations
+        });
+
+    } catch (error) {
+        console.error('Error checking classroom registration:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Register for classroom events
+router.post('/register/classroom', async (req, res) => {
+    try {
+        const { school: schoolData, events } = req.body;
+        
+        console.log('📊 Processing classroom registration for:', schoolData.name);
+        
+        // Validate input
+        if (!schoolData || !events || events.length === 0) {
+            return res.status(400).json({ message: 'School information and events are required' });
+        }
+
+        // Create or update school
+        let school = await School.findOne({ name: schoolData.name });
+        if (!school) {
+            school = new School(schoolData);
+        } else {
+            Object.assign(school, schoolData);
+        }
+        await school.save();
+
+        // Event name mapping
+        const eventNameMapping = {
+            'admeta-cat1': 'Admeta: Category 1',
+            'admeta-cat2': 'Admeta: Category 2',
+            'artem': 'Artem',
+            'carmen-cat1': 'Carmen: Category 1',
+            'carmen-cat2': 'Carmen: Category 2',
+            'fabula': 'Fabula',
+            'fortuna': 'Fortuna',
+            'codeferno': 'Codeferno',
+            'gustatio': 'Gustatio',
+            'mahim16': 'Mahim 16',
+            'negotium': 'Negotium'
+        };
+
+        // Delete existing registrations for this school
+        await ClassroomRegistration.deleteMany({ schoolId: school._id });
+        console.log('🗑️ Removed existing classroom registrations');
+
+        // Create new registrations and collect events with names for sheets sync
+        const registrations = [];
+        const eventsWithNames = [];
+        
+        for (const eventData of events) {
+            const registration = new ClassroomRegistration({
+                schoolId: school._id,
+                eventId: eventData.eventId,
+                eventName: eventNameMapping[eventData.eventId] || eventData.eventId,
+                participants: eventData.participants
+            });
+            registrations.push(registration);
+            
+            // Add event name for sheets sync
+            eventsWithNames.push({
+                ...eventData,
+                eventName: eventNameMapping[eventData.eventId] || eventData.eventId
+            });
+            
+            console.log(`✅ Classroom registration prepared for event: ${eventNameMapping[eventData.eventId] || eventData.eventId}`);
+        }
+
+        await ClassroomRegistration.insertMany(registrations);
+        console.log('All classroom registrations completed successfully');
+
+        // Send immediate success response to user
+        res.json({
+            message: 'Classroom events registration successful',
+            schoolId: school._id,
+            registeredEvents: registrations.length
+        });
+
+        // Sync to Google Sheets in background (non-blocking)
+        setImmediate(async () => {
+            try {
+                await googleSheetsService.addClassroomRegistration({
+                    school: schoolData,
+                    events: eventsWithNames
+                });
+                console.log('✅ Background Google Sheets sync completed for classroom');
+            } catch (sheetsError) {
+                console.warn('⚠️ Background Google Sheets sync failed for classroom:', sheetsError.message);
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Classroom registration error:', error);
+        res.status(500).json({ message: 'Registration failed', error: error.message });
     }
 });
 
 // Get registration statistics
 router.get('/stats/registrations', async (req, res) => {
     try {
-        console.log('📊 Fetching registration statistics...');
+        // Count stage registrations
+        const stageRegistrationCount = await StageRegistration.countDocuments();
         
-        // Add timeout wrapper for database operations
-        const timeoutMs = 15000; // 15 seconds
+        // Count sports registrations  
+        const sportsRegistrationCount = await SportsRegistration.countDocuments();
         
-        const totalRegistrations = await Promise.race([
-            EventRegistration.countDocuments(),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Database timeout')), timeoutMs))
-        ]);
+        // Count classroom registrations using imported model
+        const classroomRegistrationCount = await ClassroomRegistration.countDocuments();
         
-        const totalSchools = await Promise.race([
-            School.countDocuments(),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Database timeout')), timeoutMs))
-        ]);
+        const totalRegistrations = stageRegistrationCount + sportsRegistrationCount + classroomRegistrationCount;
         
-        // Get total event registrations (sum of all individual event registrations)
-        const eventRegistrations = await Promise.race([
-            EventRegistration.find(),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Database timeout')), timeoutMs))
-        ]);
-        
-        const totalEventRegistrations = eventRegistrations.length;
-
-        console.log(`✅ Stats: ${totalRegistrations} registrations, ${totalSchools} schools`);
-
         res.json({
-            totalRegistrations: totalRegistrations,
-            totalSchools: totalSchools,
-            totalEventRegistrations: totalEventRegistrations
+            totalRegistrations,
+            totalStageRegistrations: stageRegistrationCount,
+            totalSportsRegistrations: sportsRegistrationCount,
+            totalClassroomRegistrations: classroomRegistrationCount,
+            totalSchools: await School.countDocuments()
         });
-    } catch (error) {
-        console.error('❌ Error fetching registration stats:', error.message);
         
-        // Return default values if database is unavailable
-        res.json({
-            totalRegistrations: 0,
-            totalSchools: 0,
-            totalEventRegistrations: 0,
-            error: 'Database unavailable'
+    } catch (error) {
+        console.error('Error fetching registration statistics:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Sports registration endpoint
+router.post('/register/sports', requireAuth, async (req, res) => {
+    try {
+        const { school: schoolData, events } = req.body;
+        
+        console.log('📊 Processing sports registration for:', schoolData.name);
+        
+        // Find or create school
+        let school = await School.findOne({ name: schoolData.name });
+        if (!school) {
+            school = new School({
+                name: schoolData.name,
+                contingentCode: schoolData.contingentCode,
+                teacherName: schoolData.teacherName,
+                teacherMobile: schoolData.teacherMobile,
+                teacherEmail: schoolData.teacherEmail
+            });
+            await school.save();
+            console.log('✅ New school created for sports registration');
+        } else {
+            // Update school information
+            school.teacherName = schoolData.teacherName;
+            school.teacherMobile = schoolData.teacherMobile;
+            school.teacherEmail = schoolData.teacherEmail;
+            await school.save();
+            console.log('✅ School information updated for sports registration');
+        }
+
+        // Remove existing sports registrations for this school
+        await SportsRegistration.deleteMany({ schoolId: school._id });
+        console.log('🗑️ Removed existing sports registrations');
+
+        // Create new registrations
+        const eventsWithNames = [];
+        for (const eventData of events) {
+            const registration = new SportsRegistration({
+                schoolId: school._id,
+                eventId: eventData.eventId,
+                eventName: getSportsEventName(eventData.eventId),
+                participants: eventData.participants
+            });
+            
+            await registration.save();
+            eventsWithNames.push({
+                ...eventData,
+                eventName: getSportsEventName(eventData.eventId)
+            });
+            console.log(`✅ Sports registration saved for event: ${getSportsEventName(eventData.eventId)}`);
+        }
+
+        console.log('All sports registrations completed successfully');
+
+        // Send immediate success response to user
+        res.status(201).json({ 
+            message: 'Sports registration completed successfully',
+            schoolId: school._id,
+            eventsRegistered: events.length
+        });
+
+        // Sync to Google Sheets in background (non-blocking)
+        setImmediate(async () => {
+            try {
+                await googleSheetsService.addSportsRegistration({
+                    school: schoolData,
+                    events: eventsWithNames
+                });
+                console.log('✅ Background Google Sheets sync completed for sports');
+            } catch (sheetsError) {
+                console.warn('⚠️ Background Google Sheets sync failed for sports:', sheetsError.message);
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Sports registration error:', error);
+        res.status(500).json({ 
+            message: 'Sports registration failed',
+            error: error.message 
         });
     }
 });
+
+// Helper function to get sports event names
+function getSportsEventName(eventId) {
+    const sportsEventNames = {
+        'explorare': 'Explorare',
+        'monopolium': 'Monopolium',
+        'football-u18-boys': 'Football: Category 1: U18 Boys',
+        'football-u16-boys': 'Football: Category 2: U16 Boys',
+        'football-u18-girls': 'Football: Category 3: U18 Girls',
+        'basketball-u19-boys': 'Basketball: Boys (U19)',
+        'basketball-u16-boys': 'Basketball: Boys (U16)',
+        'basketball-u19-girls': 'Basketball: Girls (U19)',
+        'basketball-u16-girls': 'Basketball: Girls (U16)',
+        'gully-cricket': 'Gully Cricket',
+        'table-tennis': 'Table Tennis',
+        'tug-of-war-boys': 'Tug Of War: Boys (Under 16 and Under 19)',
+        'tug-of-war-girls': 'Tug Of War: Girls (Under 16 and Under 19)'
+    };
+    return sportsEventNames[eventId] || eventId;
+}
 
 module.exports = router;
