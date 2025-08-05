@@ -19,7 +19,7 @@ class GoogleSheetsService {
                 credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
             } else {
                 // Load from file (for development)
-                const credentialsPath = path.join(__dirname, '../.config/google-credentials.json');
+                const credentialsPath = process.env.GOOGLE_CREDENTIALS_PATH;
                 credentials = require(credentialsPath);
             }
 

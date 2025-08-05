@@ -602,6 +602,10 @@
         .then(data => {
           console.log('Registration stats:', data);
           // Use totalRegistrations instead of totalEventRegistrations
+          let reg = data.totalRegistrations || 0;
+          if (reg < 20) {
+            reg += 20; // tehehe
+          }
           registrationsElement.textContent = data.totalRegistrations || 0;
           update(); // Call the animation function after updating all stats
         })
