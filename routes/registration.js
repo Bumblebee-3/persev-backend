@@ -306,7 +306,7 @@ router.post('/register/classroom', async (req, res) => {
             'codeferno': 'Codeferno',
             'gustatio': 'Gustatio',
             'mahim16': 'Mahim 16',
-            'negotium': 'Negotium'
+            'adventurium': "‘Ad’venturium"
         };
 
         // Delete existing registrations for this school

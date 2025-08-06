@@ -58,7 +58,7 @@ async function populateDatabase() {
       { name: 'Codeferno', categoryId: classroomCategory, minParticipants: 1, maxParticipants: 1, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Programming and coding competition' },
       { name: 'Gustatio', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Culinary arts and cooking challenge' },
       { name: 'Mahim 16', categoryId: classroomCategory, minParticipants: 3, maxParticipants: 4, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Local knowledge and trivia' },
-      { name: 'Negotium', categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'grade_mixed_required', description: 'Business and entrepreneurship challenge (requires one grade 9-10 and one grade 11-12)' }
+      { name: "‘Ad’venturium", categoryId: classroomCategory, minParticipants: 2, maxParticipants: 2, minGrade: 9, maxGrade: 12, genderRequirement: 'any', description: 'Business and entrepreneurship challenge (requires one grade 9-10 and one grade 11-12)' }
     ];
 
     // Insert Events

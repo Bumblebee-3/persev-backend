@@ -469,8 +469,8 @@
                 genderRequirement: 'any'
             },
             {
-                _id: 'negotium',
-                name: 'Negotium',
+                _id: 'adventurium',
+                name: "‘Ad’venturium",
                 description: 'Business and entrepreneurship - Grades 9-12',
                 minParticipants: 2,
                 maxParticipants: 2,
@@ -843,7 +843,7 @@
                 messages.push(`⚠️ Need at least ${event.minParticipants} participants`);
             }
             
-            // Special validation for Negotium (grade mixed requirement)
+            // Special validation for 'Ad'venturium (grade mixed requirement)
             if (event.genderRequirement === 'grade_mixed_required') {
                 const gradeSelects = participantList.querySelectorAll('select[name*="grade"]');
                 const selectedGrades = Array.from(gradeSelects).map(s => parseInt(s.value));
@@ -1101,7 +1101,7 @@
                     }
                 }
                 
-                // Special validation for Negotium (grade mixed requirement)
+                // Special validation for 'Ad'venturium (grade mixed requirement)
                 if (event.genderRequirement === 'grade_mixed_required') {
                     const grades = eventReg.participants.map(p => p.grade);
                     const hasLowerGrade = grades.some(g => g >= 9 && g <= 10);
