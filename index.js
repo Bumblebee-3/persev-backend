@@ -226,7 +226,7 @@ app.get('/api/participating-schools', (req, res) => {
 });
 
 // Classroom registration page
-app.get('/classroom-registration', (req, res) => {
+app.get('/classroom-registration', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'views/classroom-registration.html'));
 });
 
