@@ -76,7 +76,23 @@ const userSchoolMapping = {
     'admin': {
         name: 'Admin',
         contingentCode: 'ADMIN'
-    }
+    },
+      'P1': {
+        name: 'Children\'s Academy (Thakur Complex, Kandivali)',
+        contingentCode: 'P1'
+    },'P2': {
+        name: 'Gokuldham High School',
+        contingentCode: 'P2'
+    },'P3': {
+        name: 'Billabong High School, Mulund',
+        contingentCode: 'P3'
+    },'P4': {
+        name: 'Pawar Public School (Chandivali)',
+        contingentCode: 'P4'
+    },'P5': {
+        name: 'Pawar Public School (Bhandup)',
+        contingentCode: 'P5'
+    },
 };
 
 // Serve static files from the "assets" folder
