@@ -79,7 +79,7 @@ const userSchoolMapping = {
         contingentCode: 'ADMIN'
     },
       'P1': {
-        name: 'Vibgyor High (Goregaon W)',
+        name: '',
         contingentCode: 'P1'
     },'P2': {
         name: 'Gokuldham High School',
@@ -96,9 +96,6 @@ const userSchoolMapping = {
     }, 'P6': {
         name: 'Children\'s Academy Thakur Complex, Kandivali',
         contingentCode: 'P6'
-    }, 'P7': {
-        name: 'Bombay Scottish School (Powai)',
-        contingentCode: 'P7'
     }
 };
 
