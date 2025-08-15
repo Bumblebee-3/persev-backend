@@ -14,10 +14,23 @@ console.log('Models loaded in registration routes:', {
     ClassroomRegistration: !!ClassroomRegistration
 });
 
-// Simple auth middleware (replace with your actual auth system)
+// Dummy auth middleware
 const requireAuth = (req, res, next) => {
-    // For demo purposes, always allow
     next();
+};
+
+const userSchoolMapping = {
+    'user1': 'JB Vaccha High School',
+    'user2': 'Delhi Public School',
+    'user3': 'Ryan International School',
+    'user4': 'St. Xavier\'s High School',
+    'P1': 'Vibgyor High Goregaon West',
+    'P2': 'Gokuldham High School',
+    'P3': 'Billabong High School, Mulund',
+    'P4': 'Pawar Public Chandivali',
+    'P5': 'Pawar Public Bhandup',
+    'P6': "Children's Academy (Thakur Complex, Kandivali)",
+    'P7': 'Bombay Scottish School, Powai'
 };
 
 // Get stage events
@@ -157,14 +170,7 @@ router.get('/registrations/:schoolId', async (req, res) => {
 // Check if user has existing stage registrations
 router.get('/check-stage-registration', async (req, res) => {
     try {
-        // For now, we'll use a simple mapping. In production, you'd get this from session
-        const userSchoolMapping = {
-            'user1': 'JB Vaccha High School',
-            'user2': 'Delhi Public School',
-            'user3': 'Ryan International School'
-        };
-        
-        // Get username from session or query parameter for testing
+        // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
         const schoolName = userSchoolMapping[username];
         
@@ -197,14 +203,7 @@ router.get('/check-stage-registration', async (req, res) => {
 // Check if user has existing sports registrations
 router.get('/check-sports-registration', async (req, res) => {
     try {
-        // For now, we'll use a simple mapping. In production, you'd get this from session
-        const userSchoolMapping = {
-            'user1': 'JB Vaccha High School',
-            'user2': 'Delhi Public School',
-            'user3': 'Ryan International School'
-        };
-        
-        // Get username from session or query parameter for testing
+        // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
         const schoolName = userSchoolMapping[username];
         
@@ -237,13 +236,7 @@ router.get('/check-sports-registration', async (req, res) => {
 // Check if user has existing classroom registrations
 router.get('/check-classroom-registration', async (req, res) => {
     try {
-        const userSchoolMapping = {
-            'user1': 'JB Vaccha High School',
-            'user2': 'Delhi Public School',
-            'user3': 'Ryan International School'
-        };
-        
-        // Get username from session or query parameter for testing
+        // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
         const schoolName = userSchoolMapping[username];
         
