@@ -27,9 +27,9 @@ const userSchoolMapping = {
     'P1': 'Vibgyor High Goregaon West',
     'P2': 'Gokuldham High School',
     'P3': 'Billabong High School, Mulund',
-    'P4': 'Pawar Public Chandivali',
-    'P5': 'Pawar Public Bhandup',
-    'P6': "Children's Academy (Thakur Complex, Kandivali)",
+    'P4': 'Pawar Public School (Chandivali)',
+    'P5': 'Pawar Public School (Bhandup)',
+    'P6': "Children\'s Academy Thakur Complex, Kandivali",
     'P7': 'Bombay Scottish School, Powai'
 };
 
@@ -239,11 +239,15 @@ router.get('/check-classroom-registration', async (req, res) => {
         // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
         const schoolName = userSchoolMapping[username];
+
+        console.log(username)
+        console.log(schoolName)
         
         if (!schoolName) {
             return res.json({ hasRegistration: false });
         }
 
+        console.log(School)
         const school = await School.findOne({ name: schoolName });
         if (!school) {
             return res.json({ hasRegistration: false });
