@@ -19,8 +19,19 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
-const userSchoolMapping = require("../index.js");
-
+const userSchoolMapping = {
+    'user1': 'JB Vaccha High School',
+    'user2': 'Delhi Public School',
+    'user3': 'Ryan International School',
+    'user4': 'St. Xavier\'s High School',
+    'P1': 'Vibgyor High Goregaon West',
+    'P2': 'Gokuldham High School',
+    'P3': 'Billabong High School, Mulund',
+    'P4': 'Pawar Public School (Chandivali)',
+    'P5': 'Pawar Public School (Bhandup)',
+    'P6': "Children\'s Academy Thakur Complex, Kandivali",
+    'P7': 'Bombay Scottish School, Powai'
+};
 
 // Get stage events
 router.get('/events/stage', async (req, res) => {
