@@ -6,7 +6,6 @@ const crypto = require('crypto');
 
 // Import API routes
 const registrationRoutes = require('./routes/registration');
-const adminRoutes = require('./routes/admin');
 // Import database initialization
 const { initializeDatabase } = require('./database/init_db');
 
@@ -106,7 +105,7 @@ app.use("/static",express.static(path.join(__dirname, 'static')));
 
 // Use API routes
 app.use('/api', registrationRoutes);
-app.use('/api/admin', adminRoutes);
+
 
 function hashPassword(password) {
     return crypto.createHash('sha256').update(password).digest('hex');
@@ -232,16 +231,6 @@ app.get('/api/participating-schools', (req, res) => {
 // Classroom registration page
 app.get('/classroom-registration', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'views/classroom-registration.html'));
-});
-
-// Admin login page
-app.get('/admin-login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/admin-login.html'));
-});
-
-// Admin dashboard page
-app.get('/admin-dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/admin-dashboard.html'));
 });
 
 // Catch-all route for undefined paths to serve 404.html

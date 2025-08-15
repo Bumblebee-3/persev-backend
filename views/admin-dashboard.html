@@ -1,27 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Admin Dashboard - Perseverantia Event Management">
+    <link rel="icon" type="image/png" href="/assets/persev.png" />
     <title>Admin Dashboard - Perseverantia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @font-face {
+            font-family: Mestizo;
+            src: url(/assets/MestizoFont.ttf);
         }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0D122C 0%, #131D3F 100%);
+        }
+        
+        .card-gradient {
+            background: linear-gradient(90deg, #0D122C 0%, #131D3F 100%);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(190, 142, 48, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #BE8E30;
+            outline: none;
+            box-shadow: 0 0 20px rgba(190, 142, 48, 0.3);
+        }
+        
+        .btn-primary {
+            background: #081032;
+            color: white;
+            border: 4px solid #BE8E30;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #BE8E30;
+            color: #081032;
+            box-shadow: 0 0 25px rgba(190, 142, 48, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .logo-glow {
+            filter: drop-shadow(0 0 20px rgba(190, 142, 48, 0.4));
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0D122C 0%, #131D3F 100%);
             color: white;
             padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid #BE8E30;
         }
 
         .header-content {
@@ -88,37 +124,43 @@
             margin-bottom: 30px;
         }
 
+        
         .stat-card {
-            background: white;
+            background: linear-gradient(90deg, #0D122C 0%, #131D3F 100%);
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(190, 142, 48, 0.3);
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            color: white;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
+            border-color: #BE8E30;
+            box-shadow: 0 0 25px rgba(190, 142, 48, 0.3);
         }
 
         .stat-number {
             font-size: 36px;
             font-weight: 700;
-            color: #667eea;
+            color: #BE8E30;
             margin-bottom: 10px;
+            font-family: Mestizo;
         }
 
         .stat-label {
             font-size: 16px;
-            color: #666;
+            color: #ffffff;
             font-weight: 500;
+            font-family: Mestizo;
         }
 
         .filters {
-            background: white;
+            background: linear-gradient(90deg, #0D122C 0%, #131D3F 100%);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(190, 142, 48, 0.3);
             margin-bottom: 20px;
             display: flex;
             gap: 15px;
@@ -135,54 +177,64 @@
         .filter-group label {
             font-size: 14px;
             font-weight: 500;
-            color: #555;
+            color: #ffffff;
+            font-family: Mestizo;
         }
 
         .filter-group select {
             padding: 8px 12px;
-            border: 2px solid #e1e5e9;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(190, 142, 48, 0.3);
             border-radius: 8px;
             font-size: 14px;
             outline: none;
             transition: border-color 0.3s ease;
+            color: white;
         }
 
         .filter-group select:focus {
-            border-color: #667eea;
+            border-color: #BE8E30;
+            box-shadow: 0 0 20px rgba(190, 142, 48, 0.3);
         }
 
         .refresh-btn {
-            background: #667eea;
+            background: #081032;
             color: white;
-            border: none;
+            border: 4px solid #BE8E30;
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s ease;
+            font-family: Mestizo;
+            transition: all 0.3s ease;
         }
 
         .refresh-btn:hover {
-            background: #5a6fd8;
+            background: #BE8E30;
+            color: #081032;
+            box-shadow: 0 0 25px rgba(190, 142, 48, 0.5);
+            transform: translateY(-2px);
         }
 
         .table-container {
-            background: white;
+            background: linear-gradient(90deg, #0D122C 0%, #131D3F 100%);
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(190, 142, 48, 0.3);
             overflow: hidden;
         }
 
         .table-header {
-            background: #f8f9fa;
+            background: rgba(190, 142, 48, 0.2);
             padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 2px solid rgba(190, 142, 48, 0.3);
         }
 
         .table-title {
             font-size: 20px;
             font-weight: 600;
-            color: #333;
+            color: #ffffff;
+            font-family: Mestizo;
         }
 
         .table-responsive {
@@ -192,25 +244,28 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            background: transparent;
         }
 
         th, td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(190, 142, 48, 0.2);
+            color: white;
         }
 
         th {
-            background: #f8f9fa;
+            background: rgba(190, 142, 48, 0.1);
             font-weight: 600;
-            color: #555;
+            color: #BE8E30;
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: Mestizo;
         }
 
         tr:hover {
-            background-color: #f8f9fa;
+            background-color: rgba(190, 142, 48, 0.1);
         }
 
         .badge {
@@ -224,50 +279,55 @@
         }
 
         .badge-sports {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: rgba(190, 142, 48, 0.2);
+            color: #BE8E30;
+            border: 1px solid #BE8E30;
         }
 
         .badge-classroom {
-            background: #f3e5f5;
-            color: #7b1fa2;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid #ffffff;
         }
 
         .badge-stage {
-            background: #e8f5e8;
-            color: #388e3c;
+            background: rgba(13, 18, 44, 0.8);
+            color: #BE8E30;
+            border: 1px solid #BE8E30;
         }
 
         .participant-count {
             font-weight: 600;
-            color: #667eea;
+            color: #BE8E30;
         }
 
         .date-time {
             font-size: 13px;
-            color: #666;
+            color: #cccccc;
         }
 
         .loading {
             text-align: center;
             padding: 50px;
-            color: #666;
+            color: #ffffff;
+            font-family: Mestizo;
         }
 
         .error {
-            background: #fee;
-            color: #c33;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
-            border: 1px solid #fcc;
+            border: 1px solid #ff6b6b;
         }
 
         .no-data {
             text-align: center;
             padding: 50px;
-            color: #666;
+            color: #cccccc;
             font-style: italic;
+            font-family: Mestizo;
         }
 
         .participants-list {
@@ -275,11 +335,12 @@
             max-height: 100px;
             overflow-y: auto;
             font-size: 13px;
+            color: #cccccc;
         }
 
         .participant-item {
             padding: 2px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(190, 142, 48, 0.2);
         }
 
         .participant-item:last-child {
@@ -312,27 +373,40 @@
 
             th, td {
                 padding: 10px 8px;
-            }
-        }
+            }}
     </style>
 </head>
-<body>
+<body class="gradient-bg min-h-screen">
     <div class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo">P</div>
-                <div>
-                    <div class="header-title">Admin Dashboard</div>
-                    <div class="header-subtitle">Perseverantia Event Management</div>
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img 
+                        src="/assets/persevlogo.png" 
+                        alt="Perseverantia Logo" 
+                        class="w-12 h-12 mr-4 logo-glow"
+                    />
+                    <div>
+                        <h1 class="text-2xl font-bold" style="font-family: Mestizo">Admin Dashboard</h1>
+                        <p class="text-gray-300">Perseverantia Event Management</p>
+                    </div>
                 </div>
+                <button onclick="logout()" class="btn-primary px-4 py-2 rounded-lg font-medium" style="font-family: Mestizo">
+                    Logout
+                </button>
             </div>
-            <button onclick="logout()" class="logout-btn">Logout</button>
         </div>
     </div>
 
-    <div class="container">
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-[#BE8E30] rounded-full opacity-10 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-[#BE8E30] rounded-full opacity-10 blur-3xl"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto p-6 relative z-10">
         <!-- Statistics Cards -->
-        <div class="stats-grid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="stat-card">
                 <div class="stat-number" id="total-registrations">-</div>
                 <div class="stat-label">Total Registrations</div>
@@ -352,7 +426,7 @@
         </div>
 
         <!-- Filters -->
-        <div class="filters">
+        <div class="filters mb-6">
             <div class="filter-group">
                 <label>Event Type</label>
                 <select id="event-type-filter">
@@ -378,7 +452,7 @@
             <div class="table-header">
                 <div class="table-title">Event Registrations</div>
             </div>
-            <div class="table-responsive">
+            <div class="overflow-x-auto">
                 <div id="loading" class="loading">Loading registrations...</div>
                 <div id="error" class="error" style="display: none;"></div>
                 <table id="registrations-table" style="display: none;">
