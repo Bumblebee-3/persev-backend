@@ -78,7 +78,7 @@ const userSchoolMapping = {
         contingentCode: 'ADMIN'
     },
       'P1': {
-        name: '',
+        name: 'Vibgyor High (Goregaon W)',
         contingentCode: 'P1'
     },'P2': {
         name: 'Gokuldham High School',
@@ -93,10 +93,19 @@ const userSchoolMapping = {
         name: 'Pawar Public School (Bhandup)',
         contingentCode: 'P5'
     }, 'P6': {
-        name: 'Children\'s Academy Thakur Complex, Kandivali',
+        name: 'Children\'s Academy Thakur Complex (Kandivali)',
         contingentCode: 'P6'
+    }, 'P7': {
+        name:'Bombay Scottish School, Powai',
+        contingentCode: 'P7'
     }
 };
+const data = {}
+for(acc in userSchoolMapping){
+    
+    data[acc] = userSchoolMapping[acc].name;
+}
+module.exports = {data};
 
 // Serve static files from the "assets" folder
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
