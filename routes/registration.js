@@ -1,9 +1,232 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const { School, StageEvent, StageRegistration, SportsRegistration, ClassroomRegistration } = require('../database/init_db');
 const googleSheetsService = require('../services/googleSheets');
 
 const router = express.Router();
+
+// Admin authentication middleware
+const requireAdminAuth = (req, res, next) => {
+    if (!req.session.adminAuthenticated) {
+        return res.status(401).json({ message: 'Admin authentication required' });
+    }
+    next();
+};
+
+// Admin login endpoint
+router.post('/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        const adminUsername = process.env.ADMIN_USERNAME;
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        
+        if (username === adminUsername && password === adminPassword) {
+            req.session.adminAuthenticated = true;
+            req.session.adminUsername = username;
+            res.json({ success: true, message: 'Login successful' });
+        } else {
+            res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+    } catch (error) {
+        console.error('Admin login error:', error);
+        res.status(500).json({ success: false, message: 'Login failed' });
+    }
+});
+
+// Admin check authentication endpoint
+router.get('/admin/check-auth', (req, res) => {
+    res.json({ authenticated: !!req.session.adminAuthenticated });
+});
+
+// Admin logout endpoint
+router.get('/admin/logout', (req, res) => {
+    req.session.adminAuthenticated = false;
+    req.session.adminUsername = null;
+    res.redirect('/admin/login');
+});
+
+// Admin API endpoints for fetching registration data
+router.get('/admin/api/registrations/stage', requireAdminAuth, async (req, res) => {
+    try {
+        const registrations = await StageRegistration.find({})
+            .populate('schoolId')
+            .populate('eventId', 'name');
+
+        // Group by school
+        const schoolGroups = {};
+        registrations.forEach(reg => {
+            const schoolId = reg.schoolId._id.toString();
+            if (!schoolGroups[schoolId]) {
+                schoolGroups[schoolId] = {
+                    school: {
+                        name: reg.schoolId.name,
+                        contingentCode: reg.schoolId.contingentCode,
+                        teacherName: reg.schoolId.teacherName,
+                        teacherEmail: reg.schoolId.teacherEmail,
+                        teacherMobile: reg.schoolId.teacherMobile
+                    },
+                    events: []
+                };
+            }
+            schoolGroups[schoolId].events.push({
+                eventName: reg.eventId.name,
+                participants: reg.participants
+            });
+        });
+
+        res.json(Object.values(schoolGroups));
+    } catch (error) {
+        console.error('Error fetching stage registrations for admin:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+router.get('/admin/api/registrations/sports', requireAdminAuth, async (req, res) => {
+    try {
+        const registrations = await SportsRegistration.find({})
+            .populate('schoolId');
+
+        // Group by school
+        const schoolGroups = {};
+        registrations.forEach(reg => {
+            const schoolId = reg.schoolId._id.toString();
+            if (!schoolGroups[schoolId]) {
+                schoolGroups[schoolId] = {
+                    school: {
+                        name: reg.schoolId.name,
+                        contingentCode: reg.schoolId.contingentCode,
+                        teacherName: reg.schoolId.teacherName,
+                        teacherEmail: reg.schoolId.teacherEmail,
+                        teacherMobile: reg.schoolId.teacherMobile
+                    },
+                    events: []
+                };
+            }
+            schoolGroups[schoolId].events.push({
+                eventName: reg.eventName,
+                participants: reg.participants
+            });
+        });
+
+        res.json(Object.values(schoolGroups));
+    } catch (error) {
+        console.error('Error fetching sports registrations for admin:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+router.get('/admin/api/registrations/classroom', requireAdminAuth, async (req, res) => {
+    try {
+        const registrations = await ClassroomRegistration.find({})
+            .populate('schoolId');
+
+        // Group by school
+        const schoolGroups = {};
+        registrations.forEach(reg => {
+            const schoolId = reg.schoolId._id.toString();
+            if (!schoolGroups[schoolId]) {
+                schoolGroups[schoolId] = {
+                    school: {
+                        name: reg.schoolId.name,
+                        contingentCode: reg.schoolId.contingentCode,
+                        teacherName: reg.schoolId.teacherName,
+                        teacherEmail: reg.schoolId.teacherEmail,
+                        teacherMobile: reg.schoolId.teacherMobile
+                    },
+                    events: []
+                };
+            }
+            schoolGroups[schoolId].events.push({
+                eventName: reg.eventName,
+                participants: reg.participants
+            });
+        });
+
+        res.json(Object.values(schoolGroups));
+    } catch (error) {
+        console.error('Error fetching classroom registrations for admin:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Admin summary endpoint
+router.get('/admin/api/summary', requireAdminAuth, async (req, res) => {
+    try {
+        // Get all registrations
+        const stageRegs = await StageRegistration.find({}).populate('schoolId').populate('eventId', 'name');
+        const sportsRegs = await SportsRegistration.find({}).populate('schoolId');
+        const classroomRegs = await ClassroomRegistration.find({}).populate('schoolId');
+
+        // Event summary
+        const eventSummary = {};
+        
+        // Process stage events
+        stageRegs.forEach(reg => {
+            const eventName = reg.eventId.name;
+            if (!eventSummary[eventName]) {
+                eventSummary[eventName] = { participantCount: 0, schools: new Set() };
+            }
+            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].schools.add(reg.schoolId._id.toString());
+        });
+
+        // Process sports events
+        sportsRegs.forEach(reg => {
+            const eventName = reg.eventName;
+            if (!eventSummary[eventName]) {
+                eventSummary[eventName] = { participantCount: 0, schools: new Set() };
+            }
+            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].schools.add(reg.schoolId._id.toString());
+        });
+
+        // Process classroom events
+        classroomRegs.forEach(reg => {
+            const eventName = reg.eventName;
+            if (!eventSummary[eventName]) {
+                eventSummary[eventName] = { participantCount: 0, schools: new Set() };
+            }
+            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].schools.add(reg.schoolId._id.toString());
+        });
+
+        // Convert to array
+        const eventSummaryArray = Object.keys(eventSummary).map(eventName => ({
+            eventName,
+            participantCount: eventSummary[eventName].participantCount,
+            schoolCount: eventSummary[eventName].schools.size
+        })).sort((a, b) => b.participantCount - a.participantCount);
+
+        // School summary
+        const schoolSummary = {};
+        
+        // Process all registrations for school summary
+        [...stageRegs, ...sportsRegs, ...classroomRegs].forEach(reg => {
+            const schoolName = reg.schoolId.name;
+            if (!schoolSummary[schoolName]) {
+                schoolSummary[schoolName] = { totalEvents: 0, totalParticipants: 0 };
+            }
+            schoolSummary[schoolName].totalEvents += 1;
+            schoolSummary[schoolName].totalParticipants += reg.participants.length;
+        });
+
+        const schoolSummaryArray = Object.keys(schoolSummary).map(schoolName => ({
+            schoolName,
+            totalEvents: schoolSummary[schoolName].totalEvents,
+            totalParticipants: schoolSummary[schoolName].totalParticipants
+        })).sort((a, b) => b.totalParticipants - a.totalParticipants);
+
+        res.json({
+            eventSummary: eventSummaryArray,
+            schoolSummary: schoolSummaryArray
+        });
+    } catch (error) {
+        console.error('Error generating admin summary:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // Debug: Check if models are available
 console.log('Models loaded in registration routes:', {
