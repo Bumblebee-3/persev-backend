@@ -109,6 +109,7 @@ app.use("/static",express.static(path.join(__dirname, 'static')));
 
 // Use API routes
 app.use('/api', registrationRoutes);
+app.use('/', registrationRoutes); // For admin routes
 
 
 function hashPassword(password) {
@@ -235,6 +236,19 @@ app.get('/api/participating-schools', (req, res) => {
 // Classroom registration page
 app.get('/classroom-registration', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'views/classroom-registration.html'));
+});
+
+// Admin routes
+app.get('/admin/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/admin-login.html'));
+});
+
+app.get('/admin/dashboard', (req, res) => {
+    // Check if admin is authenticated
+    if (!req.session.adminAuthenticated) {
+        return res.redirect('/admin/login');
+    }
+    res.sendFile(path.join(__dirname, 'views/website-admin-dashboard.html'));
 });
 
 // Catch-all route for undefined paths to serve 404.html
