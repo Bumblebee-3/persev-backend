@@ -50,13 +50,17 @@ router.get('/admin/logout', (req, res) => {
 // Admin API endpoints for fetching registration data
 router.get('/admin/api/registrations/stage', requireAdminAuth, async (req, res) => {
     try {
-        const registrations = await StageRegistration.find({})
+        const registrations = await StageRegistration.find({ schoolId: { $ne: null }, eventId: { $ne: null } })
             .populate('schoolId')
             .populate('eventId', 'name');
 
         // Group by school
         const schoolGroups = {};
         registrations.forEach(reg => {
+            if (!reg || !reg.schoolId || !reg.eventId) {
+                console.warn('⚠️ Skipping malformed stage registration (missing schoolId or eventId):', reg && reg._id ? reg._id.toString() : reg);
+                return; // skip this record
+            }
             const schoolId = reg.schoolId._id.toString();
             if (!schoolGroups[schoolId]) {
                 schoolGroups[schoolId] = {
@@ -71,7 +75,7 @@ router.get('/admin/api/registrations/stage', requireAdminAuth, async (req, res) 
                 };
             }
             schoolGroups[schoolId].events.push({
-                eventName: reg.eventId.name,
+                eventName: reg.eventId && reg.eventId.name ? reg.eventId.name : '(Unknown event)',
                 participants: reg.participants
             });
         });
@@ -155,7 +159,7 @@ router.get('/admin/api/registrations/classroom', requireAdminAuth, async (req, r
 router.get('/admin/api/summary', requireAdminAuth, async (req, res) => {
     try {
         // Get all registrations
-        const stageRegs = await StageRegistration.find({}).populate('schoolId').populate('eventId', 'name');
+        const stageRegs = await StageRegistration.find({ schoolId: { $ne: null }, eventId: { $ne: null } }).populate('schoolId').populate('eventId', 'name');
         const sportsRegs = await SportsRegistration.find({}).populate('schoolId');
         const classroomRegs = await ClassroomRegistration.find({}).populate('schoolId');
 
@@ -164,31 +168,37 @@ router.get('/admin/api/summary', requireAdminAuth, async (req, res) => {
         
         // Process stage events
         stageRegs.forEach(reg => {
-            const eventName = reg.eventId.name;
+            if (!reg || !reg.schoolId || !reg.eventId) {
+                console.warn('⚠️ Skipping malformed stage registration in summary:', reg && reg._id ? reg._id.toString() : reg);
+                return;
+            }
+            const eventName = reg.eventId && reg.eventId.name ? reg.eventId.name : '(Unknown stage event)';
             if (!eventSummary[eventName]) {
                 eventSummary[eventName] = { participantCount: 0, schools: new Set() };
             }
-            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].participantCount += Array.isArray(reg.participants) ? reg.participants.length : 0;
             eventSummary[eventName].schools.add(reg.schoolId._id.toString());
         });
 
         // Process sports events
         sportsRegs.forEach(reg => {
+            if (!reg || !reg.schoolId) { return; }
             const eventName = reg.eventName;
             if (!eventSummary[eventName]) {
                 eventSummary[eventName] = { participantCount: 0, schools: new Set() };
             }
-            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].participantCount += Array.isArray(reg.participants) ? reg.participants.length : 0;
             eventSummary[eventName].schools.add(reg.schoolId._id.toString());
         });
 
         // Process classroom events
         classroomRegs.forEach(reg => {
+            if (!reg || !reg.schoolId) { return; }
             const eventName = reg.eventName;
             if (!eventSummary[eventName]) {
                 eventSummary[eventName] = { participantCount: 0, schools: new Set() };
             }
-            eventSummary[eventName].participantCount += reg.participants.length;
+            eventSummary[eventName].participantCount += Array.isArray(reg.participants) ? reg.participants.length : 0;
             eventSummary[eventName].schools.add(reg.schoolId._id.toString());
         });
 
@@ -204,12 +214,13 @@ router.get('/admin/api/summary', requireAdminAuth, async (req, res) => {
         
         // Process all registrations for school summary
         [...stageRegs, ...sportsRegs, ...classroomRegs].forEach(reg => {
-            const schoolName = reg.schoolId.name;
+            if (!reg || !reg.schoolId) { return; }
+            const schoolName = reg.schoolId && reg.schoolId.name ? reg.schoolId.name : '(Unknown school)';
             if (!schoolSummary[schoolName]) {
                 schoolSummary[schoolName] = { totalEvents: 0, totalParticipants: 0 };
             }
             schoolSummary[schoolName].totalEvents += 1;
-            schoolSummary[schoolName].totalParticipants += reg.participants.length;
+            schoolSummary[schoolName].totalParticipants += Array.isArray(reg.participants) ? reg.participants.length : 0;
         });
 
         const schoolSummaryArray = Object.keys(schoolSummary).map(schoolName => ({
