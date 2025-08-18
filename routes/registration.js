@@ -1,10 +1,39 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const { School, StageEvent, StageRegistration, SportsRegistration, ClassroomRegistration } = require('../database/init_db');
 const googleSheetsService = require('../services/googleSheets');
 
 const router = express.Router();
+
+// Load school configuration and create user-to-school mapping
+let userSchoolMapping = {};
+let schoolConfig = null;
+
+function loadSchoolConfig() {
+    try {
+        const configPath = path.join(__dirname, '..', 'school_config.json');
+        const configData = fs.readFileSync(configPath, 'utf8');
+        schoolConfig = JSON.parse(configData);
+        
+        // Create user-to-school mapping from config
+        userSchoolMapping = {};
+        schoolConfig.schools.forEach(school => {
+            userSchoolMapping[school.username] = school.schoolName;
+        });
+        
+        console.log('School configuration loaded successfully');
+    } catch (error) {
+        console.error('Error loading school configuration:', error);
+        // Fallback to empty mapping if config fails to load
+        userSchoolMapping = {};
+    }
+}
+
+// Load configuration on startup
+loadSchoolConfig();
 
 // Admin authentication middleware
 const requireAdminAuth = (req, res, next) => {
@@ -253,19 +282,41 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
-const userSchoolMapping = {
-    'user1': 'JB Vaccha High School',
-    'user2': 'Delhi Public School',
-    'user3': 'Ryan International School',
-    'user4': 'St. Xavier\'s High School',
-    'P1': 'Vibgyor High Goregaon West',
-    'P2': 'Gokuldham High School',
-    'P3': 'Billabong High School, Mulund',
-    'P4': 'Pawar Public School (Chandivali)',
-    'P5': 'Pawar Public School (Bhandup)',
-    'P6': "Children\'s Academy Thakur Complex, Kandivali",
-    'P7': 'Bombay Scottish School, Powai'
-};
+// Helper function to get school name for a username
+function getSchoolNameForUser(username) {
+    return userSchoolMapping[username] || null;
+}
+
+// Helper function to reload school configuration (useful for admin operations)
+function reloadSchoolConfig() {
+    loadSchoolConfig();
+    return { success: true, message: 'School configuration reloaded', mappingCount: Object.keys(userSchoolMapping).length };
+}
+
+// Admin endpoint to reload school configuration
+router.post('/admin/reload-config', requireAdminAuth, (req, res) => {
+    try {
+        const result = reloadSchoolConfig();
+        res.json(result);
+    } catch (error) {
+        console.error('Error reloading school configuration:', error);
+        res.status(500).json({ success: false, message: 'Failed to reload configuration' });
+    }
+});
+
+// Admin endpoint to view current school mappings
+router.get('/admin/school-mappings', requireAdminAuth, (req, res) => {
+    try {
+        res.json({ 
+            mappings: userSchoolMapping, 
+            totalSchools: Object.keys(userSchoolMapping).length,
+            configLoaded: !!schoolConfig
+        });
+    } catch (error) {
+        console.error('Error retrieving school mappings:', error);
+        res.status(500).json({ success: false, message: 'Failed to retrieve mappings' });
+    }
+});
 
 // Get stage events
 router.get('/events/stage', async (req, res) => {
@@ -406,7 +457,7 @@ router.get('/check-stage-registration', async (req, res) => {
     try {
         // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
-        const schoolName = userSchoolMapping[username];
+        const schoolName = getSchoolNameForUser(username);
         
         if (!schoolName) {
             return res.json({ hasRegistration: false });
@@ -439,7 +490,7 @@ router.get('/check-sports-registration', async (req, res) => {
     try {
         // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
-        const schoolName = userSchoolMapping[username];
+        const schoolName = getSchoolNameForUser(username);
         
         if (!schoolName) {
             return res.json({ hasRegistration: false });
@@ -472,7 +523,7 @@ router.get('/check-classroom-registration', async (req, res) => {
     try {
         // Use global mapping
         const username = req.session?.username || req.query.username || 'user1';
-        const schoolName = userSchoolMapping[username];
+        const schoolName = getSchoolNameForUser(username);
 
         console.log(username)
         console.log(schoolName)

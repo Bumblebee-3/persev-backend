@@ -26,80 +26,58 @@ app.use(require("express").json())    // <==== parse request body as JSON
 
 // Load environment variables from .env file
 dotenv.config();
-console.log(process.env.UNAMES);
 
-const unames = process.env.UNAMES.split(',');
-const passwords = process.env.PASSWORDS.split(',');
-
-// User to school mapping
-const userSchoolMapping = {
-    'user1': {
-        name: 'JB Vaccha High School',
-        contingentCode: 'JBV001'
-    },
-    'user2': {
-        name: 'Delhi Public School',
-        contingentCode: 'DPS002'
-    },
-    'user3': {
-        name: 'Ryan International School',
-        contingentCode: 'RIS003'
-    },
-    'user4': {
-        name: 'St. Xavier\'s High School',
-        contingentCode: 'SXH004'
-    },
-    'user5': {
-        name: 'Greenwood High School',
-        contingentCode: 'GHS005'
-    },
-    'user6': {
-        name: 'Blue Ridge International School',
-        contingentCode: 'BRIS006'
-    },
-    'user7': {
-        name: 'Silver Oak Academy',
-        contingentCode: 'SOA007'
-    },
-    'user8': {
-        name: 'Maple Leaf International School',
-        contingentCode: 'MLIS008'
-    },
-    'user9': {
-        name: 'Oakridge International School',
-        contingentCode: 'OIS009'
-    },
-    'user10': {
-        name: 'Heritage School',
-        contingentCode: 'HS010'
-    },
-    'admin': {
-        name: 'Admin',
-        contingentCode: 'ADMIN'
-    },
-      'P1': {
-        name: 'Vibgyor High (Goregaon West)',
-        contingentCode: 'P1'
-    },'P2': {
-        name: 'Gokuldham High School',
-        contingentCode: 'P2'
-    },'P3': {
-        name: 'Billabong High School, Mulund',
-        contingentCode: 'P3'
-    },'P4': {
-        name: 'Pawar Public School (Chandivali)',
-        contingentCode: 'P4'
-    },'P5': {
-        name: 'Pawar Public School (Bhandup)',
-        contingentCode: 'P5'
-    }, 'P6': {
-        name: 'Children\'s Academy Thakur Complex, Kandivali',
-        contingentCode: 'P6'
-    }, 'P7': {
-        name: 'Bombay Scottish School (Powai)',
-        contingentCode: 'P7'
+// Load school configuration
+let schoolConfig = {};
+try {
+    const schoolConfigPath = path.join(__dirname, 'school_config.json');
+    if (fs.existsSync(schoolConfigPath)) {
+        schoolConfig = JSON.parse(fs.readFileSync(schoolConfigPath, 'utf8'));
     }
+} catch (error) {
+    console.error('Error loading school config:', error.message);
+    schoolConfig = { schools: [] };
+}
+
+// Extract usernames and passwords from school config
+const unames = schoolConfig.schools ? schoolConfig.schools.map(school => school.username) : [];
+const plainPasswords = schoolConfig.schools ? schoolConfig.schools.map(school => school.password) : [];
+
+// Hash all passwords at runtime
+const passwords = plainPasswords.map(password => hashPassword(password));
+
+console.log('Loaded users:', unames);
+
+// Create user to school mapping from school config
+const userSchoolMapping = {};
+
+// Add default test users
+const defaultUsers = {
+    'user1': { name: 'JB Vaccha High School', contingentCode: 'JBV001' },
+    'user2': { name: 'Delhi Public School', contingentCode: 'DPS002' },
+    'user3': { name: 'Ryan International School', contingentCode: 'RIS003' },
+    'user4': { name: 'St. Xavier\'s High School', contingentCode: 'SXH004' },
+    'user5': { name: 'Greenwood High School', contingentCode: 'GHS005' },
+    'user6': { name: 'Blue Ridge International School', contingentCode: 'BRIS006' },
+    'user7': { name: 'Silver Oak Academy', contingentCode: 'SOA007' },
+    'user8': { name: 'Maple Leaf International School', contingentCode: 'MLIS008' },
+    'user9': { name: 'Oakridge International School', contingentCode: 'OIS009' },
+    'user10': { name: 'Heritage School', contingentCode: 'HS010' },
+    'admin': { name: 'Admin', contingentCode: 'ADMIN' }
 };
+
+// Add default users to mapping
+Object.assign(userSchoolMapping, defaultUsers);
+
+// Add schools from config to mapping
+if (schoolConfig.schools) {
+    schoolConfig.schools.forEach(school => {
+        userSchoolMapping[school.username] = {
+            name: school.schoolName,
+            contingentCode: school.schoolCode
+        };
+    });
+}
 
 
 // Serve static files from the "assets" folder
