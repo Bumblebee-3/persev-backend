@@ -4,3 +4,5 @@ node_modules/*
 .config/
 school_config.json
 database.db
+database.db-shm
+database.db-wal

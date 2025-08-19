@@ -13,6 +13,11 @@
             src: url(/assets/MestizoFont.ttf);
         }
         
+        /* Set default font for body */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
         .gradient-bg {
             background: linear-gradient(135deg, #0D122C 0%, #131D3F 100%);
         }
@@ -149,14 +154,12 @@
             font-weight: 700;
             color: #BE8E30;
             margin-bottom: 10px;
-            font-family: Mestizo;
         }
 
         .stat-label {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
-            font-family: Mestizo;
         }
 
         .stat-description {
@@ -186,7 +189,6 @@
             color: white;
             transition: all 0.3s ease;
             white-space: nowrap;
-            font-family: Mestizo;
         }
 
         .tab.active {
@@ -222,13 +224,12 @@
             text-align: center;
             padding: 50px;
             color: #BE8E30;
-            font-family: Mestizo;
             font-size: 18px;
         }
 
         .loading::after {
             content: '';
-            display: inline-block;
+            display: none;
             width: 20px;
             height: 20px;
             border: 2px solid rgba(190, 142, 48, 0.3);
@@ -236,6 +237,9 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-left: 10px;
+        }
+        .loading::after {
+            display:none;
         }
 
         @keyframes spin {
