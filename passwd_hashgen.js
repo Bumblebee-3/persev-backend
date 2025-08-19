@@ -143,7 +143,7 @@ async function addUser(config) {
         username: schoolCode,
         schoolName: schoolName,
         schoolCode: schoolCode,
-        password: hashPassword(password) // Store hashed password
+        password: password // Store hashed password
     };
 
     config.schools.push(newUser);
