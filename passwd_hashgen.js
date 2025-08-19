@@ -187,7 +187,7 @@ async function modifyUser(config) {
         user.schoolName = newSchoolName;
     }
     if (newPassword) {
-        user.password = hashPassword(newPassword); // Store hashed password
+        user.password = (newPassword); // Store hashed password
     }
 
     console.log('\n✅ User modified successfully!');
