@@ -10,6 +10,7 @@
     "populate-db": "node database/populate_db.js"
   },
   "dependencies": {
+    "better-sqlite3": "^12.2.0",
     "body-parser": "^1.20.2",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
