@@ -102,6 +102,9 @@ function isLoggedIn(req,res,next){
         }
         res.redirect("/login?error=access");
 }
+app.get("/robots.txt",(req,res)=>{
+    res.sendFile(process.cwd()+"/static/robots.txt")
+})
 
 
 app.post("/pass/validate/",async (req,res)=>{
