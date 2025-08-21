@@ -105,6 +105,9 @@ function isLoggedIn(req,res,next){
 app.get("/robots.txt",(req,res)=>{
     res.sendFile(process.cwd()+"/static/robots.txt")
 })
+app.get("/google76278944d3b229c9.html",(req,res)=>{
+    res.sendFile(process.cwd()+"/static/google76278944d3b229c9.html")
+})
 
 
 app.post("/pass/validate/",async (req,res)=>{
