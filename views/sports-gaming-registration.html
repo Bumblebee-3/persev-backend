@@ -582,23 +582,41 @@
         // Populate existing registration data
         function populateExistingData() {
             existingRegistrations.forEach(registration => {
-                const eventId = registration.eventId;
-                
-                // Select "Yes" for this event
+                let eventId =
+                    registration.eventId ||
+                    registration.eventSlug ||
+                    (registration.event && (registration.event._id || registration.event.slug)) ||
+                    registration._id ||
+                    registration.id;
+
+                // Fallback: resolve by event name from the local sportsEvents list
+                if (!eventId) {
+                    const nameFromPayload = registration.eventName || (registration.event && registration.event.name);
+                    if (nameFromPayload) {
+                        const match = sportsEvents.find(e => e.name === nameFromPayload);
+                        if (match) eventId = match._id;
+                    }
+                }
+
+                if (!eventId) return;
+                // Select "Yes" for this event (fire real change handlers)
                 const yesRadio = document.querySelector(`input[name="participate_${eventId}"][value="yes"]`);
                 if (yesRadio) {
-                    yesRadio.checked = true;
+                    // Prefer a real click so inline onchange runs and mutual exclusion with the "no" radio is handled by the browser
+                    if (!yesRadio.checked) yesRadio.click();
+                    // Safety: ensure UI state even if the inline handler wasn't bound yet
                     toggleEvent(eventId, true);
                     
-                    // Add participants
+                    // Add participants after the card has expanded
                     setTimeout(() => {
                         const participantList = document.getElementById(`participant_list_${eventId}`);
+                        if (!participantList) return;
                         participantList.innerHTML = ''; // Clear auto-added participants
                         
-                        registration.participants.forEach((participant, index) => {
+                        (registration.participants || []).forEach((participant, index) => {
                             addParticipant(eventId);
                             
-                            // Fill participant data
+                            // Fill participant data (wait a moment for the row to be inserted)
                             setTimeout(() => {
                                 const cards = participantList.querySelectorAll('.participant-card');
                                 const currentCard = cards[index];
@@ -608,10 +626,10 @@
                                     const genderSelect = currentCard.querySelector(`select[name="participant_gender_${eventId}[]"]`);
                                     const weightInput = currentCard.querySelector(`input[name="participant_weight_${eventId}[]"]`);
                                     
-                                    if (nameInput) nameInput.value = participant.name;
-                                    if (gradeSelect) gradeSelect.value = participant.grade;
+                                    if (nameInput) nameInput.value = participant.name ?? '';
+                                    if (gradeSelect) gradeSelect.value = String(participant.grade ?? '');
                                     if (genderSelect && participant.gender) genderSelect.value = participant.gender;
-                                    if (weightInput && participant.weight) weightInput.value = participant.weight;
+                                    if (weightInput && participant.weight != null) weightInput.value = participant.weight;
                                 }
                             }, 100);
                         });
@@ -1027,6 +1045,10 @@
                 showExistingSummary();
             } else {
                 submitText.textContent = 'Submit Registration';
+            }
+            // Ensure hydration happens after the events section is shown
+            if (editMode && existingRegistrations.length > 0) {
+                populateExistingData();
             }
         }
 

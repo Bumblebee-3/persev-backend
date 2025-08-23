@@ -683,7 +683,7 @@ router.get('/check-sports-registration', async (req, res) => {
 
     // Check sports registrations for this school
     const regs = db()
-      .prepare(`SELECT id FROM sports_registrations WHERE school_id = ?`)
+      .prepare(`SELECT id, event_id, event_name FROM sports_registrations WHERE school_id = ?`)
       .all(school.id);
 
     const partStmt = db().prepare(
@@ -696,7 +696,8 @@ router.get('/check-sports-registration', async (req, res) => {
     const existingRegistrations = regs.map((r) => ({
       _id: r.id,
       schoolId: school.id,
-      eventName: db().prepare(`SELECT event_name FROM sports_registrations WHERE id = ?`).get(r.id).event_name,
+      eventId: r.event_id,
+      eventName: r.event_name,
       participants: partStmt.all(r.id),
     }));
 
