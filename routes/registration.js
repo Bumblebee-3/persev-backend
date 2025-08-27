@@ -482,9 +482,9 @@ router.get('/events/stage', async (req, res) => {
 
     // Map to the old field names where useful
     const events = rows.map((r) => ({
-      _id: r.id,
+      _id: String(r.id),
       name: r.name,
-      categoryId: r.category_id,
+      categoryId: String(r.category_id),
       description: r.description,
       minParticipants: r.min_participants,
       maxParticipants: r.max_participants,

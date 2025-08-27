@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,40 +12,40 @@
             font-family: Mestizo;
             src: url('/assets/MestizoFont.ttf');
         }
-        
+
         .gradient-bg {
             background: linear-gradient(135deg, #0D122C 0%, #131D3F 100%);
         }
-        
+
         .form-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(190, 142, 48, 0.3);
             transition: all 0.3s ease;
         }
-        
+
         .form-card:hover {
             border-color: #BE8E30;
             box-shadow: 0 0 30px rgba(190, 142, 48, 0.2);
         }
-        
+
         .input-field {
             background: rgba(255, 255, 255, 0.08);
             border: 2px solid rgba(190, 142, 48, 0.3);
             color: white;
             transition: all 0.3s ease;
         }
-        
+
         .input-field:focus {
             border-color: #BE8E30;
             box-shadow: 0 0 20px rgba(190, 142, 48, 0.3);
             outline: none;
         }
-        
+
         .input-field::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
-        
+
         /* Custom Select Styling for Safari/WebKit */
         select.input-field {
             -webkit-appearance: none;
@@ -56,31 +57,32 @@
             background-size: 1.5em 1.5em;
             padding-right: 2.5rem;
         }
-        
+
         select.input-field option {
             background: #0D122C;
             color: white;
             border: none;
         }
-        
+
         /* Ensure consistent height on Safari */
         select.input-field {
-            min-height: 44px; /* Minimum touch target for mobile Safari */
+            min-height: 44px;
+            /* Minimum touch target for mobile Safari */
         }
-        
+
         .event-toggle {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(190, 142, 48, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .event-toggle.active {
             background: rgba(190, 142, 48, 0.2);
             border-color: #BE8E30;
             box-shadow: 0 0 20px rgba(190, 142, 48, 0.3);
         }
-        
+
         .participant-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(190, 142, 48, 0.2);
@@ -89,38 +91,38 @@
             opacity: 0;
             animation: slideIn 0.5s ease forwards;
         }
-        
+
         @keyframes slideIn {
             to {
                 transform: translateY(0);
                 opacity: 1;
             }
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #BE8E30, #FFD700);
             border: none;
             transition: all 0.3s ease;
         }
-        
+
         .btn-primary:hover {
             background: linear-gradient(135deg, #FFD700, #BE8E30);
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(190, 142, 48, 0.4);
         }
-        
+
         .btn-secondary {
             background: transparent;
             border: 2px solid #BE8E30;
             color: #BE8E30;
             transition: all 0.3s ease;
         }
-        
+
         .btn-secondary:hover {
             background: #BE8E30;
             color: #0D122C;
         }
-        
+
         .loading-spinner {
             border: 3px solid rgba(190, 142, 48, 0.3);
             border-top: 3px solid #BE8E30;
@@ -129,17 +131,22 @@
             height: 20px;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         .success-message {
             background: linear-gradient(135deg, #10B981, #059669);
             border: 1px solid #065F46;
         }
-        
+
         .error-message {
             background: linear-gradient(135deg, #EF4444, #DC2626);
             border: 1px solid #991B1B;
@@ -150,7 +157,7 @@
             border: 1px solid rgba(190, 142, 48, 0.3);
             color: #BE8E30;
         }
-        
+
         /* Custom Radio Button Styles */
         .custom-radio {
             position: relative;
@@ -159,14 +166,14 @@
             cursor: pointer;
             user-select: none;
         }
-        
+
         .custom-radio input[type="radio"] {
             opacity: 0;
             position: absolute;
             width: 0;
             height: 0;
         }
-        
+
         .radio-indicator {
             width: 20px;
             height: 20px;
@@ -177,7 +184,7 @@
             position: relative;
             transition: all 0.3s ease;
         }
-        
+
         .radio-indicator::after {
             content: '';
             width: 10px;
@@ -190,33 +197,34 @@
             transform: translate(-50%, -50%) scale(0);
             transition: transform 0.2s ease;
         }
-        
-        .custom-radio input[type="radio"]:checked + .radio-indicator {
+
+        .custom-radio input[type="radio"]:checked+.radio-indicator {
             border-color: #BE8E30;
             background: rgba(190, 142, 48, 0.1);
             box-shadow: 0 0 10px rgba(190, 142, 48, 0.3);
         }
-        
-        .custom-radio input[type="radio"]:checked + .radio-indicator::after {
+
+        .custom-radio input[type="radio"]:checked+.radio-indicator::after {
             transform: translate(-50%, -50%) scale(1);
         }
-        
+
         .custom-radio:hover .radio-indicator {
             border-color: #BE8E30;
             background: rgba(190, 142, 48, 0.05);
         }
-        
+
         .radio-label {
             color: white;
             font-weight: 500;
             transition: color 0.3s ease;
         }
-        
+
         .custom-radio:hover .radio-label {
             color: #BE8E30;
         }
     </style>
 </head>
+
 <body class="gradient-bg min-h-screen">
     <!-- Header -->
     <header class="border-b border-[#BE8E30]/30 mb-8">
@@ -246,7 +254,9 @@
                     <span id="progress-text">Step 1 of 2</span>
                 </div>
                 <div class="w-full bg-gray-700 rounded-full h-2">
-                    <div id="progress-bar" class="bg-gradient-to-r from-[#BE8E30] to-[#FFD700] h-2 rounded-full transition-all duration-500" style="width: 50%"></div>
+                    <div id="progress-bar"
+                        class="bg-gradient-to-r from-[#BE8E30] to-[#FFD700] h-2 rounded-full transition-all duration-500"
+                        style="width: 50%"></div>
                 </div>
             </div>
 
@@ -258,49 +268,46 @@
                         <i class="fas fa-school text-[#BE8E30] mr-3"></i>
                         School Information
                     </h2>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-white mb-2 font-medium">Institution Name</label>
-                            <input type="text" name="schoolName" readonly 
-                                   class="input-field w-full px-4 py-3 rounded-xl opacity-75 cursor-not-allowed"
-                                   placeholder="Loading school information...">
+                            <input type="text" name="schoolName" readonly
+                                class="input-field w-full px-4 py-3 rounded-xl opacity-75 cursor-not-allowed"
+                                placeholder="Loading school information...">
                             <p class="text-gray-400 text-xs mt-1">Auto-populated from your account</p>
                         </div>
-                        
+
                         <div>
                             <label class="block text-white mb-2 font-medium">Contingent Code</label>
-                            <input type="text" name="contingentCode" readonly 
-                                   class="input-field w-full px-4 py-3 rounded-xl opacity-75 cursor-not-allowed"
-                                   placeholder="Loading...">
+                            <input type="text" name="contingentCode" readonly
+                                class="input-field w-full px-4 py-3 rounded-xl opacity-75 cursor-not-allowed"
+                                placeholder="Loading...">
                             <p class="text-gray-400 text-xs mt-1">Auto-populated from your account</p>
                         </div>
-                        
+
                         <div>
                             <label class="block text-white mb-2 font-medium">Teacher In-charge Name *</label>
-                            <input type="text" name="teacherName" required 
-                                   class="input-field w-full px-4 py-3 rounded-xl"
-                                   placeholder="Enter teacher's full name">
+                            <input type="text" name="teacherName" required
+                                class="input-field w-full px-4 py-3 rounded-xl" placeholder="Enter teacher's full name">
                         </div>
-                        
+
                         <div>
                             <label class="block text-white mb-2 font-medium">Teacher Mobile Number *</label>
-                            <input type="tel" name="teacherMobile" required 
-                                   class="input-field w-full px-4 py-3 rounded-xl"
-                                   placeholder="Enter mobile number">
+                            <input type="tel" name="teacherMobile" required
+                                class="input-field w-full px-4 py-3 rounded-xl" placeholder="Enter mobile number">
                         </div>
-                        
+
                         <div class="md:col-span-2">
                             <label class="block text-white mb-2 font-medium">Teacher Email Address *</label>
-                            <input type="email" name="teacherEmail" required 
-                                   class="input-field w-full px-4 py-3 rounded-xl"
-                                   placeholder="Enter email address">
+                            <input type="email" name="teacherEmail" required
+                                class="input-field w-full px-4 py-3 rounded-xl" placeholder="Enter email address">
                         </div>
                     </div>
-                    
+
                     <div class="flex justify-end mt-8">
-                        <button type="button" id="continue-to-events" 
-                                class="btn-primary px-8 py-3 rounded-xl text-white font-medium">
+                        <button type="button" id="continue-to-events"
+                            class="btn-primary px-8 py-3 rounded-xl text-white font-medium">
                             Continue to Events <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
@@ -312,18 +319,20 @@
                         <i class="fas fa-theater-masks text-[#BE8E30] mr-3"></i>
                         Stage Events Selection
                     </h2>
-                    
+
                     <p class="text-gray-300 mb-8">
-                        Select the events you want to participate in and add your team members. 
+                        Select the events you want to participate in and add your team members.
                         You can participate in multiple events with different teams.
                     </p>
-                    
+
                     <div class="bg-blue-900/30 border border-blue-500/30 rounded-xl p-4 mb-8" id="registration-notice">
                         <div class="flex items-center">
                             <i class="fas fa-info-circle text-blue-400 mr-3" id="notice-icon"></i>
                             <div id="notice-content">
                                 <p class="text-blue-300 font-medium" id="notice-title">Registration Notice</p>
-                                <p class="text-blue-200 text-sm" id="notice-text">You can modify your registration details until <strong>September 12, 2025</strong>. After this date, no changes will be allowed.</p>
+                                <p class="text-blue-200 text-sm" id="notice-text">You can modify your registration
+                                    details until <strong>September 12, 2025</strong>. After this date, no changes will
+                                    be allowed.</p>
                             </div>
                         </div>
                     </div>
@@ -334,7 +343,8 @@
                     </div>
 
                     <!-- Existing Registrations Summary (Edit Mode Only) -->
-                    <div id="existing-summary" class="hidden bg-green-900/30 border border-green-500/30 rounded-xl p-6 mt-8">
+                    <div id="existing-summary"
+                        class="hidden bg-green-900/30 border border-green-500/30 rounded-xl p-6 mt-8">
                         <h3 class="text-lg text-green-300 font-medium mb-4 flex items-center">
                             <i class="fas fa-check-circle mr-3"></i>
                             Current Registrations
@@ -346,12 +356,12 @@
 
                     <!-- Submit Button -->
                     <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-                        <button type="button" id="back-to-school" 
-                                class="btn-secondary px-8 py-3 rounded-xl font-medium">
+                        <button type="button" id="back-to-school"
+                            class="btn-secondary px-8 py-3 rounded-xl font-medium">
                             <i class="fas fa-arrow-left mr-2"></i>Back
                         </button>
-                        <button type="submit" id="submit-registration" 
-                                class="btn-primary px-8 py-3 rounded-xl text-white font-medium">
+                        <button type="submit" id="submit-registration"
+                            class="btn-primary px-8 py-3 rounded-xl text-white font-medium">
                             <span id="submit-text">Submit Registration</span>
                             <div id="submit-spinner" class="loading-spinner hidden inline-block ml-2"></div>
                         </button>
@@ -367,6 +377,11 @@
     </div>
 
     <script>
+        // Helper: consistent event lookup by id (handles number/string)
+        function getStageEvent(eventId) {
+            return stageEvents.find(e => String(e._id) === String(eventId));
+        }
+
         let stageEvents = [];
         let currentStep = 1;
         let editMode = false;
@@ -377,17 +392,17 @@
             // Check if we're in edit mode
             const urlParams = new URLSearchParams(window.location.search);
             editMode = urlParams.get('mode') === 'edit';
-            
+
             await loadUserSchoolInfo();
-            
+
             if (editMode) {
                 await loadExistingRegistrations();
                 updateHeaderForEditMode();
             }
-            
+
             await loadStageEvents();
             setupEventListeners();
-            
+
             if (editMode && existingRegistrations.length > 0) {
                 populateExistingData();
             }
@@ -409,7 +424,7 @@
                     const data = await response.json();
                     if (data.hasRegistration) {
                         existingRegistrations = data.registrations;
-                        
+
                         // Pre-populate school info from existing registration
                         if (data.school) {
                             document.querySelector('[name="teacherName"]').value = data.school.teacherName || '';
@@ -422,13 +437,6 @@
                 console.error('Error loading existing registrations:', error);
             }
         }
-
-        // Initialize form
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadUserSchoolInfo();
-            await loadStageEvents();
-            setupEventListeners();
-        });
 
         // Load user's school information
         async function loadUserSchoolInfo() {
@@ -452,7 +460,9 @@
         async function loadStageEvents() {
             try {
                 const response = await fetch('/api/events/stage');
-                stageEvents = await response.json();
+                const eventsPayload = await response.json();
+                stageEvents = (Array.isArray(eventsPayload) ? eventsPayload : [])
+                    .filter(e => String(e.categoryId) === '2' && (e.isActive === undefined || !!e.isActive));
                 renderEvents();
             } catch (error) {
                 console.error('Error loading events:', error);
@@ -474,22 +484,22 @@
         // Populate existing registration data
         function populateExistingData() {
             existingRegistrations.forEach(registration => {
-                const eventId = registration.eventId._id;
-                
+                const eventId = registration.eventId;
+
                 // Select "Yes" for this event
                 const yesRadio = document.querySelector(`input[name="participate_${eventId}"][value="yes"]`);
                 if (yesRadio) {
                     yesRadio.checked = true;
                     toggleEvent(eventId, true);
-                    
+
                     // Add participants
                     setTimeout(() => {
                         const participantList = document.getElementById(`participant_list_${eventId}`);
                         participantList.innerHTML = ''; // Clear auto-added participants
-                        
+
                         registration.participants.forEach((participant, index) => {
                             addParticipant(eventId);
-                            
+
                             // Fill participant data
                             setTimeout(() => {
                                 const cards = participantList.querySelectorAll('.participant-card');
@@ -498,14 +508,14 @@
                                     const nameInput = currentCard.querySelector(`input[name="participant_name_${eventId}[]"]`);
                                     const gradeSelect = currentCard.querySelector(`select[name="participant_grade_${eventId}[]"]`);
                                     const genderSelect = currentCard.querySelector(`select[name="participant_gender_${eventId}[]"]`);
-                                    
+
                                     if (nameInput) nameInput.value = participant.name;
                                     if (gradeSelect) gradeSelect.value = participant.grade;
                                     if (genderSelect && participant.gender) genderSelect.value = participant.gender;
                                 }
                             }, 100);
                         });
-                        
+
                         updateParticipantCount(eventId);
                         validateEvent(eventId);
                     }, 200);
@@ -518,7 +528,7 @@
             const div = document.createElement('div');
             div.className = 'event-toggle rounded-2xl p-6';
             div.dataset.eventId = event._id;
-            
+
             div.innerHTML = `
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
                     <div class="flex-1">
@@ -527,8 +537,8 @@
                         <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm">
                             <span class="text-[#BE8E30]">Grades: ${event.minGrade}-${event.maxGrade}</span>
                             <span class="text-[#BE8E30]">Team: ${event.minParticipants === event.maxParticipants ? event.minParticipants : event.minParticipants + '-' + event.maxParticipants} participants</span>
-                            ${event.genderRequirement === 'male_female_required' ? 
-                                '<span class="text-[#BE8E30]">1 male + 1 female required</span>' : ''}
+                            ${event.genderRequirement === 'male_female_required' ?
+                    '<span class="text-[#BE8E30]">1 male + 1 female required</span>' : ''}
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -579,7 +589,7 @@
                     </div>
                 </div>
             `;
-            
+
             return div;
         }
 
@@ -587,22 +597,26 @@
         function toggleEvent(eventId, participate) {
             const participantsSection = document.getElementById(`participants_${eventId}`);
             const eventCard = document.querySelector(`[data-event-id="${eventId}"]`);
-            
+
             if (participate) {
                 participantsSection.classList.remove('hidden');
                 eventCard.classList.add('active');
-                
+
                 // Add minimum required participants
-                const event = stageEvents.find(e => e._id === eventId);
+                const event = getStageEvent(eventId);
+                if (!event) {
+                    console.warn('toggleEvent: event not found for id', eventId, stageEvents);
+                    return;
+                }
                 const currentCount = document.querySelectorAll(`#participant_list_${eventId} .participant-card`).length;
-                
+
                 for (let i = currentCount; i < event.minParticipants; i++) {
                     addParticipant(eventId);
                 }
             } else {
                 participantsSection.classList.add('hidden');
                 eventCard.classList.remove('active');
-                
+
                 // Clear all participants
                 document.getElementById(`participant_list_${eventId}`).innerHTML = '';
                 updateParticipantCount(eventId);
@@ -611,27 +625,31 @@
 
         // Add participant
         function addParticipant(eventId) {
-            const event = stageEvents.find(e => e._id === eventId);
+            const event = getStageEvent(eventId);
+            if (!event) {
+                console.warn('addParticipant: event not found for id', eventId, stageEvents);
+                return;
+            }
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const currentCount = participantList.children.length;
-            
+
             if (currentCount >= event.maxParticipants) {
                 showMessage(`Maximum ${event.maxParticipants} participants allowed for ${event.name}`, 'error');
                 return;
             }
-            
+
             const participantIndex = currentCount + 1;
             const participantCard = document.createElement('div');
             participantCard.className = 'participant-card rounded-xl p-4';
             participantCard.style.animationDelay = `${currentCount * 0.1}s`;
-            
+
             const genderRequired = event.genderRequirement === 'male_female_required';
-            const genderOptions = genderRequired ? 
-                (participantIndex === 1 ? 
-                    '<option value="male">Male</option>' : 
+            const genderOptions = genderRequired ?
+                (participantIndex === 1 ?
+                    '<option value="male">Male</option>' :
                     '<option value="female">Female</option>') :
                 '<option value="">Select Gender</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option>';
-            
+
             participantCard.innerHTML = `
                 <div class="flex items-center justify-between mb-3">
                     <h5 class="text-white font-medium">Participant ${participantIndex}</h5>
@@ -652,9 +670,9 @@
                         <select name="participant_grade_${eventId}[]" required 
                                 class="input-field w-full px-3 py-2 rounded-lg text-sm">
                             <option value="">Select Grade</option>
-                            ${Array.from({length: event.maxGrade - event.minGrade + 1}, (_, i) => 
-                                `<option value="${event.minGrade + i}">${event.minGrade + i}</option>`
-                            ).join('')}
+                            ${Array.from({ length: event.maxGrade - event.minGrade + 1 }, (_, i) =>
+                `<option value="${event.minGrade + i}">${event.minGrade + i}</option>`
+            ).join('')}
                         </select>
                     </div>
                     ${genderRequired || event.genderRequirement !== 'any' ? `
@@ -668,7 +686,7 @@
                     ` : ''}
                 </div>
             `;
-            
+
             participantList.appendChild(participantCard);
             updateParticipantCount(eventId);
             validateEvent(eventId);
@@ -676,15 +694,19 @@
 
         // Remove participant
         function removeParticipant(eventId, button) {
-            const event = stageEvents.find(e => e._id === eventId);
+            const event = getStageEvent(eventId);
+            if (!event) {
+                console.warn('removeParticipant: event not found for id', eventId, stageEvents);
+                return;
+            }
             const participantCard = button.closest('.participant-card');
             const participantList = document.getElementById(`participant_list_${eventId}`);
-            
+
             if (participantList.children.length <= event.minParticipants) {
                 showMessage(`Minimum ${event.minParticipants} participants required for ${event.name}`, 'error');
                 return;
             }
-            
+
             participantCard.remove();
             updateParticipantCount(eventId);
             renumberParticipants(eventId);
@@ -695,7 +717,7 @@
         function removeLastParticipant(eventId) {
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const lastParticipant = participantList.lastElementChild;
-            
+
             if (lastParticipant) {
                 const removeBtn = lastParticipant.querySelector('button');
                 removeParticipant(eventId, removeBtn);
@@ -706,7 +728,7 @@
         function renumberParticipants(eventId) {
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const participantCards = participantList.querySelectorAll('.participant-card');
-            
+
             participantCards.forEach((card, index) => {
                 const title = card.querySelector('h5');
                 title.textContent = `Participant ${index + 1}`;
@@ -717,19 +739,23 @@
         function updateParticipantCount(eventId) {
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const count = participantList.children.length;
-            const event = stageEvents.find(e => e._id === eventId);
-            
+            const event = getStageEvent(eventId);
+            if (!event) {
+                console.warn('updateParticipantCount: event not found for id', eventId, stageEvents);
+                return;
+            }
+
             document.getElementById(`count_${eventId}`).textContent = count;
-            
+
             const addBtn = document.getElementById(`add_btn_${eventId}`);
             const removeBtn = document.getElementById(`remove_btn_${eventId}`);
-            
+
             if (count >= event.maxParticipants) {
                 addBtn.classList.add('hidden');
             } else {
                 addBtn.classList.remove('hidden');
             }
-            
+
             if (count > event.minParticipants) {
                 removeBtn.classList.remove('hidden');
             } else {
@@ -739,28 +765,32 @@
 
         // Validate event requirements
         function validateEvent(eventId) {
-            const event = stageEvents.find(e => e._id === eventId);
+            const event = getStageEvent(eventId);
+            if (!event) {
+                console.warn('validateEvent: event not found for id', eventId, stageEvents);
+                return;
+            }
             const participantList = document.getElementById(`participant_list_${eventId}`);
             const count = participantList.children.length;
             const validationDiv = document.getElementById(`validation_${eventId}`);
-            
+
             let messages = [];
-            
+
             if (count < event.minParticipants) {
                 messages.push(`⚠️ Need at least ${event.minParticipants} participants`);
             }
-            
+
             if (event.genderRequirement === 'male_female_required') {
                 const genderSelects = participantList.querySelectorAll('select[name*="gender"]');
                 const selectedGenders = Array.from(genderSelects).map(s => s.value);
                 const hasMale = selectedGenders.includes('male');
                 const hasFemale = selectedGenders.includes('female');
-                
+
                 if (!hasMale || !hasFemale) {
                     messages.push('⚠️ Need 1 male and 1 female participant');
                 }
             }
-            
+
             if (messages.length > 0) {
                 validationDiv.innerHTML = `<div class="text-yellow-400">${messages.join('<br>')}</div>`;
             } else {
@@ -775,9 +805,9 @@
                     showEventsSection();
                 }
             });
-            
+
             document.getElementById('back-to-school').addEventListener('click', showSchoolSection);
-            
+
             document.getElementById('registrationForm').addEventListener('submit', handleSubmit);
         }
 
@@ -785,7 +815,7 @@
         function validateSchoolInfo() {
             const requiredFields = ['schoolName', 'teacherName', 'teacherMobile', 'teacherEmail'];
             let isValid = true;
-            
+
             requiredFields.forEach(field => {
                 const input = document.querySelector(`[name="${field}"]`);
                 if (!input.value.trim()) {
@@ -795,11 +825,11 @@
                     input.classList.remove('border-red-500');
                 }
             });
-            
+
             if (!isValid) {
                 showMessage('Please fill in all required school information fields.', 'error');
             }
-            
+
             return isValid;
         }
 
@@ -810,7 +840,7 @@
             currentStep = 2;
             updateProgress();
             updateNoticeContent();
-            
+
             // Update submit button text based on mode
             const submitText = document.getElementById('submit-text');
             if (editMode) {
@@ -827,7 +857,7 @@
             const noticeIcon = document.getElementById('notice-icon');
             const noticeTitle = document.getElementById('notice-title');
             const noticeText = document.getElementById('notice-text');
-            
+
             if (editMode) {
                 // Existing user - modification notice
                 noticeDiv.className = 'bg-blue-900/30 border border-blue-500/30 rounded-xl p-4 mb-8';
@@ -848,20 +878,24 @@
             if (existingRegistrations.length > 0) {
                 const summaryDiv = document.getElementById('existing-summary');
                 const summaryContent = document.getElementById('summary-content');
-                
+
                 let summaryHTML = '';
                 existingRegistrations.forEach(registration => {
+                    const eventName =
+                        (registration.eventIdPopulated && registration.eventIdPopulated.name) ||
+                        (getStageEvent(registration.eventId)?.name) ||
+                        'Unknown event';
+
                     summaryHTML += `
-                        <div class="bg-green-800/20 rounded-lg p-3">
-                            <h4 class="text-green-200 font-medium">${registration.eventId.name}</h4>
-                            <p class="text-green-300 text-sm mt-1">
-                                ${registration.participants.length} participant(s): 
-                                ${registration.participants.map(p => p.name).join(', ')}
-                            </p>
-                        </div>
-                    `;
+                <div class="bg-green-800/20 rounded-lg p-3">
+                    <h4 class="text-green-200 font-medium">${eventName}</h4>
+                    <p class="text-green-300 text-sm mt-1">
+                        ${registration.participants.length} participant(s): 
+                        ${registration.participants.map(p => p.name).join(', ')}
+                    </p>
+                </div>
+            `;
                 });
-                
                 summaryContent.innerHTML = summaryHTML;
                 summaryDiv.classList.remove('hidden');
             }
@@ -879,7 +913,7 @@
         function updateProgress() {
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
-            
+
             if (currentStep === 1) {
                 progressBar.style.width = '50%';
                 progressText.textContent = 'Step 1 of 2';
@@ -892,23 +926,23 @@
         // Handle form submission
         async function handleSubmit(e) {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('submit-registration');
             const submitText = document.getElementById('submit-text');
             const submitSpinner = document.getElementById('submit-spinner');
-            
+
             // Show loading state
             submitBtn.disabled = true;
             submitText.textContent = 'Submitting...';
             submitSpinner.classList.remove('hidden');
-            
+
             try {
                 const formData = collectFormData();
-                
+
                 if (!validateFormData(formData)) {
                     throw new Error('Please complete all required fields and event requirements.');
                 }
-                
+
                 const response = await fetch('/api/register/stage', {
                     method: 'POST',
                     headers: {
@@ -916,15 +950,15 @@
                     },
                     body: JSON.stringify(formData)
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (response.ok) {
-                    const successMessage = editMode ? 
-                        'Registration updated successfully! 🎉' : 
+                    const successMessage = editMode ?
+                        'Registration updated successfully! 🎉' :
                         'Registration submitted successfully! 🎉';
                     showMessage(successMessage, 'success');
-                    
+
                     // Redirect to panel after successful submission
                     setTimeout(() => {
                         window.location.href = '/panel';
@@ -932,7 +966,7 @@
                 } else {
                     throw new Error(result.message || 'Registration failed');
                 }
-                
+
             } catch (error) {
                 console.error('Registration error:', error);
                 showMessage(error.message, 'error');
@@ -956,39 +990,39 @@
                 },
                 events: []
             };
-            
+
             // Collect event registrations
             stageEvents.forEach(event => {
                 const participateYes = document.querySelector(`input[name="participate_${event._id}"][value="yes"]`);
                 if (participateYes && participateYes.checked) {
                     const participants = [];
                     const participantList = document.getElementById(`participant_list_${event._id}`);
-                    
+
                     participantList.querySelectorAll('.participant-card').forEach((card, index) => {
                         const name = card.querySelector(`input[name="participant_name_${event._id}[]"]`).value.trim();
                         const grade = parseInt(card.querySelector(`select[name="participant_grade_${event._id}[]"]`).value);
                         const genderSelect = card.querySelector(`select[name="participant_gender_${event._id}[]"]`);
                         const gender = genderSelect ? genderSelect.value : '';
-                        
+
                         if (name && grade) {
                             // Convert to proper Title Case (e.g., "john doe" → "John Doe")
                             const titleCaseName = name.trim().toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
-                            
+
                             const participant = {
                                 name: titleCaseName,
                                 grade: grade,
                                 participantOrder: index + 1
                             };
-                            
+
                             // Only include gender if it exists and is not empty
                             if (gender && gender.trim() !== '') {
                                 participant.gender = gender;
                             }
-                            
+
                             participants.push(participant);
                         }
                     });
-                    
+
                     if (participants.length > 0) {
                         formData.events.push({
                             eventId: event._id,
@@ -997,7 +1031,7 @@
                     }
                 }
             });
-            
+
             return formData;
         }
 
@@ -1010,24 +1044,24 @@
                     return false;
                 }
             }
-            
+
             // Check at least one event is selected
             if (formData.events.length === 0) {
                 showMessage('Please select at least one event to participate in.', 'error');
                 return false;
             }
-            
+
             // Validate each event
             for (let eventReg of formData.events) {
                 const event = stageEvents.find(e => e._id === eventReg.eventId);
-                
+
                 // Check participant count
-                if (eventReg.participants.length < event.minParticipants || 
+                if (eventReg.participants.length < event.minParticipants ||
                     eventReg.participants.length > event.maxParticipants) {
                     showMessage(`${event.name} requires ${event.minParticipants}-${event.maxParticipants} participants.`, 'error');
                     return false;
                 }
-                
+
                 // Check gender requirements
                 if (event.genderRequirement === 'male_female_required') {
                     const genders = eventReg.participants.map(p => p.gender);
@@ -1036,7 +1070,7 @@
                         return false;
                     }
                 }
-                
+
                 // Check grade requirements
                 for (let participant of eventReg.participants) {
                     if (participant.grade < event.minGrade || participant.grade > event.maxGrade) {
@@ -1045,7 +1079,7 @@
                     }
                 }
             }
-            
+
             return true;
         }
 
@@ -1053,7 +1087,7 @@
         function showMessage(message, type) {
             const container = document.getElementById('message-container');
             const messageClass = type === 'success' ? 'success-message' : 'error-message';
-            
+
             container.innerHTML = `
                 <div class="${messageClass} rounded-xl p-4 text-white">
                     <div class="flex items-center">
@@ -1062,9 +1096,9 @@
                     </div>
                 </div>
             `;
-            
+
             container.classList.remove('hidden');
-            
+
             // Auto hide after 5 seconds
             setTimeout(() => {
                 container.classList.add('hidden');
@@ -1072,4 +1106,5 @@
         }
     </script>
 </body>
+
 </html>
