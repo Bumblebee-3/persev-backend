@@ -327,6 +327,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="bg-red-900/30 border border-red-500/30 rounded-xl p-4 mb-8" id="registration-notice">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-red-400 mr-3" id="notice-icon"></i>
+                            <div id="notice-content">
+                            <p class="text-red-300 font-medium" id="notice-title">Registration Notice</p>
+                            <p class="text-red-200 text-sm" id="notice-text">
+                                All Artem participants are required to fill out 
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScAJcfQQtQ6vUXn-6Bce9O2tNWoVENx4rXbmHaN7qp3BbPCNw/viewform" 
+                                target="_blank" 
+                                class="text-red-300 underline font-semibold hover:text-red-100">this form</a>.
+                            </p>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Events Container -->
                     <div id="events-container" class="space-y-6">
@@ -612,8 +626,8 @@
             
             const specialRequirement = event.genderRequirement === 'grade_mixed_required' ? 
                 '<span class="text-[#BE8E30]">One Grade 9-10 + One Grade 11-12 required</span>' : '';
-            
-            div.innerHTML = `
+            if (event._id=='artem'){
+                div.innerHTML = `
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
                     <div class="flex-1">
                         <h3 class="text-xl text-white font-bold">${event.name}</h3>
@@ -645,12 +659,27 @@
                 
                 <div id="participants_${event._id}" class="hidden">
                     <div class="border-t border-[#BE8E30]/30 pt-6">
+                        <div class="bg-red-900/30 border border-red-500/30 rounded-xl p-4 mb-8" id="registration-notice">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-red-400 mr-3" id="notice-icon"></i>
+                            <div id="notice-content">
+                            <p class="text-red-300 font-medium" id="notice-title">Registration Notice</p>
+                            <p class="text-red-200 text-sm" id="notice-text">
+                                All Artem participants are required to fill out 
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScAJcfQQtQ6vUXn-6Bce9O2tNWoVENx4rXbmHaN7qp3BbPCNw/viewform" 
+                                target="_blank" 
+                                class="text-red-300 underline font-semibold hover:text-red-100">this form</a>.
+                            </p>
+                            </div>
+                        </div>
+                    </div>
                         <div class="flex items-center justify-between mb-4">
                             <h4 class="text-lg text-white font-medium">Team Members</h4>
                             <div class="participant-counter px-3 py-1 rounded-full text-sm font-medium">
                                 <span id="count_${event._id}">0</span> / ${event.maxParticipants} participants
                             </div>
                         </div>
+
                         
                         <div id="participant_list_${event._id}" class="space-y-4 mb-4">
                             <!-- Participants will be added here -->
@@ -672,7 +701,68 @@
                     </div>
                 </div>
             `;
-            
+            }
+            else {
+                div.innerHTML = `
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl text-white font-bold">${event.name}</h3>
+                            <p class="text-gray-300 text-sm">${event.description}</p>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm">
+                                <span class="text-[#BE8E30]">Grades: ${event.minGrade}-${event.maxGrade}</span>
+                                <span class="text-[#BE8E30]">Team: ${event.minParticipants === event.maxParticipants ? event.minParticipants : event.minParticipants + '-' + event.maxParticipants} participants</span>
+                                ${specialRequirement}
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-shrink-0">
+                            <label class="text-white font-medium text-center sm:text-left">Participate:</label>
+                            <div class="flex justify-center sm:justify-start space-x-3">
+                                <label class="custom-radio">
+                                    <input type="radio" name="participate_${event._id}" value="yes" 
+                                        onchange="toggleEvent('${event._id}', true)">
+                                    <div class="radio-indicator"></div>
+                                    <span class="radio-label">Yes</span>
+                                </label>
+                                <label class="custom-radio">
+                                    <input type="radio" name="participate_${event._id}" value="no" 
+                                        onchange="toggleEvent('${event._id}', false)" checked>
+                                    <div class="radio-indicator"></div>
+                                    <span class="radio-label">No</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="participants_${event._id}" class="hidden">
+                        <div class="border-t border-[#BE8E30]/30 pt-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-lg text-white font-medium">Team Members</h4>
+                                <div class="participant-counter px-3 py-1 rounded-full text-sm font-medium">
+                                    <span id="count_${event._id}">0</span> / ${event.maxParticipants} participants
+                                </div>
+                            </div>
+                            
+                            <div id="participant_list_${event._id}" class="space-y-4 mb-4">
+                                <!-- Participants will be added here -->
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button type="button" onclick="addParticipant('${event._id}')" 
+                                        id="add_btn_${event._id}"
+                                        class="btn-secondary px-4 py-2 rounded-lg text-sm">
+                                    <i class="fas fa-plus mr-2"></i>Add Participant
+                                </button>
+                                <button type="button" onclick="removeLastParticipant('${event._id}')" 
+                                        id="remove_btn_${event._id}" class="btn-secondary px-4 py-2 rounded-lg text-sm hidden">
+                                    <i class="fas fa-minus mr-2"></i>Remove Last
+                                </button>
+                            </div>
+                            
+                            <div id="validation_${event._id}" class="mt-4 text-sm"></div>
+                        </div>
+                    </div>
+                `;
+            }
             return div;
         }
 
