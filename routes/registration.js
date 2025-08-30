@@ -98,6 +98,11 @@ function getEventById(eventId) {
     .get(eventId);
 }
 
+function getEventsInCategory(cat) {
+  return db().prepare('select * from events where category_id = ?')
+  .get(cat);
+}
+
 function deleteAllStageRegistrationsForSchool(schoolId) {
   db()
     .prepare('DELETE FROM event_registrations WHERE school_id = ?')
@@ -630,7 +635,8 @@ router.get('/check-stage-registration', async (req, res) => {
 
     const school = findSchoolByName(schoolName);
     if (!school) {
-      return res.json({ hasRegistration: false });
+      return res.json({ hasRegistration: false ,
+        events: db().prepare('SELECT * FROM events where category_id == 2').all() });
     }
 
     // Check if school has any stage event registrations
@@ -656,6 +662,7 @@ router.get('/check-stage-registration', async (req, res) => {
         participants: r.participants,
         eventIdPopulated: { name: r.event.name }, // minimal equivalent to populate('eventId', 'name')
       })),
+        events: db().prepare('SELECT * FROM events where category_id == 2').all()   // ✅ array of events
     });
   } catch (error) {
     console.error('Error checking registration:', error);
@@ -676,6 +683,7 @@ router.get('/check-sports-registration', async (req, res) => {
 
     const school = findSchoolByName(schoolName);
     if (!school) {
+      console.log('fuck');
       return res.json({ hasRegistration: false });
     }
 
