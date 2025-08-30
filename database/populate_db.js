@@ -3,15 +3,21 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const models = require('./init_db'); 
 
-async function populateDatabase() {
+async function populateDatabase(options = { resetIds: false }) {
   try {
     await models.initializeDatabase();
     const db = models.db();
 
     console.log('Starting database population...\n');
-    db.exec('DELETE FROM events;');
-    db.exec('DELETE FROM event_categories;');
-    console.log('Cleared existing data');
+    
+    // Optionally reset autoincrement IDs if tables are empty
+    if (options.resetIds) {
+      console.log('Checking for autoincrement reset...');
+      models.resetAutoIncrement();
+    }
+    
+    // Note: NOT deleting existing data to preserve registrations and consistent IDs
+    console.log('Updating existing data (preserving registrations)');
 
     // Event categories data
     const categories = [
@@ -21,20 +27,29 @@ async function populateDatabase() {
     ];
 
     const insertCategory = db.prepare(`
-      INSERT INTO event_categories (name, description) VALUES (?, ?)
+      INSERT OR IGNORE INTO event_categories (name, description) VALUES (?, ?)
+    `);
+
+    const updateCategory = db.prepare(`
+      UPDATE event_categories SET description = ? WHERE name = ?
     `);
 
     const catTx = db.transaction((rows) => {
       const ids = [];
       for (const c of rows) {
-        const info = insertCategory.run(c.name, c.description ?? null);
-        ids.push({ id: info.lastInsertRowid, name: c.name });
+        // Try to insert, if it exists (IGNORE), then update
+        insertCategory.run(c.name, c.description ?? null);
+        updateCategory.run(c.description ?? null, c.name);
+        
+        // Get the actual ID
+        const existing = db.prepare('SELECT id FROM event_categories WHERE name = ?').get(c.name);
+        ids.push({ id: existing.id, name: c.name });
       }
       return ids;
     });
 
     const insertedCategories = catTx(categories);
-    console.log('✅ Categories inserted:', insertedCategories.length);
+    console.log('✅ Categories upserted:', insertedCategories.length);
 
     // Map category names -> ids
     const idByName = Object.fromEntries(insertedCategories.map(c => [c.name, c.id]));
@@ -75,14 +90,29 @@ async function populateDatabase() {
     ];
 
     const insertEvent = db.prepare(`
-      INSERT INTO events
+      INSERT OR IGNORE INTO events
         (name, category_id, description, min_participants, max_participants, min_grade, max_grade, gender_requirement, is_active)
       VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, 1)
     `);
 
+    const updateEvent = db.prepare(`
+      UPDATE events SET
+        category_id = ?,
+        description = ?,
+        min_participants = ?,
+        max_participants = ?,
+        min_grade = ?,
+        max_grade = ?,
+        gender_requirement = ?,
+        is_active = 1,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE name = ?
+    `);
+
     const eventTx = db.transaction((rows) => {
       for (const e of rows) {
+        // Try to insert, if it exists (IGNORE), then update
         insertEvent.run(
           e.name,
           e.category_id,
@@ -93,11 +123,22 @@ async function populateDatabase() {
           e.max_grade,
           e.gender_requirement
         );
+        
+        updateEvent.run(
+          e.category_id,
+          e.description ?? null,
+          e.min_participants,
+          e.max_participants,
+          e.min_grade,
+          e.max_grade,
+          e.gender_requirement,
+          e.name
+        );
       }
     });
 
     eventTx(events);
-    console.log('✅ Events inserted:', events.length);
+    console.log('✅ Events upserted:', events.length);
 
     // Summary
     const summaryStmt = db.prepare(`
@@ -114,7 +155,8 @@ async function populateDatabase() {
       console.log(`   ${row.name}: ${row.eventCount} events`);
     }
 
-    console.log('\Population completed successfully!');
+    console.log('\nPopulation completed successfully!');
+    console.log('Note: Existing registrations and stable IDs preserved');
   } catch (error) {
     console.error('Population failed:', error);
     throw error;
@@ -124,7 +166,10 @@ async function populateDatabase() {
 }
 
 if (require.main === module) {
-  populateDatabase()
+  const args = process.argv.slice(2);
+  const resetIds = args.includes('--reset-ids');
+  
+  populateDatabase({ resetIds })
     .then(() => {
       console.log('Database population completed successfully!');
       process.exit(0);

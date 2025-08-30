@@ -13,6 +13,25 @@ const DB_PATH = path.resolve(process.env.DATABASE_PATH);
 let db = null;
 let isConnected = false;
 
+/** Reset autoincrement counters (use with caution - only on fresh/empty database) */
+function resetAutoIncrement() {
+  if (!db) throw new Error('Database not initialized');
+  
+  const tables = ['event_categories', 'events', 'schools', 'event_registrations', 'sports_registrations', 'classroom_registrations'];
+  
+  for (const table of tables) {
+    // Check if table has any data
+    const count = db.prepare(`SELECT COUNT(*) as count FROM ${table}`).get().count;
+    if (count === 0) {
+      // Only reset if table is empty
+      db.exec(`DELETE FROM sqlite_sequence WHERE name = '${table}'`);
+      console.log(`Reset autoincrement for ${table}`);
+    } else {
+      console.log(`Skipped ${table} reset (has ${count} records)`);
+    }
+  }
+}
+
 /** Create updated_at trigger */
 function createTimestampTrigger(table) {
   db.exec(`
@@ -246,6 +265,7 @@ const models = {
   initializeDatabase,
   disconnectFromDatabase,
   createEventRegistration,
+  resetAutoIncrement,
 };
 
 console.log('Available models:', Object.keys(models));
@@ -254,8 +274,16 @@ module.exports = models;
 
 /* ---------- run if called directly ---------- */
 if (require.main === module) {
+  const args = process.argv.slice(2);
+  const resetIds = args.includes('--reset-ids');
+  
   initializeDatabase()
     .then(async () => {
+      if (resetIds) {
+        console.log('Resetting autoincrement IDs for empty tables...');
+        resetAutoIncrement();
+      }
+      
       // Do a no-op write to guarantee file timestamp changes even if schema already existed
       db.exec('PRAGMA wal_checkpoint(TRUNCATE);');
       console.log('Database initialization completed successfully at:', DB_PATH);

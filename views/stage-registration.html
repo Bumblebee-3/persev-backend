@@ -400,7 +400,6 @@
                 updateHeaderForEditMode();
             }
 
-            await loadStageEvents();
             setupEventListeners();
 
             if (editMode && existingRegistrations.length > 0) {
@@ -432,6 +431,7 @@
                             document.querySelector('[name="teacherEmail"]').value = data.school.teacherEmail || '';
                         }
                     }
+                    stageEvents = data.events;
                 }
             } catch (error) {
                 console.error('Error loading existing registrations:', error);
@@ -453,20 +453,6 @@
             } catch (error) {
                 console.error('Error loading school info:', error);
                 showMessage('Error loading school information. Please refresh the page.', 'error');
-            }
-        }
-
-        // Load stage events from API
-        async function loadStageEvents() {
-            try {
-                const response = await fetch('/api/events/stage');
-                const eventsPayload = await response.json();
-                stageEvents = (Array.isArray(eventsPayload) ? eventsPayload : [])
-                    .filter(e => String(e.categoryId) === '2' && (e.isActive === undefined || !!e.isActive));
-                renderEvents();
-            } catch (error) {
-                console.error('Error loading events:', error);
-                showMessage('Error loading events. Please refresh the page.', 'error');
             }
         }
 
