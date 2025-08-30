@@ -45,33 +45,33 @@ async function populateDatabase() {
     // Events data
     const events = [
       // Sports Events
-      { name: 'Explorare', category_id: sportsCategory, min_participants: 4,  max_participants: 6,  min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Adventure and exploration challenge' },
-      { name: 'Monopolium', category_id: sportsCategory, min_participants: 3,  max_participants: 5,  min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Strategic board game competition' },
-      { name: 'Football', category_id: sportsCategory, min_participants: 11, max_participants: 15, min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Inter-school football tournament' },
-      { name: 'Basketball', category_id: sportsCategory, min_participants: 5,  max_participants: 8,  min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Basketball championship' },
-      { name: 'Gully Cricket', category_id: sportsCategory, min_participants: 6,  max_participants: 10, min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Street cricket tournament' },
-      { name: 'Table Tennis', category_id: sportsCategory, min_participants: 2,  max_participants: 4,  min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Table tennis singles and doubles' },
-      { name: 'Tug of War', category_id: sportsCategory, min_participants: 8,  max_participants: 12, min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Traditional tug of war competition' },
-      { name: 'E-Sports', category_id: sportsCategory, min_participants: 1,  max_participants: 7,  min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Video game tournament' },
+      { name: 'Explorare', category_id: sportsCategory, min_participants: 4,  max_participants: 4,  min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Adventure and exploration challenge' },
+      { name: 'Monopolium', category_id: sportsCategory, min_participants: 1,  max_participants: 1,  min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Strategic board game competition' },
+      { name: 'Football', category_id: sportsCategory, min_participants: 8, max_participants: 8, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Inter-school football tournament' },
+      { name: 'Basketball', category_id: sportsCategory, min_participants: 7,  max_participants: 10,  min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Basketball championship' },
+      { name: 'Gully Cricket', category_id: sportsCategory, min_participants: 7,  max_participants: 7, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Street cricket tournament (6 participants +1 substitute)' },
+      { name: 'Table Tennis', category_id: sportsCategory, min_participants: 2,  max_participants: 4,  min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Table tennis singles and doubles' },
+      { name: 'Tug of War', category_id: sportsCategory, min_participants: 8,  max_participants: 8, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Traditional tug of war competition (6 participants + 2 substitutes)' },
+      { name: 'E-Sports', category_id: sportsCategory, min_participants: 2,  max_participants: 4,  min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Video game tournament' },
 
       // Stage Events
       { name: 'Gratia', category_id: stageCategory, min_participants: 6, max_participants: 8, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Group dance performance competition' },
-      { name: 'Panache', category_id: stageCategory, min_participants: 5, max_participants: 7, min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Fashion and style showcase' },
-      { name: 'Symphonia', category_id: stageCategory, min_participants: 5, max_participants: 7, min_grade: 8,  max_grade: 12, gender_requirement: 'any', description: 'Musical performance competition' },
+      { name: 'Panache', category_id: stageCategory, min_participants: 5, max_participants: 7, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Fashion and style showcase' },
+      { name: 'Symphonia', category_id: stageCategory, min_participants: 5, max_participants: 7, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Musical performance competition' },
       { name: 'Mr. and Mrs. Perseverantia', category_id: stageCategory, min_participants: 2, max_participants: 2, min_grade: 9,  max_grade: 12, gender_requirement: 'male_female_required', description: 'Personality and talent showcase for one male and one female participant' },
 
       // Classroom Events
       { name: 'Admeta: Category 1', category_id: classroomCategory, min_participants: 2, max_participants: 2, min_grade: 9,  max_grade: 10, gender_requirement: 'any', description: 'Academic debate for grades 9-10' },
       { name: 'Admeta: Category 2', category_id: classroomCategory, min_participants: 2, max_participants: 2, min_grade: 11, max_grade: 12, gender_requirement: 'any', description: 'Academic debate for grades 11-12' },
-      { name: 'Artem', category_id: classroomCategory, min_participants: 1, max_participants: 1, min_grade: 11, max_grade: 12, gender_requirement: 'any', description: 'Art and creativity challenge' },
+      { name: 'Artem', category_id: classroomCategory, min_participants: 1, max_participants: 1, min_grade: 9, max_grade: 12, gender_requirement: 'any', description: 'Art and creativity challenge' },
       { name: 'Carmen: Category 1', category_id: classroomCategory, min_participants: 1, max_participants: 1, min_grade: 9,  max_grade: 10, gender_requirement: 'any', description: 'Poetry and creative writing for grades 9-10' },
       { name: 'Carmen: Category 2', category_id: classroomCategory, min_participants: 1, max_participants: 1, min_grade: 11, max_grade: 12, gender_requirement: 'any', description: 'Poetry and creative writing for grades 11-12' },
       { name: 'Fabula', category_id: classroomCategory, min_participants: 4, max_participants: 10, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Storytelling and narrative competition' },
-      { name: 'Fortuna', category_id: classroomCategory, min_participants: 2, max_participants: 3, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Strategy and luck-based games' },
+      { name: 'Fortuna', category_id: classroomCategory, min_participants: 3, max_participants: 3, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Strategy and luck-based games' },
       { name: 'Codeferno', category_id: classroomCategory, min_participants: 1, max_participants: 1, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Programming and coding competition' },
       { name: 'Gustatio', category_id: classroomCategory, min_participants: 2, max_participants: 2, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Culinary arts and cooking challenge' },
-      { name: 'Mahim 16', category_id: classroomCategory, min_participants: 3, max_participants: 4, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Local knowledge and trivia' },
-      { name: "‘Ad’venturium", category_id: classroomCategory, min_participants: 2, max_participants: 2, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Business and entrepreneurship challenge (requires one grade 9-10 and one grade 11-12)' }
+      { name: 'Mahim 16', category_id: classroomCategory, min_participants: 3, max_participants: 4, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Mystery based-crime event' },
+      { name: "‘Ad’venturium", category_id: classroomCategory, min_participants: 3, max_participants: 3, min_grade: 9,  max_grade: 12, gender_requirement: 'any', description: 'Business and entrepreneurship challenge ' }
     ];
 
     const insertEvent = db.prepare(`
